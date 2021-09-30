@@ -1,6 +1,6 @@
 import tkinter as tk
-from helpers import Vector
-from pong import PongRound
+from pages.common.helpers import Vector
+from pages import local_multiplayer
 from time import sleep
 # References -
 # pong gameplay : https://www.ponggame.org/
@@ -15,18 +15,7 @@ root = tk.Tk() # Initialize window
 root.geometry(f'{WINDOW_SIZE.x}x{WINDOW_SIZE.y}') # Set size of the window
 root.resizable(0,0) # We dont want it to be resizable
 # ---
+local_multiplayer.load(root,WINDOW_SIZE)
 
-# < Background >
-canvas = tk.Canvas(root,background = "black") # background is going to be a Canvas on the {root} with background black
-canvas.place(x = 0, y = 0, width = WINDOW_SIZE.x,height = WINDOW_SIZE.y) # We place the background at 0,0 with width = window's width and height = window's height
-# ---
-
-def onRoundEnd(res):
-    print(f"{res['reason']}")
-    print(f"player {res['victorySide']} has won the round")
-    sleep(5)
-    PongRound(root, canvas, WINDOW_SIZE, onRoundEnd = onRoundEnd)
-
-PongRound(root, canvas, WINDOW_SIZE, onRoundEnd = onRoundEnd) # Refer to pong.py for this function
 
 root.mainloop() # Start running window

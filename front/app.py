@@ -5,6 +5,7 @@ from pong import Pong
 # pong gameplay : https://www.ponggame.org/
 # classes in python : https://www.w3schools.com/python/python_classes.asp/ 
 # tkinter canvas : https://www.tutorialspoint.com/python/tk_canvas.htm/
+# how to edit markdown files : https://www.youtube.com/watch?v=HUBNt18RFbo
 
 WINDOW_SIZE = Vector(800, 500) # The size of the window
 

@@ -1,6 +1,10 @@
 # ComputerProject2021
-We are making the pong
-helo :) bye :(
-hello
-hi
-the pull worked
+
+# **Pong**
+This is a clone of the game '*pong*'
+
+
+
+## Why
+This is for our cs project
+___

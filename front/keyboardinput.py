@@ -17,7 +17,7 @@ class BindKeyDown:
         if self.paused : return
         #print(self.isDown)
         for i in self.isDown: # for every key that is currently pushed
-            self.toWatch[i](i) # call the callback
+            self.toWatch[i][0](i) # call the callback
         self.root.after(self.msdelay, self.callbackLoop) # after msdelay call this function again
 
     def pause(self): # pauses all key events
@@ -25,8 +25,8 @@ class BindKeyDown:
     def cont(self): # continues all key events
         self.paused = False
         self.callbackLoop()
-    def bindKey(self,keysym, callback = print): # bind a new key to keydown
-        self.toWatch[keysym] = callback
+    def bindKey(self,keysym, down = print, up = lambda k:0): # bind a new key to keydown
+        self.toWatch[keysym] = (down,up)
     def unbindKey(self,keysym): # unbind a key
         if not self.toWatch.get(keysym):return
         self.toWatch.__delitem__(keysym)
@@ -35,5 +35,9 @@ class BindKeyDown:
         if e.keysym in self.toWatch:
             self.isDown.add(e.keysym)
     def onKeyRelease(self,e):
-        if e.keysym in self.isDown:self.isDown.remove(e.keysym)
+        if e.keysym in self.isDown:
+            self.isDown.remove(e.keysym)
+
+            if not self.paused:self.toWatch[e.keysym][1](e.keysym)
+            
         

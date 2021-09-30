@@ -3,8 +3,9 @@ from helpers import Vector
 import drawingtools
 from keyboardinput import BindKeyDown
 import physics as world
-
-def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
+renderLoopID = -1
+logicLoopID = -1
+def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print):
     '''
     Deals with the main working of our app\n    
     Params :\n
@@ -21,14 +22,19 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
         "ball" : -1, # ball
         "middleSectionLineCanvasID" : -1 # for the middle division line thingy
     }
+    result = {
+        "victorySide" : 0,
+        "reason" : "Unkown Reason"
+    }
     
     # < Defining ball >
     ball = {
-        'position' : Vector(size.x/2, 30),
+        'position' : Vector(size.x/2, size.y/2),
         'direction' : Vector(3,4).normalized(),
         'size' : Vector(10,10),
         'ballSpeed' : 6,
-        'displacement' : Vector(0,0)
+        'displacement' : Vector(0,0),
+        'collisionConst' :1
     }
 
     # < Defining players >
@@ -41,20 +47,32 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
     player1 = {
         'position' : Vector(playerInfo['xOffset'], size.y / 2),
         'size' : Vector(20,80),
-        'displacement' : Vector(0,0)
+        'displacement' : Vector(0,0),
+        'dir' : 1
     }
 
     # Player 2
     player2 = {
         'position' : Vector(size.x - playerInfo['xOffset'], size.y / 2),
         'size' : Vector(20,80),
-        'displacement' : Vector(0,0)
+        'displacement' : Vector(0,0),
+        'dir' : 1
     }
     # ---
     
+    def End():
+        global renderLoopID
+        global logicLoopID
+        root.after_cancel(renderLoopID)
+        root.after_cancel(logicLoopID)
+        keybinds.pause()
+        canvas.delete("all")
+        
+        onRoundEnd(result)
 
     # < Called once at the start, renders some items that stay forever >
     def InitialRender():
+        global renderLoopID
         # Draw the middle line
         canvasIDS["middleSectionLineCanvasID"] = canvas.create_line(size.x / 2, 0, size.x / 2, size.y,fill = "white",dash=(3, 1),tags="splitDistance")
 
@@ -62,10 +80,11 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
         canvasIDS['p2'] = drawingtools.draw_rectangle_with_centre(canvas, player2['position'], player2['size'])
         
         canvasIDS['ball'] = drawingtools.draw_rectangle_with_centre(canvas, ball['position'], ball['size'])
-        Render()
+        renderLoopID = root.after(renderDelay, Render)
 
     # < Renders the game > | To be used whenever some update is made
     def Render():
+        global renderLoopID
         # !!! Note !!!
         # Canvas origin is not in the centre, it is the top left
         
@@ -76,23 +95,31 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
         player2['displacement'] = Vector(0,0)
         ball['displacement'] = Vector(0,0)
 
-        root.after(renderDelay, Render)
+        renderLoopID = root.after(renderDelay, Render)
 
     # < Called every frame, Handles logic and rendering >
     def HandleFrame():
+        global logicLoopID
         # Called every {1000 / fps} milliseconds
+        if (world.hasCrossedHorizontalWalls(ball, (0, size.x))):
+            if ball["position"].x < 0:
+                result["victorySide"] = 2
+                result["reason"] = "GOAL!"
+            else:
+                result["victorySide"] = 1
+                result["reason"] = "GOAL!"
+            End()
+            return
         if (world.isCollidingVerticalWalls(ball, (0, size.y))):
             ball['direction'].y *= -1
-        if (world.hasCrossedHorizontalWalls(ball, (0, size.x))):
-            print("Out of bounds")
-            ball['direction'].x *= -1
+        
         isColliding,collidingBody = world.lookForCollisionWithPaddles(ball, player1, player2)
         if (isColliding):
             currVel = ball['direction'] * ball['ballSpeed']
-            ball['direction'] = Vector(-currVel.x, currVel.y).normalized()
+            ball['direction'] = Vector(-currVel.x, currVel.y + collidingBody['dir'] * ball["collisionConst"]).normalized()
         ball['position'] += ball['direction'] * ball['ballSpeed']
         ball['displacement'] += ball['direction'] * ball['ballSpeed']
-        root.after(logicDelay, HandleFrame)
+        logicLoopID = root.after(logicDelay, HandleFrame)
 
     # < Called when a key is pressed >
     def onKeydown(key):
@@ -103,29 +130,41 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
             if (player2['position'] + up * playerInfo['paddleSpeed'] - (player2['size'] / 2)).y > 0:
                 player2['displacement'] += up * playerInfo['paddleSpeed']
                 player2['position'] += up * playerInfo['paddleSpeed']
+                player2['dir'] = 1
         elif key == "Down":
             if (player2['position'] + down * playerInfo['paddleSpeed'] + (player2['size'] / 2)).y < size.y:
                 player2['displacement'] += down * playerInfo['paddleSpeed']
                 player2['position'] += down * playerInfo['paddleSpeed']
+                player2['dir'] = -1
         elif key == "w":
             if (player1['position'] + up * playerInfo['paddleSpeed'] - (player1['size'] / 2)).y > 0:
                 player1['displacement'] += up * playerInfo['paddleSpeed']
                 player1['position'] += up *playerInfo['paddleSpeed']
+                player1['dir'] = 1
         elif key == "s":
             if (player1['position'] + down * playerInfo['paddleSpeed'] + (player1['size'] / 2)).y < size.y:
                 player1['displacement'] += down * playerInfo['paddleSpeed']
                 player1['position'] += down * playerInfo['paddleSpeed']
+                player1['dir'] = -1
+    # < Called when a key is released >
+    def onKeyUp(key):
+        # Origin is top left of screen
+        if key == "Up" or key == "Down":
+            player2['dir'] = 0
+        elif key == "w" or key == "s":
+                player1['dir'] = 0
+
 
     # < Adding keybinds >
-    keybinds = BindKeyDown(root, msdelay=10)
-    keybinds.bindKey("Up",onKeydown)
-    keybinds.bindKey("Down",onKeydown)
-    keybinds.bindKey("w",onKeydown)
-    keybinds.bindKey("s",onKeydown)
+    keybinds = BindKeyDown(root, msdelay=20)
+    keybinds.bindKey("Up",down=onKeydown, up=onKeyUp)
+    keybinds.bindKey("Down",down=onKeydown, up=onKeyUp)
+    keybinds.bindKey("w",down=onKeydown, up=onKeyUp)
+    keybinds.bindKey("s",down=onKeydown, up=onKeyUp)
     # ---
 
     InitialRender() # paint the initial screen
-    HandleFrame() # start the actual logic cycle
+    logicLoopID = root.after(logicDelay, HandleFrame) # start the actual logic cycle
     
 
 

@@ -1,6 +1,7 @@
 import tkinter as tk
 from helpers import Vector
-from pong import Pong
+from pong import PongRound
+from time import sleep
 # References -
 # pong gameplay : https://www.ponggame.org/
 # classes in python : https://www.w3schools.com/python/python_classes.asp/ 
@@ -20,6 +21,12 @@ canvas = tk.Canvas(root,background = "black") # background is going to be a Canv
 canvas.place(x = 0, y = 0, width = WINDOW_SIZE.x,height = WINDOW_SIZE.y) # We place the background at 0,0 with width = window's width and height = window's height
 # ---
 
-Pong(root, canvas, WINDOW_SIZE) # Refer to pong.py for this function
+def onRoundEnd(res):
+    print(f"{res['reason']}")
+    print(f"player {res['victorySide']} has won the round")
+    sleep(5)
+    PongRound(root, canvas, WINDOW_SIZE, onRoundEnd = onRoundEnd)
+
+PongRound(root, canvas, WINDOW_SIZE, onRoundEnd = onRoundEnd) # Refer to pong.py for this function
 
 root.mainloop() # Start running window

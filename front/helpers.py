@@ -2,9 +2,23 @@ class Vector:
     '''
     A 2D vector with x,y
     '''
+    
     def __init__(self,x,y):
         self.x = x
         self.y = y
+
+    def normalized(self):
+        '''returns normalized vector'''
+        l = self / Vector(0,0)
+        return Vector(self.x / l, self.y / l)
+
+    def normalize(self):
+        '''normalizes the vector itself, returns old value'''
+        old = Vector(self.x, self.y)
+        l = old / Vector(0,0)
+        self.x /= l
+        self.y /= l
+        return old
 
     def __eq__(self, other): # Defines what it means to be equal to a 'Vector'
         t = type(other)
@@ -46,7 +60,7 @@ class Vector:
         else:
             raise TypeError(f"Type error : vector cannot be added with type : {t}")
     
-    def __mult__(self, other):
+    def __mul__(self, other):
         t = type(other)
         if t == float or t == int:
             return Vector(other * self.x, other * self.y)

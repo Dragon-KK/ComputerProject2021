@@ -35,5 +35,5 @@ class BindKeyDown:
         if e.keysym in self.toWatch:
             self.isDown.add(e.keysym)
     def onKeyRelease(self,e):
-        self.isDown.remove(e.keysym)
+        if e.keysym in self.isDown:self.isDown.remove(e.keysym)
         

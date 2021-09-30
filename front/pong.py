@@ -14,7 +14,7 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
     ''' 
     # < Some constants >
     logicDelay = 10 # ms between each Frame
-    renderDelay = 15 # ms between each render
+    renderDelay = 1 # ms between each render
     canvasIDS = { # Given by canvas when we draw stuff
         "p1" : -1, # for player1 (left side)
         "p2" : -1, # for player2 (right side)
@@ -24,18 +24,18 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
     
     # < Defining ball >
     ball = {
-        'position' : Vector(size.x/2, size.y/2),
+        'position' : Vector(size.x/2, 30),
         'direction' : Vector(3,4).normalized(),
-        'radius' : 10,
-        'ballSpeed' : 10,
+        'size' : Vector(10,10),
+        'ballSpeed' : 6,
         'displacement' : Vector(0,0)
     }
 
     # < Defining players >
     playerInfo = {
         'color' : "white",
-        'paddleSpeed' : 5,
-        'xOffset' : 20
+        'paddleSpeed' : 8,
+        'xOffset' : 13
     }
     # Player 1
     player1 = {
@@ -61,7 +61,7 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
         canvasIDS['p1'] = drawingtools.draw_rectangle_with_centre(canvas, player1['position'], player1['size'])
         canvasIDS['p2'] = drawingtools.draw_rectangle_with_centre(canvas, player2['position'], player2['size'])
         
-        canvasIDS['ball'] = drawingtools.draw_circle_with_centre(canvas, ball['position'], ball['radius'])
+        canvasIDS['ball'] = drawingtools.draw_rectangle_with_centre(canvas, ball['position'], ball['size'])
         Render()
 
     # < Renders the game > | To be used whenever some update is made
@@ -81,11 +81,15 @@ def Pong(root : tk.Tk,canvas : tk.Canvas, size : Vector):
     # < Called every frame, Handles logic and rendering >
     def HandleFrame():
         # Called every {1000 / fps} milliseconds
-        if (world.isCollidingVerticalWalls({'type' : 'c','position' : ball['position'],'radius' : ball['radius']}, (0, size.y))):
+        if (world.isCollidingVerticalWalls(ball, (0, size.y))):
             ball['direction'].y *= -1
-        if (world.hasCrossedHorizontalWalls({'type' : 'c','position' : ball['position'],'radius' : ball['radius']}, (0, size.x))):
+        if (world.hasCrossedHorizontalWalls(ball, (0, size.x))):
             print("Out of bounds")
             ball['direction'].x *= -1
+        isColliding,collidingBody = world.lookForCollisionWithPaddles(ball, player1, player2)
+        if (isColliding):
+            currVel = ball['direction'] * ball['ballSpeed']
+            ball['direction'] = Vector(-currVel.x, currVel.y).normalized()
         ball['position'] += ball['direction'] * ball['ballSpeed']
         ball['displacement'] += ball['direction'] * ball['ballSpeed']
         root.after(logicDelay, HandleFrame)

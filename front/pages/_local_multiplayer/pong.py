@@ -63,16 +63,16 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
     }
     # ---
     
-    def End():
+    def End(): # Called when the round ends
         global renderLoopID
         global logicLoopID
         
-        root.after_cancel(renderLoopID)
-        root.after_cancel(logicLoopID)
-        keybinds.pause()
-        canvas.delete("all")
+        root.after_cancel(renderLoopID) # I no longer want to render stuff
+        root.after_cancel(logicLoopID) # I no longer want to do logic
+        keybinds.pause() # I no longer need to listen for keypress
+        canvas.delete("all") # Clear the canvas so it can be reused
         
-        onRoundEnd(result)
+        onRoundEnd(result) # onRoundEnd is a function given by local_multiplayer
 
     # < Called once at the start, renders some items that stay forever >
     def InitialRender():
@@ -92,6 +92,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         # !!! Note !!!
         # Canvas origin is not in the centre, it is the top left
         
+        # Move all the items by displacement
         drawingtools.moveItem(canvas, canvasIDS['p1'], player1['displacement'])
         drawingtools.moveItem(canvas, canvasIDS['p2'], player2['displacement'])
         drawingtools.moveItem(canvas, canvasIDS['ball'], ball['displacement'])
@@ -102,10 +103,12 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
 
     # < Called every frame, Handles logic and rendering >
     def HandleFrame():
-        global paused
-        if paused:return
-        global logicLoopID
         # Called every {1000 / fps} milliseconds
+        global paused
+        global logicLoopID
+        
+        if paused:return # should never really happen, but if it does this is another check
+
         if (world.hasCrossedHorizontalWalls(ball, (0, size.x))):
             if ball["position"].x < 0:
                 result["victorySide"] = 2
@@ -131,6 +134,8 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         # Origin is top left of screen
         up = Vector(0,-1)
         down = Vector(0,1)
+
+        # Note that player['dir'] is used when ball collides with paddle
         if key == "Up":
             if (player2['position'] + up * playerInfo['paddleSpeed'] - (player2['size'] / 2)).y > 0:
                 player2['displacement'] += up * playerInfo['paddleSpeed']
@@ -175,6 +180,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         global renderLoopID
         global logicLoopID
         global paused
+        # Refer to 'End' for what these do
         paused = True
         root.after_cancel(renderLoopID)
         root.after_cancel(logicLoopID)
@@ -185,6 +191,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         global logicLoopID
         global renderLoopID
         global paused
+        # Refer to 'End' for what these do
         paused = False
         keybinds.cont()
         renderLoopID = root.after(renderDelay, Render)
@@ -205,7 +212,3 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
             return "Invalid Command!"
 
     return interface
-
-
-if __name__ == "__main__": # just for debugging
-    import app

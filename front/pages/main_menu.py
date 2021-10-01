@@ -5,6 +5,9 @@ Container = None
 def unload():
     Container.destroy()
 
+def resetGlobalScope():
+    global Container
+    Container= None
 
 
 def load(root,size,navigateTo):

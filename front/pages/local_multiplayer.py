@@ -84,9 +84,7 @@ def load(_root : tk.Tk, WINDOW_SIZE : Vector, navigateTo):
         p1Score.config(text = str(currentScore[1]))
         p2Score.config(text = str(currentScore[2]))
         pong.resetGlobalScope()
-        ended = True
-        navigateTo(pages.MAIN_MENU)
-        #Round = pong.PongRound(root, canvas, WINDOW_SIZE, onRoundEnd = onRoundEnd)
+        Round = pong.PongRound(root, canvas, WINDOW_SIZE, onRoundEnd = onRoundEnd)
 
     Round = pong.PongRound(root, canvas, WINDOW_SIZE, onRoundEnd = onRoundEnd) # Refer to pong.py for this function
 

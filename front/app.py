@@ -31,6 +31,7 @@ def goTo(page):
         current.unload()
         print("Finished deload")
     current = __pages.get(page)
+    current.resetGlobalScope()
     current.load(root, WINDOW_SIZE + Vector(0,0), goTo)
     
 

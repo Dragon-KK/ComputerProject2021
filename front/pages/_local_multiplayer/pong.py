@@ -48,7 +48,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
     # < Defining players >
     playerInfo = {
         'color' : "white",
-        'paddleSpeed' : 8,
+        'paddleSpeed' : 5,
         'xOffset' : 13
     }
     # Player 1
@@ -128,7 +128,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         isColliding,collidingBody = world.lookForCollisionWithPaddles(ball, player1, player2)
         if (isColliding):
             currVel = ball['direction'] * ball['ballSpeed']
-            print(collidingBody['dir'],currVel.y)
+            #print(collidingBody['dir'],currVel.y)
             ball['direction'] = Vector(-currVel.x, currVel.y + (collidingBody['dir'] * ball["collisionConst"])).normalized()
         ball['position'] += ball['direction'] * ball['ballSpeed']
         ball['displacement'] += ball['direction'] * ball['ballSpeed']

@@ -6,7 +6,12 @@ from . import physics as world
 from . import constants as cmd
 renderLoopID = -1
 logicLoopID = -1
-paused = False
+paused = True
+
+def resetGlobalScope():
+    global paused
+    paused = True
+
 def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print):
     '''
     Deals with the main working of our app\n    
@@ -37,7 +42,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         'size' : Vector(10,10),
         'ballSpeed' : 6,
         'displacement' : Vector(0,0),
-        'collisionConst' : -1
+        'collisionConst' : -3
     }
 
     # < Defining players >
@@ -51,7 +56,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         'position' : Vector(playerInfo['xOffset'], size.y / 2),
         'size' : Vector(20,80),
         'displacement' : Vector(0,0),
-        'dir' : 1
+        'dir' : 0
     }
 
     # Player 2
@@ -59,7 +64,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         'position' : Vector(size.x - playerInfo['xOffset'], size.y / 2),
         'size' : Vector(20,80),
         'displacement' : Vector(0,0),
-        'dir' : 1
+        'dir' : 0
     }
     # ---
     
@@ -76,7 +81,6 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
 
     # < Called once at the start, renders some items that stay forever >
     def InitialRender():
-        global renderLoopID
         # Draw the middle line
         canvasIDS["middleSectionLineCanvasID"] = canvas.create_line(size.x / 2, 0, size.x / 2, size.y,fill = "white",dash=(3, 1),tags="splitDistance")
 
@@ -84,7 +88,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         canvasIDS['p2'] = drawingtools.draw_rectangle_with_centre(canvas, player2['position'], player2['size'])
         
         canvasIDS['ball'] = drawingtools.draw_rectangle_with_centre(canvas, ball['position'], ball['size'])
-        renderLoopID = root.after(renderDelay, Render)
+
 
     # < Renders the game > | To be used whenever some update is made
     def Render():
@@ -124,7 +128,8 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
         isColliding,collidingBody = world.lookForCollisionWithPaddles(ball, player1, player2)
         if (isColliding):
             currVel = ball['direction'] * ball['ballSpeed']
-            ball['direction'] = Vector(-currVel.x, currVel.y + collidingBody['dir'] * ball["collisionConst"]).normalized()
+            print(collidingBody['dir'],currVel.y)
+            ball['direction'] = Vector(-currVel.x, currVel.y + (collidingBody['dir'] * ball["collisionConst"])).normalized()
         ball['position'] += ball['direction'] * ball['ballSpeed']
         ball['displacement'] += ball['direction'] * ball['ballSpeed']
         logicLoopID = root.after(logicDelay, HandleFrame)
@@ -174,7 +179,6 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
     # ---
 
     InitialRender() # paint the initial screen
-    logicLoopID = root.after(logicDelay, HandleFrame) # start the actual logic cycle
     
     def pauseGame():
         global renderLoopID
@@ -203,6 +207,7 @@ def PongRound(root : tk.Tk,canvas : tk.Canvas, size : Vector, onRoundEnd = print
             End()
             return True
         elif c == cmd.GET_STATE:
+            global paused
             return paused
         elif c == cmd.PAUSE:
             return pauseGame()

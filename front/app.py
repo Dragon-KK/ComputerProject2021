@@ -1,6 +1,7 @@
 import tkinter as tk
 from pages.common.helpers import Vector
-from pages import local_multiplayer
+from pages import local_multiplayer,main_menu
+from pages import  page_index as pages
 from time import sleep
 # References -
 # pong gameplay : https://www.ponggame.org/
@@ -15,7 +16,24 @@ root = tk.Tk() # Initialize window
 root.geometry(f'{WINDOW_SIZE.x}x{WINDOW_SIZE.y}') # Set size of the window
 root.resizable(0,0) # We dont want it to be resizable
 # ---
-local_multiplayer.load(root,WINDOW_SIZE)
 
+__pages = {
+    pages.MAIN_MENU : main_menu,
+    pages.LOCAL_MULTIPLAYER : local_multiplayer
+}
+
+current = None
+def goTo(page):
+    global current
+    global root
+    global WINDOW_SIZE
+    if current:
+        current.unload()
+        print("Finished deload")
+    current = __pages.get(page)
+    current.load(root, WINDOW_SIZE + Vector(0,0), goTo)
+    
+
+goTo(pages.MAIN_MENU)
 
 root.mainloop() # Start running window

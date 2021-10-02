@@ -1,6 +1,6 @@
 import tkinter as tk
 from pages.common.helpers import Vector
-from pages import local_multiplayer,main_menu
+from pages import local_multiplayer,main_menu,online_multiplayer
 from pages import  page_index as pages
 from time import sleep
 # References -
@@ -19,7 +19,8 @@ root.resizable(0,0) # We dont want it to be resizable
 
 __pages = {
     pages.MAIN_MENU : main_menu,
-    pages.LOCAL_MULTIPLAYER : local_multiplayer
+    pages.LOCAL_MULTIPLAYER : local_multiplayer,
+    pages.ONLINE_MULTIPLAYER : online_multiplayer
 }
 
 current = None

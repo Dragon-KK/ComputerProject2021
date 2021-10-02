@@ -1,0 +1,1 @@
+DISCONNECT = "$$Disconnect$$" # When this message is recieved, closes the socket connection

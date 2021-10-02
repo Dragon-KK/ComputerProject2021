@@ -23,3 +23,6 @@ def load(root,size,navigateTo):
 
     local_multiplayer = tk.Button(modesContainer,text="Local Multiplayer", background="white",command=lambda:navigateTo(pages.LOCAL_MULTIPLAYER))
     local_multiplayer.grid()
+
+    online_multiplayer = tk.Button(modesContainer,text="Online Multiplayer", background="white",command=lambda:navigateTo(pages.ONLINE_MULTIPLAYER))
+    online_multiplayer.grid()

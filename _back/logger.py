@@ -14,3 +14,7 @@ class console:
     @staticmethod
     def serverLog(msg):
         print(f"[Server] {msg}")
+
+    @staticmethod
+    def error(errorType = "Unkown Error", errorLevel = "?",errorDesc = "An error has occured"):
+        print(f"[Error ( Error level : {errorLevel} )] | type : {errorType} | {errorDesc}")

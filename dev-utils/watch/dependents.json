@@ -1,0 +1,16 @@
+{
+    "../../front/" :
+    {
+        "util.py" : "dependencies/common/util.py",
+        "logger.py" : "dependencies/common/logger.py",
+        "protocols.py" : "dependencies/common/protocols.py",
+        "tools.py" : "dependencies/common/tools.py"
+    },
+    "../../back/" :
+    {
+        "util.py" : "dependencies/common/util.py",
+        "logger.py" : "dependencies/common/logger.py",
+        "protocols.py" : "dependencies/common/protocols.py",
+        "tools.py" : "dependencies/common/tools.py"
+    }
+}

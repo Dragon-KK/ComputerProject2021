@@ -1,6 +1,6 @@
 from ..utils import page
 import tkinter as tk
-
+from ..utils.custom import Button
 class mainMenu(page.definition):
 
     def __init__(self, *args, **kwargs):
@@ -11,11 +11,13 @@ class mainMenu(page.definition):
 
 
     def render(self):
-        self.container.config(background = "black")
-        self.elements['title'] = tk.Label(self.container, text = "Hello World")
-        self.elements['title'].place(relx = 0.3, relwidth = 0.4,rely = 0.1,relheight = 0.2)
-
-        self.elements['buttons'] = {
-            'Play' : tk.Button(self.container,text="Play",command=lambda:print("Hello"))
-        }
-        self.elements['buttons']['Play'].pack()
+        self.container.config(background='black')
+        self.elements['button'] = Button(self.container,
+        css = {
+            'top' : 100, 'right' : 10, 'width' : 60, 'height' : 30,
+            'font' : {'color' : 'black', 'style' : 'Times', 'size' : 15},
+            'border':{'radius' : 20}
+        },
+        text='yo'
+        )
+        self.elements['button'].draw()

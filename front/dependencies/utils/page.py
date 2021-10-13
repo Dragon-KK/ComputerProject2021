@@ -1,11 +1,12 @@
-import tkinter as tk
+from . import custom as customTK
 from typing import Dict
 class definition:
 
     def __init__(self, root, pageSize, navigator):
         self.root = root # Store this (i refer to this as parent sometimes)
-        self.container = tk.Frame(root) # Each page has a container which contains all the other elements
+        self.container = customTK.container(root) # Each page has a container which contains all the other elements
         self.container.place(relx = 0, rely = 0, relwidth = 1, relheight = 1) # Place it to fill the whole parent
+        self.container.activate()
         self.pageSize = pageSize # Store this
         self.navigateTo = navigator # A way to talk to whoever initialized this page
         self.elements = {} # A dict of all elements in the page

@@ -15,8 +15,9 @@ class mainMenu(page.definition):
         self.elements['button'] = Button(self.container,
         css = {
             'top' : 100, 'right' : 10, 'width' : 60, 'height' : 30,
-            'font' : {'color' : 'black', 'style' : 'Times', 'size' : 15},
-            'border':{'radius' : 20}
+            'font' : {'color' : 'black', 'style' : 'Times'},
+            'background' : { 'color' : None },
+            'border':{'radius' : 20, 'color' : 'white'}
         },
         text='yo'
         )

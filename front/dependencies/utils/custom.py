@@ -103,7 +103,8 @@ class Button(element):
             y1 = y2 - self.css.height
         else:
             return []
-        radius =  self.css.border.get('radius', 0)
+        radius =  self.css.border['radius']
+        # src for how to make rounded elements : https://stackoverflow.com/a/44100075/15993687
         self.clientRect =  [x1+radius, y1,
                 x1+radius, y1,
                 x2-radius, y1,
@@ -128,5 +129,5 @@ class Button(element):
     def draw(self):
         self._getRenderPoints()
 
-        self.elemID = self.create_polygon(self.clientRect,fill=self.css.background['color'], tag='button', smooth=True)
+        self.elemID = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
         self.textID = self.create_text(self.clientRect[-2] + self.css.width/2, self.clientRect[-1] + self.css.height/2, text=self.text, tags="button", fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify="center")

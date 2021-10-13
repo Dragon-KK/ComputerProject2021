@@ -21,7 +21,7 @@ class css:
         self.flex = {}
         self.width = 0
         self.height = 0
-        self.border = {}
+        self.border = { 'color' : None, 'size' : 0, 'radius' : 0}
         self.padding = {}
         self.background = {'color' : 'white'}
         self.font = {'color' : 'black', 'size' : 5, 'style': 'ariel'}
@@ -55,7 +55,10 @@ class css:
     def set(self, **kwargs):
         for i in kwargs:
             if i in self.attrs:
-                self.__setattr__( i, kwargs[i])
+                if type(kwargs[i]) == dict and type(self.__getattribute__(i)) == dict:
+                    self.__getattribute__(i).update(kwargs[i])
+                else:
+                    self.__setattr__( i, kwargs[i])
 
         
     def __repr__(self):

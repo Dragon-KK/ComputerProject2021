@@ -32,6 +32,7 @@ class element:
         self.parent.undrawChild(ids)
 
     def draw(self):
+        self.css.origin = self.parent.renderInfo.get('position', Vector(0,0))
         self.onDraw()
         for event in self.events:
             self.parent.addChildEventListener(self.canvasIDs, event, lambda *args:self.onEvent(event,*args))
@@ -55,14 +56,22 @@ class element:
     def onEvent(self,event, args):
         self.events.get(event, lambda n:0)(args)
 
-    def updateAbsolutePosition(self):
-        pass
+
 
     def _getRenderPoints(self):
         return []
 
-    def updateAbsoluteSize(self):
-        pass
+    def getAbsoluteValue(self,query):
+        val,unit = query.split(':')
+        if unit == 'px':
+            return int(val)
+        elif unit == 'w%':
+            return int(val) * self.parent.renderInfo['size'].x / 100
+        elif unit == 'h%':
+            return int(val) * self.parent.renderInfo['size'].y / 100
+        else:
+            return 0
+
 
     def updateStyles(self, **kwargs):
         self.css.set(**kwargs)
@@ -82,7 +91,11 @@ class container(tk.Canvas):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.css = css()
+        
         self.child_nodes = []
+        self.renderInfo = {
+            'position' : Vector(0, 0)
+        }
 
     def draw(self):
         for i in self.child_nodes:
@@ -95,6 +108,7 @@ class container(tk.Canvas):
     def activate(self):
         self.update()
         self.css.set(height = self.winfo_height(), width = self.winfo_width(), origin = Vector(0,0))
+        self.renderInfo['size'] = Vector(self.css.width,self.css.height)
 
     def addChildEventListener(self, canvasID, event, callback):
         for i in canvasID:
@@ -103,15 +117,74 @@ class container(tk.Canvas):
     def appendChild(self, child : element):
         self.child_nodes.append(child)
 
-    
+class Frame(element):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
 
-class Button(element):
+    def _getRenderPoints(self):
+        if not (self.css.width and self.css.height):return []
+        x1,x2,y1,y2 = 0,0,0,0
+        h = self.getAbsoluteValue(self.css.height)
+        w = self.getAbsoluteValue(self.css.width)
+        if self.css.left != None:
+            x = self.getAbsoluteValue(self.css.left)
+            
+
+            x1 = x + self.css.origin.x
+            x2 = x1 + w
+        elif self.css.right != None:
+            x = self.getAbsoluteValue(self.css.right)
+            x2 = self.parent.renderInfo['size'].x - x + self.css.origin.x
+            x1 = x2 - w
+        else:
+            return []
+        if self.css.top != None:
+            y = self.getAbsoluteValue(self.css.top)
+            
+            y1 = y + self.css.origin.y
+            y2 = y1 + h
+        elif self.css.bottom != None:
+            y = self.getAbsoluteValue(self.css.bottom)
+            y2 = self.parent.renderInfo['size'].y - y + self.css.origin.y
+            y1 = y2 - h
+        else:
+            return []
+        radius =  self.css.border['radius']
+        # src for how to make rounded elements : https://stackoverflow.com/a/44100075/15993687
+        self.clientRect =  [x1+radius, y1,
+                x1+radius, y1,
+                x2-radius, y1,
+                x2-radius, y1,
+                x2, y1,
+                x2, y1+radius,
+                x2, y1+radius,
+                x2, y2-radius,
+                x2, y2-radius,
+                x2, y2,
+                x2-radius, y2,
+                x2-radius, y2,
+                x1+radius, y2,
+                x1+radius, y2,
+                x1, y2,
+                x1, y2-radius,
+                x1, y2-radius,
+                x1, y1+radius,
+                x1, y1+radius,
+                x1, y1]
+    def onDraw(self):
+        w = self.getAbsoluteValue(self.css.width)
+        h = self.getAbsoluteValue(self.css.height)
+        self._getRenderPoints()
+        self.renderInfo['position'] = Vector(self.clientRect[-2], self.clientRect[-1])
+        self.renderInfo['size'] = Vector(w, h)
+        self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
+        
+
+class TextBox(element):
     def __init__(
         self,
-        parent : tk.Canvas,
-        borderRadius = [0, 0, 0, 0],
-        text = "button",
-        command = lambda:0,
+        parent : element,
+        text = "Text",
         **kwargs ):
         super().__init__(parent,**kwargs)
         self.text = text
@@ -119,20 +192,29 @@ class Button(element):
     def _getRenderPoints(self):
         if not (self.css.width and self.css.height):return []
         x1,x2,y1,y2 = 0,0,0,0
+        h = self.getAbsoluteValue(self.css.height)
+        w = self.getAbsoluteValue(self.css.width)
         if self.css.left != None:
-            x1 = self.css.left
-            x2 = x1 + self.css.width
+            x = self.getAbsoluteValue(self.css.left)
+            
+
+            x1 = x + self.css.origin.x
+            x2 = x1 + w
         elif self.css.right != None:
-            x2 = self.parent.css.width - self.css.right
-            x1 = x2 - self.css.width
+            x = self.getAbsoluteValue(self.css.right)
+            x2 = self.parent.renderInfo['size'].x - x + self.css.origin.x
+            x1 = x2 - w
         else:
             return []
         if self.css.top != None:
-            y1 = self.css.top
-            y2 = y1 + self.css.height
+            y = self.getAbsoluteValue(self.css.top)
+            
+            y1 = y + self.css.origin.y
+            y2 = y1 + h
         elif self.css.bottom != None:
-            y2 = self.parent.css.height - self.css.bottom
-            y1 = y2 - self.css.height
+            y = self.getAbsoluteValue(self.css.bottom)
+            y2 = self.parent.renderInfo['size'].y - y + self.css.origin.y
+            y1 = y2 - h
         else:
             return []
         radius =  self.css.border['radius']
@@ -159,7 +241,10 @@ class Button(element):
                 x1, y1]
             
     def onDraw(self):
+        w = self.getAbsoluteValue(self.css.width)
+        h = self.getAbsoluteValue(self.css.height)
         self._getRenderPoints()
-
+        self.renderInfo['position'] = Vector(self.clientRect[-2], self.clientRect[-1])
+        self.renderInfo['size'] = Vector(w, h)
         self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
-        self.canvasIDs['text'] = self.create_text(self.clientRect[-2] + self.css.width/2, self.clientRect[-1] + self.css.height/2, text=self.text, tags="button", fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify="center")
+        self.canvasIDs['text'] = self.create_text(self.clientRect[-2] + w/2, self.clientRect[-1] + h/2, text=self.text, tags="button", fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify="center")

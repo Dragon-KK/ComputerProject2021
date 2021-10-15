@@ -11,14 +11,22 @@ class mainMenu(page.definition):
 
 
     def render(self):
+        def tmp(a):
+            self.elements['button'].undraw()
         self.container.config(background='black')
-        self.elements['button'] = Button(self.container,
-        css = {
-            'top' : 100, 'right' : 10, 'width' : 60, 'height' : 30,
-            'font' : {'color' : 'black', 'style' : 'Times'},
-            'background' : { 'color' : None },
-            'border':{'radius' : 20, 'color' : 'white'}
-        },
-        text='yo'
+        self.elements['button'] = Button(self.container,text='yo')\
+        .updateStyles(
+            top=100,right=10,width=60,height=30,
+            font = {'color' : 'black', 'size' : 20, 'style' : 'Ariel'},
+            background = { 'color' : 'white' },
+            border = {'radius' : 20, 'color' : 'white'}
+        ).addEventListener('<Button-1>', tmp)
+        self.elements['child'] = Button(self.elements['button'],
+        text="Hello")\
+        .updateStyles(
+            top=100,left=10,width=60,height=30,
+            font = {'color' : 'black', 'size' : 20, 'style' : 'Ariel'},
+            background = { 'color' : 'white' },
+            border = {'radius' : 20, 'color' : 'white'}
         )
-        self.elements['button'].draw()
+        self.container.draw()

@@ -16,8 +16,30 @@ class element:
         self.css = css()
         self.css.set(**(kwargs.get('css', {})))
         self.child_nodes =  []
-
         self.parent.appendChild(self)
+        self.canvasIDs = {}
+        self.events = {}
+        self.clientRect = []
+
+    def undraw(self):
+        for i in self.child_nodes:
+            i.undraw()
+        self.parent.undrawChild(self.canvasIDs.values())
+        self.events.clear()
+        self.canvasIDs.clear()
+
+    def undrawChild(self,ids):
+        self.parent.undrawChild(ids)
+
+    def draw(self):
+        self.onDraw()
+        for event in self.events:
+            self.parent.addChildEventListener(self.canvasIDs, event, lambda *args:self.onEvent(event,*args))
+        for i in self.child_nodes:
+            i.draw()
+    def onDraw(self):
+        return
+
     def create_image(self,*args,**kwargs):
         return self.parent.create_image(*args,**kwargs)
     def create_polygon(self,*args,**kwargs):
@@ -28,6 +50,10 @@ class element:
 
     def appendChild(self,child):
         self.child_nodes.append(child)
+        return self
+
+    def onEvent(self,event, args):
+        self.events.get(event, lambda n:0)(args)
 
     def updateAbsolutePosition(self):
         pass
@@ -37,34 +63,42 @@ class element:
 
     def updateAbsoluteSize(self):
         pass
-    def render(self):        
-        '''
-        Called when element is to be rendered
-        '''
-        pass
 
     def updateStyles(self, **kwargs):
         self.css.set(**kwargs)
-        pass
+        return self
 
     def addEventListener(self, event, callback):
         '''
         Binds and
         '''
+        self.events[event] = callback
         return self
 
+    def addChildEventListener(self,canvasID,event, callback):
+        self.parent.addChildEventListener(canvasID, event, callback)
 
 class container(tk.Canvas):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.css = css()
         self.child_nodes = []
-        
+
+    def draw(self):
+        for i in self.child_nodes:
+            i.draw() 
+
+    def undrawChild(self,ids):
+        for i in ids:
+            self.delete(i)
         
     def activate(self):
         self.update()
         self.css.set(height = self.winfo_height(), width = self.winfo_width(), origin = Vector(0,0))
 
+    def addChildEventListener(self, canvasID, event, callback):
+        for i in canvasID:
+            self.tag_bind(canvasID[i], event, callback)
 
     def appendChild(self, child : element):
         self.child_nodes.append(child)
@@ -80,8 +114,6 @@ class Button(element):
         command = lambda:0,
         **kwargs ):
         super().__init__(parent,**kwargs)
-        self.elemID = -1
-        self.textID = -1
         self.text = text
 
     def _getRenderPoints(self):
@@ -126,8 +158,8 @@ class Button(element):
                 x1, y1+radius,
                 x1, y1]
             
-    def draw(self):
+    def onDraw(self):
         self._getRenderPoints()
 
-        self.elemID = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
-        self.textID = self.create_text(self.clientRect[-2] + self.css.width/2, self.clientRect[-1] + self.css.height/2, text=self.text, tags="button", fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify="center")
+        self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
+        self.canvasIDs['text'] = self.create_text(self.clientRect[-2] + self.css.width/2, self.clientRect[-1] + self.css.height/2, text=self.text, tags="button", fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify="center")

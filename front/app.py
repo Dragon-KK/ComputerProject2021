@@ -1,6 +1,6 @@
 # Imports
 import tkinter as tk # this is the thing that lets us handle GUI easily
-from dependencies.pages import mainMenu
+from dependencies.pages import mainMenu,freePlay,localMultiplayer,onlineMultiplayer,aboutUs
 from dependencies.utils import page
 from dependencies.common.tools import Vector # Import Vector
 
@@ -20,7 +20,11 @@ root.resizable(0,0) # We dont want it to be resizable
 
 # < set {app} >
 app = page.container(root, WINDOW_SIZE, {
-    "mainMenu" : mainMenu.mainMenu
+    "mainMenu" : mainMenu.mainMenu,
+    "aboutUs" : aboutUs.aboutUs,
+    "freePlay" : freePlay.freePlay,
+    "localMultiplayer" : localMultiplayer.localMultiplayer,
+    "onlineMultiplayer" : onlineMultiplayer.onlineMultiplayer
 })
 app.open("mainMenu")
 

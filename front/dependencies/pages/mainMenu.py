@@ -31,27 +31,27 @@ class mainMenu(page.definition):
                     font={'color': 'white', 'size': 20, 'style': 'Ariel'},
                     background={'color': None},
                     border={'radius': 30,'size' : 3, 'color': 'white'}
-                ).addEventListener('<Button-1>', lambda n:print("Play Local")),
+                ).addEventListener('<Button-1>', lambda n:self.navigateTo("localMultiplayer")),
             'playOnineButton' : TextBox(self.elements['buttonContainer'], text="ONLINE")\
                 .updateStyles(
                     top='0:px', left='52:w%', width='48:w%', height='55:h%',
                     font={'color': 'white', 'size': 20, 'style': 'Ariel'},
                     background={'color': None},
                     border={'radius': 30,'size' : 3, 'color': 'white'}
-                ).addEventListener('<Button-1>', lambda n:print("Play Online")),
+                ).addEventListener('<Button-1>', lambda n:self.navigateTo("onlineMultiplayer")),
             'freePlayButton' : TextBox(self.elements['buttonContainer'], text="Free Play")\
                 .updateStyles(
                     top='65:h%', left='52:w%', width='48:w%', height='35:h%',
                     font={'color': 'white', 'size': 20, 'style': 'Ariel'},
                     background={'color': None},
                     border={'radius': 10,'size' : 3, 'color': 'white'}
-                ).addEventListener('<Button-1>', lambda n:print("Play Online")),
+                ).addEventListener('<Button-1>', lambda n:self.navigateTo("freePlay")),
             'aboutUsButton' : TextBox(self.elements['buttonContainer'], text="About Us")\
                 .updateStyles(
                     top='65:h%', left='0:w%', width='48:w%', height='35:h%',
                     font={'color': 'white', 'size': 20, 'style': 'Ariel'},
                     background={'color': None},
                     border={'radius': 10,'size' : 3, 'color': 'white'}
-                ).addEventListener('<Button-1>', lambda n:print("Play Online")),
+                ).addEventListener('<Button-1>', lambda n:self.navigateTo("aboutUs")),
         }
         self.container.draw()

@@ -65,3 +65,46 @@ class container:
 
     def destroy(self):
         self.currentActive.destroy(force=True)
+
+class childPage:
+    def __init__(self, root, pageSize, navigator):
+        self.root = root # Store this (i refer to this as parent sometimes)
+        self.container = customTK.Frame(root).updateStyles(
+            top = '0:px', left = '0:px', width = '100:w%', height = '100:h%'
+        )
+        
+        print(self.container.parent.child_nodes)
+        self.pageSize = pageSize # Store this
+        self.navigateTo = navigator # A way to talk to whoever initialized this page
+        self.elements = {} # A dict of all elements in the page
+        self.container.draw()
+        self.render()
+        
+
+    def onDestruction(self):
+        '''
+        Return True if destruction is to be continued
+        To be overloaded by child if needed
+        '''
+        
+        return True
+
+    def destroy(self, force = False):
+        '''
+        Called on destruction, returns false if destruction is aborted
+
+        Params\n
+        force : bool -> if True destroys regardless of self.onDestruction 
+        '''
+        destructionAccepted = self.onDestruction()
+        if force or destructionAccepted:
+            self.container.destroy()
+            return True
+        else:
+            return False
+
+    def render(self):
+        '''
+        Called when the page is ready to be rendered
+        '''
+        pass

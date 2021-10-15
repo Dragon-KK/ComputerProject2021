@@ -4,10 +4,7 @@ from ._custom.styling import options,css
 from ..common.tools import Vector
 
 
-class container(tk.Canvas):
-    def __init__(self, size, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.clientRect = []
+
 
 class element:
     def __init__(self, parent, **kwargs):
@@ -21,9 +18,12 @@ class element:
         self.events = {}
         self.clientRect = []
 
-    def undraw(self):
+    def setKeyInput(self,callback):
+        self.parent.setKeyInput(callback)
+
+    def destroy(self):
         for i in self.child_nodes:
-            i.undraw()
+            i.destroy()
         self.parent.undrawChild(self.canvasIDs.values())
         self.events.clear()
         self.canvasIDs.clear()
@@ -91,11 +91,14 @@ class container(tk.Canvas):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.css = css()
-        
+        self.bind_all("<Key>", self.onKey)
         self.child_nodes = []
         self.renderInfo = {
             'position' : Vector(0, 0)
         }
+
+    def onKey(self,e):
+        print(self,self.child_nodes)
 
     def draw(self):
         for i in self.child_nodes:

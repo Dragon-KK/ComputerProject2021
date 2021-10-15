@@ -1,6 +1,8 @@
 from ..utils import page
 import tkinter as tk
 from ..utils.custom import TextBox, Frame
+from ..utils.page import container
+from ._localMultiplayer import settings
 
 
 class localMultiplayer(page.definition):
@@ -8,16 +10,20 @@ class localMultiplayer(page.definition):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    def goBack(self,*args):
+        print(1)
+        self.c.destroy()
+        self.navigateTo('mainMenu')
+
     def onDestruction(self):
         print("am die")
 
     def render(self):
+        print(self.container)
         self.container.config(background='black')
-
-        
-        self.elements['title'] = TextBox(self.container, text = "Local")\
-        .updateStyles(
-            top='10:h%', left='30:w%', width='40:w%',height='20:h%',
-            font={'color': 'white','size' : 60 }
-        )
+        self.c = container(self.container, (0,0), {
+            'Settings' : settings.Settings,
+            'goBack' : self.goBack
+        })
+        self.c.open('Settings')
         self.container.draw()

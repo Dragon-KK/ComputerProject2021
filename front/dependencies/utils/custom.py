@@ -53,7 +53,9 @@ class element:
         self.child_nodes.append(child)
         return self
 
-    def onEvent(self,event, args):
+    def onEvent(self,event, args, propagate = False):
+        if propagate:
+            for i in self.child_nodes:i.onEvent(event,args,propagate = True)
         self.events.get(event, lambda n:0)(args)
 
 
@@ -98,7 +100,7 @@ class container(tk.Canvas):
         }
 
     def onKey(self,e):
-        print(self,self.child_nodes)
+        for i in self.child_nodes:i.onEvent('<Key>',e,propagate = True)
 
     def draw(self):
         for i in self.child_nodes:

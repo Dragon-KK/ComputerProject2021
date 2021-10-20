@@ -73,14 +73,22 @@ class element:
         return []
 
     def getAbsoluteValue(self,query):
-        val,unit = query.split(':')
-        if unit == 'px':
-            return int(val)
-        elif unit == 'w%':
-            return int(val) * self.parent.renderInfo['size'].x / 100
-        elif unit == 'h%':
-            return int(val) * self.parent.renderInfo['size'].y / 100
-        else:
+        x = query.split(':')
+        if len(x) != 2:
+            print(f"{query} doesnt have ':' properly")
+            return 0
+        val,unit = x
+        try:
+            if unit == 'px':
+                return float(val)
+            elif unit == 'w%':
+                return float(val) * self.parent.renderInfo['size'].x / 100
+            elif unit == 'h%':
+                return float(val) * self.parent.renderInfo['size'].y / 100
+            else:
+                return 0
+        except Exception as e:
+            print(e)
             return 0
     def updateFocus(self,elem):
         self.parent.updateFocus(elem)
@@ -157,7 +165,8 @@ class Frame(element):
             x2 = self.parent.renderInfo['size'].x - x + self.css.origin.x
             x1 = x2 - w
         else:
-            return []
+            x1 = self.css.origin.x
+            x2 = x1 + w
         if self.css.top != None:
             y = self.getAbsoluteValue(self.css.top)
             
@@ -168,7 +177,8 @@ class Frame(element):
             y2 = self.parent.renderInfo['size'].y - y + self.css.origin.y
             y1 = y2 - h
         else:
-            return []
+            y1 = self.css.origin.y
+            y2 = y1 + h
         radius =  self.css.border['radius']
         # src for how to make rounded elements : https://stackoverflow.com/a/44100075/15993687
         self.clientRect =  [x1+radius, y1,
@@ -232,13 +242,12 @@ class TextInput(Frame):
         self.focused = False
         self.addEventListener("<Key>", self.onKey)
         self.addEventListener("<Button-1>", self._focus)
-        self.borderColor = 'white'
+        self.borderColor = None
         self.Numeric = numeric
         
     def _focus(self,e):
         self.updateFocus(self)
         self.focused =True
-        self.borderColor = self.css.border['color']
         self.updateStyles(border = {'color' : "green"})
         self.update()
 
@@ -258,6 +267,7 @@ class TextInput(Frame):
 
 
     def onDraw(self):
+        
         w = self.getAbsoluteValue(self.css.width)
         h = self.getAbsoluteValue(self.css.height)
         self._getRenderPoints()

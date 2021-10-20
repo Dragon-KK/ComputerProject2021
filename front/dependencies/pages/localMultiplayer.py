@@ -13,10 +13,11 @@ class localMultiplayer(page.definition):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def navigate(self,location):
+    def navigate(self,location,*args):
         self.elements['container'].destroy()
         if location == "play":
-            pass
+            print(args[0])
+            self.navigateTo("mainMenu")
         elif location == "mainMenu":
             self.navigateTo(location)
         else:

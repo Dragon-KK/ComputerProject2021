@@ -19,8 +19,8 @@ class css:
         self.display = options.default
         self.grid = {}
         self.flex = {}
-        self.width = '0-px'
-        self.height = '0-px'
+        self.width = '0:px'
+        self.height = '0:px'
         self.border = { 'color' : None, 'size' : 0, 'radius' : 0}
         self.padding = {}
         self.background = {'color' : None}

@@ -12,7 +12,15 @@ class Game:
 
 class GameSettings:
     def __init__(self, difficulty = 10,duece = False, winCondition = 5, difficultySlope = 0.5):
-        self.difficulty = difficulty
+        self.speed = difficulty
         self.duece = duece
         self.winCondition = 5
         self.difficultySlope = difficultySlope
+
+    def __repr__(self):
+        return repr({
+            'speed' : self.speed,
+            'duece' : self.duece,
+            'winCondition' :self.winCondition,
+            'difficultySlope' : self.difficultySlope
+        })

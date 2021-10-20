@@ -1,5 +1,5 @@
 from ...utils.page import childPage
-from ...utils.custom import TextBox,Frame
+from ...utils.custom import TextBox,Frame,TextInput
 def render(container, goTo = print):
 
     container.updateStyles(background = {'color' : 'black'})
@@ -22,10 +22,26 @@ def render(container, goTo = print):
     elements['Frame'] = Frame(container).updateStyles(
         top = '15:h%', left = '3:w%', width = '94:w%', height = '80:h%',
         border = {'color' : '#28292f','size' : 2}
-    ).addEventListener("<Button-1>", print)
+    )
 
-    elements['TextBox'] = TextBox(elements['Frame']).updateStyles(
+    elements['SpeedInput'] = TextInput(elements['Frame'], numeric=True).updateStyles(
         top='3:h%',left = '3:w%', width = '20:w%', height = '5:w%',
-        border = {'color' : 'white','size' : 2}
+        border = {'color' : 'white','size' : 2},
+        font = {'color' : 'white', 'size' : 10}
+    )
+    elements['winCondInput'] = TextInput(elements['Frame'], numeric=True).updateStyles(
+        top='15:h%',left = '3:w%', width = '20:w%', height = '5:w%',
+        border = {'color' : 'white','size' : 2},
+        font = {'color' : 'white', 'size' : 10}
+    )
+    elements['difficultySlope'] = TextInput(elements['Frame'], numeric=True).updateStyles(
+        top='27:h%',left = '3:w%', width = '20:w%', height = '5:w%',
+        border = {'color' : 'white','size' : 2},
+        font = {'color' : 'white', 'size' : 10}
+    )
+    elements['startingDifficulty'] = TextInput(elements['Frame'], numeric=True).updateStyles(
+        top='39:h%',left = '3:w%', width = '20:w%', height = '5:w%',
+        border = {'color' : 'white','size' : 2},
+        font = {'color' : 'white', 'size' : 10}
     )
         

@@ -212,7 +212,7 @@ class Frame(element):
         self._getRenderPoints()
         self.renderInfo['position'] = Vector(self.clientRect[-2], self.clientRect[-1])
         self.renderInfo['size'] = Vector(w, h)
-        self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
+        self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], dash = self.css.border['dash'],tag='button', smooth=True)
         
 
 class TextBox(Frame):
@@ -276,3 +276,7 @@ class TextInput(Frame):
         self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
         self.canvasIDs['text'] = self.create_text(self.clientRect[-2] + w/2, self.clientRect[-1] + h/2, text=self.value, fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify = None)
         
+
+class Arena(Frame):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)

@@ -45,14 +45,14 @@ def render(container, goTo = print):
             elements['difficultySlope']['input'].updateStyles(border = {'color' : 'red'})
 
             elements['difficultySlope']['input'].update()
-        if winCond == '':
+        if not winCond:
             elements['winCondInput']['input'].updateStyles(border = {'color' : 'red'})
 
             elements['winCondInput']['input'].update()
 
         if speed and difficulty and winCond:
 
-            setting = GameSettings(difficulty= speed,difficultySlope=difficulty,winCondition=winCond)
+            setting = GameSettings(difficulty= speed,difficultySlope=difficulty,winCondition=winCond, duece=elements['duece']['input'].text == "Yes")
             goTo('play',setting)
 
 
@@ -108,7 +108,14 @@ def render(container, goTo = print):
 
             border = {'color' : '#303030', 'size' : 4}
 
-        )
+        ),
+         'duece' : Frame(elements['Frame']).updateStyles(
+
+            top='39:h%',left = '3:w%', width = '40:w%', height = '5:w%',
+
+            border = {'color' : '#303030', 'size' : 4}
+
+        ),
 
     }
 
@@ -171,6 +178,30 @@ def render(container, goTo = print):
         border = {'radius' : 10,'size' : 2},
 
         font = {'color' : 'white', 'size' : 10, 'style' : 'ariel'})
+
+    }
+    
+    def dueceClick(*args):
+        elements['duece']['input'].text = "Yes" if elements['duece']['input'].text == "No" else "No"
+        elements['duece']['input'].update()
+    
+    elements['duece'] = {
+
+        "label" : TextBox(elements['SettingsContainers']['duece'], text="Allow Duece").updateStyles(
+
+            top = '0:px',left = '0:px', width = '50:w%', height = '100:h%',
+
+            font = {'color' : 'white', 'size' : 10, 'style' : 'ariel'}
+
+        ),
+
+        "input" : TextBox(elements['SettingsContainers']['duece'], text = "No").updateStyles(
+
+        top = '0:px',left = '50:w%', width = '50:w%', height = '100:h%',
+        background = {'color' : '#202020'},
+        border = {'radius' : 10,'size' : 2},
+
+        font = {'color' : 'white', 'size' : 10, 'style' : 'ariel'}).addEventListener("<Button-1>", dueceClick)
 
     }
 

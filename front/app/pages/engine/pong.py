@@ -2,7 +2,9 @@ from .entities import Ball,Player
 
 class Game:
     def __init__(self, drawer, settings, playerManager):
-        pass
+        self.settings = settings
+        self.drawer = drawer
+        self.playerManager = playerManager
 
     def start(self):
         pass
@@ -10,17 +12,15 @@ class Game:
     def pause(self):
         pass
 
+    def end(self):
+        pass
+
 class GameSettings:
     def __init__(self, difficulty = 10,duece = False, winCondition = 5, difficultySlope = 0.5):
         self.speed = difficulty
         self.duece = duece
-        self.winCondition = 5
+        self.winCondition = winCondition
         self.difficultySlope = difficultySlope
 
     def __repr__(self):
-        return repr({
-            'speed' : self.speed,
-            'duece' : self.duece,
-            'winCondition' :self.winCondition,
-            'difficultySlope' : self.difficultySlope
-        })
+        return f"<GameSettings speed={self.speed} duece={self.duece} difficultySlope={self.difficultySlope} winCondition={self.winCondition}>" 

@@ -1,8 +1,8 @@
 # Imports
 import tkinter as tk # this is the thing that lets us handle GUI easily
-from dependencies.pages import mainMenu,freePlay,localMultiplayer,onlineMultiplayer,aboutUs
-from dependencies.utils import page
-from dependencies.common.tools import Vector # Import Vector
+from app.pages import mainMenu,freePlay,localMultiplayer,onlineMultiplayer,aboutUs
+from app.utils import page
+from app.common.tools import Vector # Import Vector
 
 # References -
 # pong gameplay : https://www.ponggame.org/

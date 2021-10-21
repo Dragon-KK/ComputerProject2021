@@ -21,7 +21,7 @@ class css:
         self.flex = {}
         self.width = '0:px'
         self.height = '0:px'
-        self.border = { 'color' : None, 'size' : 0, 'radius' : 0}
+        self.border = { 'color' : None, 'size' : 0, 'radius' : 0,'dash' : None}
         self.padding = {}
         self.background = {'color' : None}
         self.font = {'color' : 'black', 'size' : 5, 'style': 'ariel'}

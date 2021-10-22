@@ -15,6 +15,7 @@ WINDOW_SIZE = Vector(800, 500) # The size of the window
 # < set {root} >
 root = tk.Tk() # Initialize the window
 root.geometry(f'{WINDOW_SIZE.x}x{WINDOW_SIZE.y}') # Set size of the window
+root.title("Pong") # Setting the title to the window
 root.resizable(0,0) # We dont want it to be resizable
 # < />
 

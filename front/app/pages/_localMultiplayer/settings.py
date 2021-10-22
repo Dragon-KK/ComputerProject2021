@@ -1,14 +1,14 @@
 from ...utils.page import childPage
 
 from ...utils.custom import TextBox,Frame,TextInput
-
+from ...utils import fileManager
 from ..engine.pong import GameSettings
 
 def render(container, goTo = print):
 
 
     container.updateStyles(background = {'color' : 'black'})
-
+    data = fileManager.getJson("localMultiplayer.dat")
     elements ={}
 
     elements['navigationButtons'] = {
@@ -36,7 +36,6 @@ def render(container, goTo = print):
 
         difficulty = elements['difficultySlope']['input'].value
         winCond = elements['winCondInput']['input'].value
-        print(difficulty,winCond)
         if not speed:
             elements['Speed']['input'].updateStyles(border = {'color' : 'red'})
             elements['Speed']['input'].update()
@@ -51,11 +50,17 @@ def render(container, goTo = print):
             elements['winCondInput']['input'].update()
 
         if speed and difficulty and winCond:
-
+            fileManager.saveJson("localMultiplayer.dat", {
+                'speed' : speed,
+                'difficultySlope' : difficulty,
+                'winCondition' : winCond,
+                'duece' : elements['duece']['input'].text == "Yes"
+            })
             setting = GameSettings(difficulty= speed,difficultySlope=difficulty,winCondition=winCond, duece=elements['duece']['input'].text == "Yes")
+            
             goTo('play',setting)
 
-
+    	
 
     elements['title'] = TextBox(container, text='Local Multiplayer') .updateStyles(
 
@@ -195,7 +200,7 @@ def render(container, goTo = print):
 
         ),
 
-        "input" : TextBox(elements['SettingsContainers']['duece'], text = "No").updateStyles(
+        "input" : TextBox(elements['SettingsContainers']['duece'], text = "Yes" if data['duece'] else "No").updateStyles(
 
         top = '0:px',left = '50:w%', width = '50:w%', height = '100:h%',
         background = {'color' : '#202020'},
@@ -205,6 +210,10 @@ def render(container, goTo = print):
 
     }
 
+    elements['Speed']['input'].value = str(data['speed'])
+    elements['difficultySlope']['input'].value = str(data['difficultySlope'])
+    elements['winCondInput']['input'].value = str(data['winCondition'])
+    
 
     elements['start'] = TextBox(elements['Frame'], text = "Start").updateStyles(
 

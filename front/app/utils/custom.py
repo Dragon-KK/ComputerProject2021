@@ -180,27 +180,22 @@ class Frame(element):
             y1 = self.css.origin.y
             y2 = y1 + h
         radius =  self.css.border['radius']
-        # src for how to make rounded elements : https://stackoverflow.com/a/44100075/15993687
-        self.clientRect =  [x1+radius, y1,
+
+
+        self.clientRect = [
                 x1+radius, y1,
-                x2-radius, y1,
                 x2-radius, y1,
                 x2, y1,
                 x2, y1+radius,
-                x2, y1+radius,
-                x2, y2-radius,
                 x2, y2-radius,
                 x2, y2,
                 x2-radius, y2,
-                x2-radius, y2,
-                x1+radius, y2,
                 x1+radius, y2,
                 x1, y2,
                 x1, y2-radius,
-                x1, y2-radius,
                 x1, y1+radius,
-                x1, y1+radius,
-                x1, y1]
+                x1, y1
+        ]
     def reDraw(self):
         self.undrawChild(self.canvasIDs.values())
         self.onDraw()

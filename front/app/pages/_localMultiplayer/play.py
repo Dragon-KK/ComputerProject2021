@@ -1,7 +1,7 @@
 from ...utils.page import childPage
 
 from ...utils.custom import TextBox,Frame,TextInput,Arena
-
+from ...utils import fileManager
 from ..engine.pong import GameSettings,Ball,Game,Player
 
 def render(container, gameSettings, goTo = print):
@@ -9,7 +9,7 @@ def render(container, gameSettings, goTo = print):
     elements = {}
     elements['Arena'] = Arena(container).updateStyles(
         top='10:h%',height = '89:h%',left='0.5:w%',width = '99:w%',
-        border = {'color' : 'white', 'size' : 2, 'dash' : (3,1)}
+        border = {'color' : 'white', 'size' : 2, 'dash' : (1,1)}
     )
 
     def pause(*args):

@@ -1,5 +1,15 @@
 class Ball:
-    pass
+    def __init__(self):
+        pass
 
 class Player:
-    pass
+    def __init__(self):
+        pass
+
+class Wall:
+    def __init__(self):
+        pass
+
+class WinZone(Wall):
+    def __init__(self):
+        pass

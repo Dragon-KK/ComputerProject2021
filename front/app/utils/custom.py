@@ -33,6 +33,7 @@ class element:
 
     def draw(self):
         self.css.origin = self.parent.renderInfo.get('position', Vector(0,0))
+        self.renderInfo['viewport'] = self.parent.renderInfo['viewport']
         self.onDraw()
         for event in self.events:
             self.parent.addChildEventListener(self.canvasIDs, event, lambda *args:self.onEvent(event,*args))
@@ -72,7 +73,8 @@ class element:
     def _getRenderPoints(self):
         return []
 
-    def getAbsoluteValue(self,query):
+    def getAbsoluteValue(self,query, **kwargs):
+        wrt = kwargs.get('wrt', self.parent)
         x = query.split(':')
         if len(x) != 2:
             print(f"{query} doesnt have ':' properly")
@@ -82,9 +84,13 @@ class element:
             if unit == 'px':
                 return float(val)
             elif unit == 'w%':
-                return float(val) * self.parent.renderInfo['size'].x / 100
+                return float(val) * wrt.renderInfo['size'].x / 100
             elif unit == 'h%':
-                return float(val) * self.parent.renderInfo['size'].y / 100
+                return float(val) * wrt.renderInfo['size'].y / 100
+            elif unit == 'vw':
+                return float(val) * wrt.renderInfo['viewport'].x / 100
+            elif unit == 'vh':
+                return float(val) * wrt.renderInfo['viewport'].y / 100
             else:
                 return 0
         except Exception as e:
@@ -92,6 +98,9 @@ class element:
             return 0
     def updateFocus(self,elem):
         self.parent.updateFocus(elem)
+
+    def getCanvas(self):
+        return self.parent.getCanvas()
 
     def updateStyles(self, **kwargs):
         self.css.set(**kwargs)
@@ -117,6 +126,10 @@ class container(tk.Canvas):
             'position' : Vector(0, 0)
         }
         self.focuesedElement = None
+
+    def getCanvas(self):
+        return self
+
     def updateFocus(self,elem):
         if self.focuesedElement:self.focuesedElement._unfocus()
         self.focuesedElement = elem
@@ -136,6 +149,7 @@ class container(tk.Canvas):
         self.update()
         self.css.set(height = self.winfo_height(), width = self.winfo_width(), origin = Vector(0,0))
         self.renderInfo['size'] = Vector(self.css.width,self.css.height)
+        self.renderInfo['viewport'] = Vector(self.css.width,self.css.height)
 
     def addChildEventListener(self, canvasID, event, callback):
         for i in canvasID:
@@ -275,3 +289,61 @@ class TextInput(Frame):
 class Arena(Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
+        self.canvas : tk.Canvas = self.getCanvas()
+        self.items = {
+
+        }
+        self.itemNumber = 0
+
+    def registerItem(self,item):
+        self.items[self.itemNumber] = item
+        self.itemNumber += 1
+        return self.itemNumber - 1
+
+    def updateItem(self, itemID, renderInfo):
+        if not self.items.get(itemID):return False
+        self.items[itemID].updateInfo(renderInfo)
+        return True
+
+
+    def delete(self,ID):
+        if ID in self.items:
+            self.canvas.delete(self.items[ID].canvasID)
+            del self.items[ID]
+            return True
+        else:
+            return False
+    
+    def onDraw(self):
+        w = self.getAbsoluteValue(self.css.width)
+        h = self.getAbsoluteValue(self.css.height)
+        self._getRenderPoints()
+        self.renderInfo['position'] = Vector(self.clientRect[-2], self.clientRect[-1])
+        self.renderInfo['size'] = Vector(w, h)
+        self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], dash = self.css.border['dash'],tag='button', smooth=True)
+        self.render(first = True)
+
+    def renderItem(self, item):
+        if item.type == 'line':
+            p1 = Vector(self.getAbsoluteValue(item.p1.x, wrt = self), self.getAbsoluteValue(item.p1.y, wrt = self)) 
+            p2 = Vector(self.getAbsoluteValue(item.p2.x, wrt = self), self.getAbsoluteValue(item.p2.y, wrt = self))
+            if not item.absolute:
+                p1 += self.renderInfo['position']
+                p2 += self.renderInfo['position']
+            item.canvasID =  self.canvas.create_line(p1.x,p1.y,p2.x,p2.y,fill = item.color, dash = item.dash, width = item.size)
+            return item.canvasID
+
+    def updateItem(self, item):
+        return
+
+    def render(self, first = False):
+        
+        if first:
+            for i in self.items:
+                self.canvasIDs[i] = self.renderItem(self.items[i])
+        else:
+            for i in self.items:
+                updateItem(self.items[i])
+        print(self.items)
+
+        

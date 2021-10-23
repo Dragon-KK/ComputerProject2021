@@ -14,9 +14,32 @@ class line(shape):
         self.dash = dash
         self.absolute = absolute
 
-    def update(self,p1=None,p2 = None, absolute = False,color = 'white', size = 5, dash = None):
+    def update(self,**kwargs):
+        for i in kwargs:
+            self.__setattr__(i, kwargs[i])
 
-        pass
+class circle(shape):
+    """This is a circle"""
+    def __init__(self, c, r,absolute = False,color = 'white', size = 5, dash = None,fill = 'white'):
+        super().__init__('circle')
+        self.c = c
+        self.r = r
+        self.color = color
+        self.size = size
+        self.dash = dash
+        self.absolute = absolute
+        self.fill = fill
+
+    def update(self,c = None,r = None,color = 'white', size = 5, dash = None,fill = 'white'):
+        if c:self.c = c
+        if r:self.r = r
+        self.color = color
+        self.size = size
+        self.dash = dash
+        self.absolute = absolute
+        self.fill = fill
+        
+
         
     
         

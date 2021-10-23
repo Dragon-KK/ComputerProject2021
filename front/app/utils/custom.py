@@ -300,15 +300,16 @@ class Arena(Frame):
         self.itemNumber += 1
         return self.itemNumber - 1
 
-    def updateItem(self, itemID, renderInfo):
+    def updateItem(self, itemID, **kwargs):
         if not self.items.get(itemID):return False
-        self.items[itemID].updateInfo(renderInfo)
+        self.items[itemID].update(**kwargs)
         return True
 
 
     def delete(self,ID):
         if ID in self.items:
             self.canvas.delete(self.items[ID].canvasID)
+            del self.canvasIDs[ID]
             del self.items[ID]
             return True
         else:
@@ -332,18 +333,32 @@ class Arena(Frame):
                 p2 += self.renderInfo['position']
             item.canvasID =  self.canvas.create_line(p1.x,p1.y,p2.x,p2.y,fill = item.color, dash = item.dash, width = item.size)
             return item.canvasID
+        
+        elif item.type == 'circle':
+            c = Vector(self.getAbsoluteValue(item.c.x, wrt = self), self.getAbsoluteValue(item.c.y, wrt = self))
+            r = self.getAbsoluteValue(item.r, wrt = self)
+            if not item.absolute:
+                c += self.renderInfo['position']
+        else:
+            print("Invalid Item")
 
-    def updateItem(self, item):
-        return
+    def moveItem(self, item, amount):
+        self.canvas.move(item.canvasID,amount.x,amount.y)
 
     def render(self, first = False):
-        
-        if first:
+        def _render():
             for i in self.items:
                 self.canvasIDs[i] = self.renderItem(self.items[i])
+        
+        if first:
+            _render()
         else:
+            toDel = []
             for i in self.items:
-                updateItem(self.items[i])
-        print(self.items)
+                toDel.append(self.canvasIDs[i])
+                del self.canvasIDs[i]
+            self.undrawChild(toDel)
+            _render()
+    
 
         

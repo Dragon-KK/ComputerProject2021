@@ -1,4 +1,4 @@
-from .entities import Ball,Player
+from .entities import Ball,Player,Wall,WinZone
 
 class Game:
     def __init__(self, drawer, settings, playerManager):

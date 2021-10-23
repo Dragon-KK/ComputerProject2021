@@ -2,7 +2,7 @@ from ...utils.custom import TextBox,Frame,TextInput,Arena
 from ...utils import fileManager
 from ...common.tools import Vector
 from ..engine import drawing as shapes
-from ..engine.pong import GameSettings,Ball,Game,Player
+from ..engine.pong import GameSettings,Ball,Game,Player,Wall,WinZone
 
 def render(container, gameSettings, goTo = print):
     container.updateStyles(background = {'color' : 'black'})
@@ -14,6 +14,8 @@ def render(container, gameSettings, goTo = print):
 
     def pause(*args):
         print(gameSettings)
+        arena.updateItem(sectionizer,color='blue')
+        arena.render()
         return
 
     def updateScores(p1,p2):
@@ -41,8 +43,9 @@ def render(container, gameSettings, goTo = print):
 
     }
     
-
-    elements['Arena'].registerItem(
+    arena = elements['Arena']
+    
+    sectionizer = arena.registerItem(
         shapes.line(
             Vector('50:vw', '0:vh'),
             Vector('50:vw', '100:vh'),
@@ -52,3 +55,4 @@ def render(container, gameSettings, goTo = print):
             color = "#303030"
         )
     )
+    w = Wall(arena)

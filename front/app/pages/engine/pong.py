@@ -17,7 +17,7 @@ class Game:
     # setting msPerFrame to 1 gives nice graphics but takes 12% ram.. : D
     # I think the main issue is that tkinter really isnt built for this kind of stuff
     # We shouldve just used pygame lol
-    def __init__(self, arena, settings : GameSettings, playerManager : playerManager,msPerFrame = 1,walls = {}, winZones = {}, balls  = []):
+    def __init__(self, arena, settings : GameSettings, playerManager : playerManager,msPerFrame = 5,walls = {}, winZones = {}, balls  = []):
         self.settings = settings
         self.arena = arena
         self.playerManager = playerManager
@@ -29,9 +29,10 @@ class Game:
         for ball in self.balls:
             ball.setWallsAndWinZones(self.walls,self.winZones)
 
-        self.daemon = Daemon(arena.getTkObj(), self.interval, self.work, dt = 0.001)
+        self.daemon = Daemon(arena.getTkObj(), self.interval, self.work)
 
     def work(self, dt = 0.1):
+        
         for ball in self.balls:
             ball.work(dt = dt)
 

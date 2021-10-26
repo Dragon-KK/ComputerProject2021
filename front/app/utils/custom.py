@@ -99,6 +99,9 @@ class element:
     def updateFocus(self,elem):
         self.parent.updateFocus(elem)
 
+    def getTkObj(self):
+        return self.parent.getTkObj()
+
     def getCanvas(self):
         return self.parent.getCanvas()
 
@@ -125,7 +128,11 @@ class container(tk.Canvas):
         self.renderInfo = {
             'position' : Vector(0, 0)
         }
+        
         self.focuesedElement = None
+
+    def getTkObj(self):
+        return self
 
     def getCanvas(self):
         return self
@@ -331,19 +338,29 @@ class Arena(Frame):
             if not item.absolute:
                 p1 += self.renderInfo['position']
                 p2 += self.renderInfo['position']
+            item.absoluteInfo['p1'] = p1
+            item.absoluteInfo['p2'] = p2
             item.canvasID =  self.canvas.create_line(p1.x,p1.y,p2.x,p2.y,fill = item.color, dash = item.dash, width = item.size)
-            return item.canvasID
+            
         
         elif item.type == 'circle':
             c = Vector(self.getAbsoluteValue(item.c.x, wrt = self), self.getAbsoluteValue(item.c.y, wrt = self))
             r = self.getAbsoluteValue(item.r, wrt = self)
             if not item.absolute:
                 c += self.renderInfo['position']
+            item.absoluteInfo['position'] = c
+            item.absoluteInfo['radius'] = r
+            item.canvasID = self.canvas.create_oval(c.x - r, c.y - r,c.x + r, c.y + r, fill = item.color)
+            #item.canvasID = self.canvas.create_rectangle(c.x - r, c.y - r,c.x + r, c.y + r, fill = item.color, tag='ball')
+            
         else:
             print("Invalid Item")
+            return -1
 
-    def moveItem(self, item, amount):
-        self.canvas.move(item.canvasID,amount.x,amount.y)
+        return item.canvasID
+
+    def moveItem(self, itemID, amount):
+        self.canvas.move(self.canvasIDs[itemID],amount.x,amount.y)
 
     def render(self, first = False):
         def _render():

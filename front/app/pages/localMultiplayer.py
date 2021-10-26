@@ -13,12 +13,14 @@ class localMultiplayer(page.definition):
     def __init__(self, *args, **kwargs):
         self.activePage = "settings"
         self.args = []
+        self.onEnd = print
         super().__init__(*args, **kwargs)
         
 
     def navigate(self,location,*args):
         self.elements['container'].destroy()
         self.args = args
+        self.onEnd()
         if location == "play":
             for i in self.container.child_nodes:i.destroy()
             self.container.child_nodes.clear()
@@ -35,16 +37,16 @@ class localMultiplayer(page.definition):
             print("Error")
 
     def onDestruction(self):
-        print("am die")
+        self.onEnd()
 
     def render(self):
         self.elements['container'] = Frame(self.container).updateStyles(
             top = '0:px',left = '0:px',width = '100:w%',height = '100:h%'
         )
         if self.activePage == 'settings':        
-            settings.render(self.elements['container'], *self.args, goTo = self.navigate)
+            self.onEnd = settings.render(self.elements['container'], *self.args, goTo = self.navigate)
         elif self.activePage == 'play':
-            play.render(self.elements['container'], *self.args, goTo = self.navigate)
+            self.onEnd = play.render(self.elements['container'], *self.args, goTo = self.navigate)
         
         
         self.container.draw()

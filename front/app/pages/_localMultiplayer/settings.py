@@ -224,3 +224,8 @@ def render(container, goTo = print):
         font = {'color' : 'white','size' : 10, 'style' : 'ariel'}
 
     ).addEventListener('<Button-1>', start)
+
+    def onEnd():
+        print("Closing Settings")
+
+    return onEnd

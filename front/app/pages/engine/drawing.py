@@ -1,3 +1,5 @@
+from ...common.tools import Vector
+
 class shape:
     def __init__(self, _type):
         self.type = _type
@@ -13,6 +15,7 @@ class line(shape):
         self.size = size
         self.dash = dash
         self.absolute = absolute
+        self.absoluteInfo = {'p1' : Vector(0, 0), 'p2': Vector(0, 0)}
 
     def update(self,**kwargs):
         for i in kwargs:
@@ -28,6 +31,7 @@ class circle(shape):
         self.size = size
         self.dash = dash
         self.absolute = absolute
+        self.absoluteInfo = {'position' : Vector(0,0),'radius' : 0} 
         self.fill = fill
 
     def update(self,c = None,r = None,color = 'white', size = 5, dash = None,fill = 'white'):

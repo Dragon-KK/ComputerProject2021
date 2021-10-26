@@ -10,6 +10,9 @@ from app.common.tools import Vector # Import Vector
 # tkinter canvas : https://www.tutorialspoint.com/python/tk_canvas.htm/
 # how to edit markdown files : https://www.youtube.com/watch?v=HUBNt18RFbo
 
+# this is the file with the most comments 
+# its also the file where the least stuff happens :D
+
 WINDOW_SIZE = Vector(800, 500) # The size of the window
 
 # < set {root} >

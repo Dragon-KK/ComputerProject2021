@@ -93,6 +93,9 @@ def render(container, gameSettings, goTo = print):
         )
     )
 
+
+    # This is why we have over 50 files
+    # This is clean and easy to configure
     game = Game(
         arena,
         gameSettings,
@@ -114,6 +117,7 @@ def render(container, gameSettings, goTo = print):
 
     )
 
+    # This part looks ugly but you win some you lose some ig
     def onEnd():
         game.forceQuit()
     return onEnd

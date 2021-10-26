@@ -1,4 +1,7 @@
 from time import time as time
+# Honestly idk what a daemon actually does
+# But i think usually daemons are used to manage threads and stuff
+# The use of the class below is somewhat similar and plus the name sounds cool
 class Daemon:
     def __init__(self,tk, interval, slave, *args, **kwargs):
         self.interval = interval
@@ -23,7 +26,7 @@ class Daemon:
     def work(self):
         if self.paused:return
         if not self.last:
-            dt = 0.0000000001
+            dt = 0.0000000001 # idk why i put this number it shouldnt really matter 
             self.last = time()
         else:
             tmp = time()
@@ -31,3 +34,5 @@ class Daemon:
             self.last = tmp
         self.slave(*self.args,dt = dt,**self.kwargs)
         self.loopID = self.tk.after(self.interval,self.work)
+
+# we have atleast 6 util.py files lol i should probably use more descriptive names but util.py sounds professional so...

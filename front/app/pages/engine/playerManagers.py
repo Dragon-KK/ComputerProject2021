@@ -1,3 +1,5 @@
+# this is the reason we had to remake our entire project :(
+
 class playerManager:
     def __init__(self):
         pass

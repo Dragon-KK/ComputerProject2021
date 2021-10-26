@@ -1,12 +1,14 @@
 import tkinter as tk
-from ._custom.util import rect
+from ._custom.util import rect # we dont even use this but it sounded cool so i kept it in
 from ._custom.styling import options,css
-from ..common.tools import Vector
+from ..common.tools import Vector # If we didnt have our Vector class the code wouldve been 10 times worse
+
+# I just added stuff as i needed (without commenting)
+# Half of this is probably useless
+# But now im too deep in i cant go through and exactly figure out the best way to do things
 
 
-
-
-class element:
+class element: # This is an element
     def __init__(self, parent, **kwargs):
         self.parent = parent
         self.renderInfo = {}
@@ -73,7 +75,7 @@ class element:
     def _getRenderPoints(self):
         return []
 
-    def getAbsoluteValue(self,query, **kwargs):
+    def getAbsoluteValue(self,query, **kwargs): # Best function
         wrt = kwargs.get('wrt', self.parent)
         x = query.split(':')
         if len(x) != 2:
@@ -99,7 +101,7 @@ class element:
     def updateFocus(self,elem):
         self.parent.updateFocus(elem)
 
-    def getTkObj(self):
+    def getTkObj(self): # Most obviously redundant function
         return self.parent.getTkObj()
 
     def getCanvas(self):
@@ -119,7 +121,7 @@ class element:
     def addChildEventListener(self,canvasID,event, callback):
         self.parent.addChildEventListener(canvasID, event, callback)
 
-class container(tk.Canvas):
+class container(tk.Canvas): # this is a container
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.css = css()
@@ -166,7 +168,7 @@ class container(tk.Canvas):
         self.child_nodes.append(child)
 
 
-class Frame(element):
+class Frame(element): # ig i shouldve just named it div but Frame sounds more pythonic
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
 
@@ -203,7 +205,7 @@ class Frame(element):
         radius =  self.css.border['radius']
 
 
-        self.clientRect = [
+        self.clientRect = [ # The points on our shape. tkinter does the rest :D
                 x1+radius, y1,
                 x2-radius, y1,
                 x2, y1,
@@ -217,7 +219,7 @@ class Frame(element):
                 x1, y1+radius,
                 x1, y1
         ]
-    def reDraw(self):
+    def reDraw(self): # Ive interchanged draw and render and im too lazy to fix it
         self.undrawChild(self.canvasIDs.values())
         self.onDraw()
 
@@ -231,7 +233,7 @@ class Frame(element):
         self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], dash = self.css.border['dash'],tag='button', smooth=True)
         
 
-class TextBox(Frame):
+class TextBox(Frame): # Label wouldve been a more pythonic name 
     def __init__(
         self,
         parent : element,
@@ -251,7 +253,7 @@ class TextBox(Frame):
         self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
         self.canvasIDs['text'] = self.create_text(self.clientRect[-2] + w/2, self.clientRect[-1] + h/2, text=self.text, tags="button", fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify="center")
 
-class TextInput(Frame):
+class TextInput(Frame): # we shouldve just made an imput element and give it the type of input in the args, it wouldve been more 'furute proof'
     def __init__(self, *args, numeric = False,**kwargs):
         self.value = ""
         super().__init__(*args,**kwargs)
@@ -293,7 +295,8 @@ class TextInput(Frame):
         self.canvasIDs['text'] = self.create_text(self.clientRect[-2] + w/2, self.clientRect[-1] + h/2, text=self.value, fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify = None)
         
 
-class Arena(Frame):
+class Arena(Frame): # ?
+    # canvas sounded too lame, arena > canvas
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
         self.canvas : tk.Canvas = self.getCanvas()
@@ -311,6 +314,8 @@ class Arena(Frame):
         if not self.items.get(itemID):return False
         self.items[itemID].update(**kwargs)
         return True
+
+    
 
 
     def delete(self,ID):

@@ -3,6 +3,8 @@ from typing import List
 from .playerManagers import playerManager
 from .util import Daemon
 
+# This is where the pong part happens
+
 class GameSettings:
     def __init__(self, difficulty = 10,duece = False, winCondition = 5, difficultySlope = 0.5):
         self.speed = difficulty
@@ -37,7 +39,7 @@ class Game:
             ball.work(dt = dt)
 
         # I had some issue where the canvas would clip an item when canvas.move moved stuff either too fast or too much
-        # this .configure(cursor='arror') seems to magically fix it so i shall not question it
+        # this .configure(cursor='arror') business seems to magically fix it so i shall not question it
         self.daemon.tk.configure(cursor='arrow') # i just need that tk obj, you could do this in many ways, i did this cause im lazy
 
     def start(self):

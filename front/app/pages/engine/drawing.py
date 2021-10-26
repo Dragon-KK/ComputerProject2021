@@ -1,5 +1,5 @@
 from ...common.tools import Vector
-
+# :D
 class shape:
     def __init__(self, _type):
         self.type = _type

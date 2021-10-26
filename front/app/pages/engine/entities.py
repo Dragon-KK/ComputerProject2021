@@ -2,6 +2,8 @@ from . import drawing as shapes
 from ...common.tools import Vector
 from typing import List
 
+# This is also where the pong happens
+
 class Wall:
     def __init__(self, arena, vertical = True,p1 = Vector('0:px', '0:px'), p2 = Vector('0:px', '0:px'), color = None, size = 2):
         self.itemID = arena.registerItem(

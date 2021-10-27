@@ -1,6 +1,7 @@
 from . import drawing as shapes
 from ...common.tools import Vector
 from typing import List
+from .physics import CollisionData
 
 # This is also where the pong happens
 
@@ -34,12 +35,12 @@ class Wall:
             if (p1.y < currPos.y < p2.y):
                 if (currPos.x + radius > p1.x and prevPos.x + radius < p1.x) or (currPos.x - radius < p1.x and prevPos.x - radius > p1.x):
                     ball.lastCollidedWall = self
-                    return True,"Yes"            
+                    return True,CollisionData(self, Vector(p1.x, currPos.y), collisionAxis = CollisionData.y)          
         else:
             if (p1.x < currPos.x < p2.x):
                 if (currPos.y + radius > p1.y and prevPos.y + radius < p1.y) or (currPos.y - radius < p1.y and prevPos.y - radius > p1.y):
                     ball.lastCollidedWall = self
-                    return True,"Yes"
+                    return True,CollisionData(self,Vector(currPos.x, p1.y), collisionAxis = CollisionData.x)
         return False,None
 
 class WinZone(Wall):
@@ -63,7 +64,7 @@ class Ball:
         self.position = Vector(0, 0)
         self.prevposition = Vector(0, 0) # I should probably store this in absoluteInfo but... meh atleast i know where all my bugs will probably come from now
         self.acceleration = acceleration
-        self.direction = Vector(0, 1)
+        self.direction = Vector(3, 4).normalized()
         self._walls = walls
         self._winZones = winZones
         self.walls : List[Wall] = []
@@ -91,7 +92,11 @@ class Ball:
                 self.handleCollision(collisionData)
 
     def handleCollision(self, collisionData):
-        self.direction.y *= -1
+        if collisionData.collisionAxis == CollisionData.x:
+            self.direction.y *= -1
+        else:
+            self.direction.x *= -1
+
                 
 
 

@@ -4,7 +4,16 @@ from .playerManagers import playerManager
 from .util import Daemon
 
 # This is where the pong part happens
-
+# !!
+# !!!
+# !!!!
+#
+#
+#
+# The timing loop part is dogshit fix it
+# 
+#
+# !!!!!!!
 class GameSettings:
     def __init__(self, difficulty = 10,duece = False, winCondition = 5, difficultySlope = 0.5):
         self.speed = difficulty
@@ -19,7 +28,7 @@ class Game:
     # setting msPerFrame to 1 gives nice graphics but takes 12% ram.. : D
     # I think the main issue is that tkinter really isnt built for this kind of stuff
     # We shouldve just used pygame lol
-    def __init__(self, arena, settings : GameSettings, playerManager : playerManager,msPerFrame = 5,walls = {}, winZones = {}, balls  = []):
+    def __init__(self, arena, settings : GameSettings, playerManager : playerManager,msPerFrame = 1,walls = {}, winZones = {}, balls  = []):
         self.settings = settings
         self.arena = arena
         self.playerManager = playerManager

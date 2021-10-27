@@ -102,13 +102,15 @@ def render(container, gameSettings, goTo = print):
         None,
         walls = {
             'top' : Wall(arena,vertical=False, p1=Vector('0:px', '0:px'),p2=Vector('100:w%', '0:px')),
-            'bottom' : Wall(arena,vertical=False, p1=Vector('0:px', '100:h%'),p2=Vector('100:w%', '100:h%'))
+            'bottom' : Wall(arena,vertical=False, p1=Vector('0:px', '100:h%'),p2=Vector('100:w%', '100:h%')),
+            'left' : Wall(arena,vertical=True, p1=Vector('0:px', '0:px'),p2=Vector('0:px', '100:h%')),
+            'right' : Wall(arena,vertical=True, p1=Vector('100:w%', '0:h%'),p2=Vector('100:w%', '100:h%')),
             },
         winZones={},
         balls=[
             Ball(
                 arena,
-                walls = ['top', 'bottom'],
+                walls = ['top', 'bottom','left','right'],
                 winZones = [],
                 acceleration=10,
                 initialSpeed=100

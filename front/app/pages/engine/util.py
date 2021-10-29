@@ -1,4 +1,5 @@
 from time import time as time
+from math import floor
 # Honestly idk what a daemon actually does
 # But i think usually daemons are used to manage threads and stuff
 # The use of the class below is somewhat similar and plus the name sounds cool
@@ -33,6 +34,6 @@ class Daemon:
             dt = tmp - self.last
             self.last = tmp
         self.slave(*self.args,dt = dt,**self.kwargs)
-        self.loopID = self.tk.after(self.interval,self.work)
+        self.loopID = self.tk.after(max(floor(self.interval - ((time() - self.last)/1000)), 1),self.work)
 
 # we have atleast 6 util.py files lol i should probably use more descriptive names but util.py sounds professional so...

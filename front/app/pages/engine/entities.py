@@ -2,8 +2,11 @@ from . import drawing as shapes
 from ...common.tools import Vector
 from typing import List
 from .physics import CollisionData
-
+import math
 # This is also where the pong happens
+
+# Collision code is dogshit
+
 
 class Wall:
     def __init__(self, arena, vertical = True,p1 = Vector('0:px', '0:px'), p2 = Vector('0:px', '0:px'), color = None, size = 2):
@@ -34,15 +37,15 @@ class Wall:
         if self.vertical:
             if (p1.y < currPos.y < p2.y):
                 if (currPos.x + radius > p1.x and prevPos.x + radius < p1.x) or (currPos.x - radius < p1.x and prevPos.x - radius > p1.x):
-                    ball.lastCollidedWall = self
-                    return True,CollisionData(self, Vector(p1.x, currPos.y), collisionAxis = CollisionData.y)          
+                    
+                    return True,CollisionData(self, Vector(p1.x, ((p1.x - prevPos.x) * (currPos.y - prevPos.y)/(currPos.x - prevPos.x)) + prevPos.y), collisionAxis = CollisionData.y)          
         else:
             if (p1.x < currPos.x < p2.x):
                 if (currPos.y + radius > p1.y and prevPos.y + radius < p1.y) or (currPos.y - radius < p1.y and prevPos.y - radius > p1.y):
-                    ball.lastCollidedWall = self
-                    return True,CollisionData(self,Vector(currPos.x, p1.y), collisionAxis = CollisionData.x)
+                    
+                    return True,CollisionData(self,Vector(((p1.y-prevPos.y) * (currPos.x - prevPos.x)/(currPos.y - prevPos.y)) + prevPos.x, p1.y), collisionAxis = CollisionData.x)
         return False,None
-
+        
 class WinZone(Wall):
     def __init__(self):
         pass
@@ -64,7 +67,7 @@ class Ball:
         self.position = Vector(0, 0)
         self.prevposition = Vector(0, 0) # I should probably store this in absoluteInfo but... meh atleast i know where all my bugs will probably come from now
         self.acceleration = acceleration
-        self.direction = Vector(3, 4).normalized()
+        self.direction = Vector(9,3).normalized()
         self._walls = walls
         self._winZones = winZones
         self.walls : List[Wall] = []
@@ -80,24 +83,36 @@ class Ball:
         return self.arena.items[self.itemID].absoluteInfo
 
     def work(self, dt = 0.1):
+
         s = self.direction * self.speed * dt
         self.arena.items[self.itemID].absoluteInfo['position'] += s
         self.prevposition = self.arena.items[self.itemID].absoluteInfo['position'] - s
         self.arena.moveItem(self.itemID, s)
         self.speed += self.acceleration * dt
-
-        for wall in self.walls:
-            isColliding,collisionData = wall.checkForCollision(self)
-            if isColliding:
-                self.handleCollision(collisionData)
+        while True:
+            for wall in self.walls:
+                isColliding,collisionData = wall.checkForCollision(self)
+                if isColliding:
+                    self.handleCollision(collisionData)
+                    break
+            else:
+                break
 
     def handleCollision(self, collisionData):
+        self.lastCollidedWall = collisionData.collider
+        self.prevposition = collisionData.collisionPoint
+        currpos = self.arena.items[self.itemID].absoluteInfo['position']
+        newpos = 0
         if collisionData.collisionAxis == CollisionData.x:
+            newpos = Vector(currpos.x, collisionData.collisionPoint.y - (self.arena.items[self.itemID].absoluteInfo['radius']*math.copysign(2,self.direction.y) + currpos.y - collisionData.collisionPoint.y))
             self.direction.y *= -1
         else:
+            newpos = Vector(collisionData.collisionPoint.x - (self.arena.items[self.itemID].absoluteInfo['radius']*math.copysign(2,self.direction.x) + currpos.x - collisionData.collisionPoint.x), currpos.y)
             self.direction.x *= -1
 
-                
+        s = newpos - currpos
+        self.arena.items[self.itemID].absoluteInfo['position'] = newpos
+        self.arena.moveItem(self.itemID, s)
 
 
 class Player:

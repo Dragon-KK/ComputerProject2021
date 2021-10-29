@@ -1,0 +1,20 @@
+To do:
+
+    FIX COLLISION CHECK, ITS TRASH
+    
+    THE BALL CAN PHASE OUT OF REALITY WHEN IT GOES WITH HIGH SPD
+
+    if the ball calls a collision on two walls at a time it skips one of them (like when it goes with a high speed towards a corner)
+    cause collision chekc is trash
+
+    work on player manager then set
+
+    
+
+the game is bad
+Properly find collision point . done
+Find updated position based on collision point . done
+!! FIX GAMELOOP . Done ig?
+Then set it to repeat . done
+
+16.7 ms per frame is what i want

@@ -112,8 +112,8 @@ def render(container, gameSettings, goTo = print):
                 arena,
                 walls = ['top', 'bottom','left','right'],
                 winZones = [],
-                acceleration=10,
-                initialSpeed=100
+                acceleration=100,
+                initialSpeed=1000
             )
         ]
 

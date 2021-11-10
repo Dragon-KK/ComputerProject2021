@@ -2,6 +2,7 @@ from .entities import Ball,Player,Wall,WinZone
 from typing import List
 from .playerManagers import playerManager
 from .util import Daemon
+from .physics import world
 
 # This is where the pong part happens
 # !!
@@ -36,19 +37,12 @@ class Game:
         self.walls = walls
         self.interval = msPerFrame
         self.winZones = winZones
-
-        for ball in self.balls:
-            ball.setWallsAndWinZones(self.walls,self.winZones)
-
+        self.world = world(balls,walls)
         self.daemon = Daemon(arena.getTkObj(), self.interval, self.work)
+        
 
     def work(self, dt = 0.1):
-        
-        for ball in self.balls:
-            ball.work(dt = dt)
-
-        # I had some issue where the canvas would clip an item when canvas.move moved stuff either too fast or too much
-        # this .configure(cursor='arror') business seems to magically fix it so i shall not question it
+        self.world.work(dt = dt)
         self.daemon.tk.configure(cursor='arrow') # i just need that tk obj, you could do this in many ways, i did this cause im lazy
 
     def start(self):

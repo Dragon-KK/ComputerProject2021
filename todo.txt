@@ -1,12 +1,17 @@
 To do:
 
-    FIX COLLISION CHECK, ITS TRASH
+    The onCollision works for slower speeds but the logic just cant hold
+    when the ball goes super fast it can effectively skip some walls
+    this is because prevpos is updated after each wall check
+
+    FIGURE OUT SOME NEW LOGIC FOR COLLISIONS
     
     THE BALL CAN PHASE OUT OF REALITY WHEN IT GOES WITH HIGH SPD
 
     if the ball calls a collision on two walls at a time it skips one of them (like when it goes with a high speed towards a corner)
     cause collision chekc is trash
 
+    move ball stuff to physics
     work on player manager then set
 
     

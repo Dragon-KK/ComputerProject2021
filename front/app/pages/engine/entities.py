@@ -23,6 +23,9 @@ class Wall:
         self.vertical = vertical
         self.arena = arena
 
+    def getAbsoluteInfo(self):
+        return self.arena.items[self.itemID].absoluteInfo
+
     def checkForCollision(self, ball):
         if ball.lastCollidedWall == self:return False,None
         tmp = ball.info()
@@ -34,16 +37,19 @@ class Wall:
         p1 = tmp2['p1']
         p2 = tmp2['p2']
         
+        # This part is trash
         if self.vertical:
-            if (p1.y < currPos.y < p2.y):
+            correctedY = ((p1.x - prevPos.x) * (currPos.y - prevPos.y)/(currPos.x - prevPos.x)) + prevPos.y if currPos.x  != prevPos.x else currPos.x
+            if (p1.y <= correctedY <= p2.y):
                 if (currPos.x + radius > p1.x and prevPos.x + radius < p1.x) or (currPos.x - radius < p1.x and prevPos.x - radius > p1.x):
                     
-                    return True,CollisionData(self, Vector(p1.x, ((p1.x - prevPos.x) * (currPos.y - prevPos.y)/(currPos.x - prevPos.x)) + prevPos.y), collisionAxis = CollisionData.y)          
+                    return True,CollisionData(self, Vector(p1.x, correctedY), collisionAxis = CollisionData.y)          
         else:
-            if (p1.x < currPos.x < p2.x):
+            correctedX = ((p1.y-prevPos.y) * (currPos.x - prevPos.x)/(currPos.y - prevPos.y)) + prevPos.x if currPos.y != prevPos.y else currPos.y
+            if (p1.x <= correctedX <= p2.x):
                 if (currPos.y + radius > p1.y and prevPos.y + radius < p1.y) or (currPos.y - radius < p1.y and prevPos.y - radius > p1.y):
                     
-                    return True,CollisionData(self,Vector(((p1.y-prevPos.y) * (currPos.x - prevPos.x)/(currPos.y - prevPos.y)) + prevPos.x, p1.y), collisionAxis = CollisionData.x)
+                    return True,CollisionData(self,Vector(correctedX, p1.y), collisionAxis = CollisionData.x)
         return False,None
         
 class WinZone(Wall):
@@ -62,27 +68,28 @@ class Ball:
         
         # half of these variables are probably redundant but ig thats what i get for not writing comments ;_;
         self.lastCollidedWall = None
+        self.nextCollidingWall = None
         self.arena = arena
         self.speed = initialSpeed
         self.position = Vector(0, 0)
         self.prevposition = Vector(0, 0) # I should probably store this in absoluteInfo but... meh atleast i know where all my bugs will probably come from now
         self.acceleration = acceleration
-        self.direction = Vector(9,3).normalized()
-        self._walls = walls
-        self._winZones = winZones
-        self.walls : List[Wall] = []
-        self.winZones : List[WinZone] = []
+        self.direction = Vector(1,0).normalized()
+        self.walls = walls
+        self.winZones = winZones
 
-    def setWallsAndWinZones(self,walls,winZones):
-        for i in self._walls:
-            self.walls.append(walls[i])
-        for i in self._winZones:
-            self.winZones.appedn(winZones[i])
+    def update(self):
+        self.position = self.arena.items[self.itemID].absoluteInfo['position']
 
     def info(self):
         return self.arena.items[self.itemID].absoluteInfo
 
+    def displace(self, displacement):
+        pass
+
     def work(self, dt = 0.1):
+
+        # Move this to physics, ball should be like player manager
 
         s = self.direction * self.speed * dt
         self.arena.items[self.itemID].absoluteInfo['position'] += s

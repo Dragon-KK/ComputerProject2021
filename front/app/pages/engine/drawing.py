@@ -1,9 +1,14 @@
 from ...common.tools import Vector
 # :D
 class shape:
-    def __init__(self, _type):
+    def __init__(self, _type, **kwargs):
+        print(kwargs,_type)
         self.type = _type
         self.canvasID = -1
+        self.init = kwargs.get('init',self.init)
+
+    def init(self):
+        pass
 
 class line(shape):
     """This is a line"""
@@ -23,8 +28,8 @@ class line(shape):
 
 class circle(shape):
     """This is a circle"""
-    def __init__(self, c, r,absolute = False,color = 'white', size = 5, dash = None,fill = 'white'):
-        super().__init__('circle')
+    def __init__(self, c, r,absolute = False,color = 'white', size = 5, dash = None,fill = 'white',**kwargs):
+        super().__init__('circle',**kwargs)
         self.c = c
         self.r = r
         self.color = color

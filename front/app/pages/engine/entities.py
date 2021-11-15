@@ -3,6 +3,7 @@ from ...common.tools import Vector
 from typing import List
 from .physics import CollisionData
 import math
+from random import randint
 # This is also where the pong happens
 
 # Collision code is dogshit
@@ -26,100 +27,111 @@ class Wall:
     def getAbsoluteInfo(self):
         return self.arena.items[self.itemID].absoluteInfo
 
-    def checkForCollision(self, ball):
-        if ball.lastCollidedWall == self:return False,None
-        tmp = ball.info()
-        currPos = tmp['position']
-        radius = tmp['radius']
-        prevPos = ball.prevposition
-        
-        tmp2 = self.arena.items[self.itemID].absoluteInfo
-        p1 = tmp2['p1']
-        p2 = tmp2['p2']
-        
-        # This part is trash
+    def checkForCollisionAndMove(self, ball, juice):
         if self.vertical:
-            correctedY = ((p1.x - prevPos.x) * (currPos.y - prevPos.y)/(currPos.x - prevPos.x)) + prevPos.y if currPos.x  != prevPos.x else currPos.x
-            if (p1.y <= correctedY <= p2.y):
-                if (currPos.x + radius > p1.x and prevPos.x + radius < p1.x) or (currPos.x - radius < p1.x and prevPos.x - radius > p1.x):
-                    
-                    return True,CollisionData(self, Vector(p1.x, correctedY), collisionAxis = CollisionData.y)          
+
+            r = ball.info()['radius']
+            r *= -1 if ball.direction.x < 0 else 1
+            if (ball.position.x + r - self.arena.items[self.itemID].absoluteInfo['p1'].x) * (ball.position.x + r + (ball.direction.x * juice) - self.arena.items[self.itemID].absoluteInfo['p1'].x) < 0:
+                tmp = self.arena.items[self.itemID].absoluteInfo['p1'].x - ball.position.x - r
+                usedJuice = tmp / ball.direction.x
+                displacement = Vector(tmp,usedJuice * ball.direction.y)
+                ball.displace(displacement)
+                ball.direction.x *= -1
+                ball.hasCollidedSinceCheck = True
+                return usedJuice
         else:
-            correctedX = ((p1.y-prevPos.y) * (currPos.x - prevPos.x)/(currPos.y - prevPos.y)) + prevPos.x if currPos.y != prevPos.y else currPos.y
-            if (p1.x <= correctedX <= p2.x):
-                if (currPos.y + radius > p1.y and prevPos.y + radius < p1.y) or (currPos.y - radius < p1.y and prevPos.y - radius > p1.y):
-                    
-                    return True,CollisionData(self,Vector(correctedX, p1.y), collisionAxis = CollisionData.x)
-        return False,None
+            r = ball.info()['radius']
+            r *= -1 if ball.direction.y < 0 else 1
+            if (ball.position.y + r - self.arena.items[self.itemID].absoluteInfo['p1'].y) * (ball.position.y + r + juice * ball.direction.y - self.arena.items[self.itemID].absoluteInfo['p1'].y) < 0:
+                tmp = self.arena.items[self.itemID].absoluteInfo['p1'].y - ball.position.y - r
+                usedJuice = tmp / ball.direction.y
+                displacement = Vector(usedJuice * ball.direction.x,tmp)
+                ball.displace(displacement)
+                ball.direction.y *= -1
+                ball.hasCollidedSinceCheck = True
+                return usedJuice
+        ball.displace(ball.direction * juice)
+        return juice
+
+    
         
 class WinZone(Wall):
-    def __init__(self):
-        pass
+    def __init__(self, result,*args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.result = result
 
+    def checkForWinOrMove(self, ball, juice):
+        if self.vertical:
+
+            r = ball.info()['radius']
+            r *= 1 if ball.direction.x < 0 else -1
+            if (ball.position.x + r - self.arena.items[self.itemID].absoluteInfo['p1'].x) * (ball.position.x + r + (ball.direction.x * juice) - self.arena.items[self.itemID].absoluteInfo['p1'].x) < 0:
+                return True,self.result
+        else:
+            r = ball.info()['radius']
+            r *= 1 if ball.direction.y < 0 else -1
+            if (ball.position.y + r - self.arena.items[self.itemID].absoluteInfo['p1'].y) * (ball.position.y + r + juice * ball.direction.y - self.arena.items[self.itemID].absoluteInfo['p1'].y) < 0:
+                return True,self.result
+        ball.displace(ball.direction * juice)
+        return False,None
+def plusMinus(n):
+    return (1 if randint(0,1) == 1 else -1) * n
 
 class Ball:
+    
+    def getRandomishDirection(self):
+        #return Vector(-0.9805806756909202, -0.19611613513818404)
+        return Vector(plusMinus(randint(5,10)), plusMinus(randint(5, 10))).normalized()
+
     def __init__(self,arena,walls = [], winZones = [],initialSpeed = 5, acceleration = 1, radius = '10:px', color = 'white'):
         self.itemID = arena.registerItem(
             shapes.circle(
                 Vector('50:w%','50:h%'), radius,
-                color = color
+                color = color,
+                init=self.initialize
             )
         )
         
         # half of these variables are probably redundant but ig thats what i get for not writing comments ;_;
-        self.lastCollidedWall = None
+        self.hasCollidedSinceCheck = True
         self.nextCollidingWall = None
         self.arena = arena
         self.speed = initialSpeed
+        self.initialSpeed = initialSpeed
+        self.initialAcceleration = acceleration
         self.position = Vector(0, 0)
-        self.prevposition = Vector(0, 0) # I should probably store this in absoluteInfo but... meh atleast i know where all my bugs will probably come from now
         self.acceleration = acceleration
-        self.direction = Vector(1,0).normalized()
+        self.direction = self.getRandomishDirection()
         self.walls = walls
         self.winZones = winZones
+        self.totalDisplacement = Vector(0,0)
 
-    def update(self):
+    def initialize(self):
         self.position = self.arena.items[self.itemID].absoluteInfo['position']
 
     def info(self):
         return self.arena.items[self.itemID].absoluteInfo
 
+    def draw(self):
+        self.arena.moveItem(self.itemID, self.totalDisplacement)        
+        self.totalDisplacement = Vector(0, 0)
+
     def displace(self, displacement):
-        pass
+        self.position += displacement
+        self.totalDisplacement += displacement
 
-    def work(self, dt = 0.1):
-
-        # Move this to physics, ball should be like player manager
-
-        s = self.direction * self.speed * dt
-        self.arena.items[self.itemID].absoluteInfo['position'] += s
-        self.prevposition = self.arena.items[self.itemID].absoluteInfo['position'] - s
-        self.arena.moveItem(self.itemID, s)
-        self.speed += self.acceleration * dt
-        while True:
-            for wall in self.walls:
-                isColliding,collisionData = wall.checkForCollision(self)
-                if isColliding:
-                    self.handleCollision(collisionData)
-                    break
-            else:
-                break
-
-    def handleCollision(self, collisionData):
-        self.lastCollidedWall = collisionData.collider
-        self.prevposition = collisionData.collisionPoint
-        currpos = self.arena.items[self.itemID].absoluteInfo['position']
-        newpos = 0
-        if collisionData.collisionAxis == CollisionData.x:
-            newpos = Vector(currpos.x, collisionData.collisionPoint.y - (self.arena.items[self.itemID].absoluteInfo['radius']*math.copysign(2,self.direction.y) + currpos.y - collisionData.collisionPoint.y))
-            self.direction.y *= -1
-        else:
-            newpos = Vector(collisionData.collisionPoint.x - (self.arena.items[self.itemID].absoluteInfo['radius']*math.copysign(2,self.direction.x) + currpos.x - collisionData.collisionPoint.x), currpos.y)
-            self.direction.x *= -1
-
-        s = newpos - currpos
-        self.arena.items[self.itemID].absoluteInfo['position'] = newpos
-        self.arena.moveItem(self.itemID, s)
+    def reset(self):
+        self.arena.render()
+        self.initialize()
+        # half of these variables are probably redundant but ig thats what i get for not writing comments ;_;
+        self.hasCollidedSinceCheck = True
+        self.nextCollidingWall = None
+        self.speed = self.initialSpeed
+        self.acceleration = self.initialAcceleration
+        self.direction = self.getRandomishDirection()
+        self.totalDisplacement = Vector(0,0)
+        
 
 
 class Player:

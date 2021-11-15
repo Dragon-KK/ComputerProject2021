@@ -29,31 +29,33 @@ class Game:
     # setting msPerFrame to 1 gives nice graphics but takes 12% ram.. : D
     # I think the main issue is that tkinter really isnt built for this kind of stuff
     # We shouldve just used pygame lol
-    def __init__(self, arena, settings : GameSettings, playerManager : playerManager,msPerFrame = 1,walls = {}, winZones = {}, balls  = []):
+    def __init__(self, arena, settings : GameSettings, playerManager : playerManager,fps = 10,walls = {}, winZones = {}, balls  = []):
         self.settings = settings
         self.arena = arena
         self.playerManager = playerManager
         self.balls = balls
         self.walls = walls
-        self.interval = msPerFrame
+        self.drawInterval = fps
         self.winZones = winZones
-        self.world = world(balls,walls)
-        self.daemon = Daemon(arena.getTkObj(), self.interval, self.work)
+        self.renderSlave = Daemon(arena.getTkObj(), self.drawInterval, self.renderFrame)
         
+    def renderFrame(self, dt = 1):
+        
+        for i in self.balls:
+            i.draw()
+        self.renderSlave.tk.configure(cursor='arrow') # i just need that tk obj, you could do this in many ways, i did this cause im lazy
 
-    def work(self, dt = 0.1):
-        self.world.work(dt = dt)
-        self.daemon.tk.configure(cursor='arrow') # i just need that tk obj, you could do this in many ways, i did this cause im lazy
-
-    def start(self):
-        pass
+    def cont(self):
+        self.renderSlave.cont()
 
     def pause(self):
-        pass
+        self.renderSlave.pause()
 
-    def end(self):
-        pass
+    def reset(self):
+        self.pause()
+        for i in self.balls:
+            i.reset()
 
     def forceQuit(self):
-        self.daemon.pause()
+        self.renderSlave.pause()
 

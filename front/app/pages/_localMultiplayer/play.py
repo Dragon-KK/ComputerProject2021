@@ -8,9 +8,21 @@ from ..engine import drawing as shapes
 
 from ..engine.pong import GameSettings,Ball,Game,Player,Wall,WinZone
 
+from ..engine.physics import world
+from ..engine.util import Daemon
 
+from ..engine import playerManagers as PlayerManager
+
+PHYSICSFPS = 30
+p1Score = 0
+p2Score = 0
 def render(container, gameSettings, goTo = print):
+    global p1Score
+    global p2Score
+    p1Score = 0
+    p2Score = 0
     container.updateStyles(background = {'color' : 'black'})
+
 
     elements = {}
     elements['Arena'] = Arena(container).updateStyles(
@@ -19,7 +31,12 @@ def render(container, gameSettings, goTo = print):
     )
 
     def pause(*args):
-        game.forceQuit()
+        if physics.paused:
+            game.cont()
+            physics.cont()
+        else:
+            game.pause()
+            physics.pause()
         return
 
     def updateScores(p1,p2):
@@ -60,33 +77,50 @@ def render(container, gameSettings, goTo = print):
             color = "#303030"
         )
     )
-
-
-    # This is why we have over 50 files
-    # This is clean and easy to configure
-    game = Game(
+    def createRound():
+        # This is why we have over 50 files
+        # This is clean and easy to configure
+        return Game(
         arena,
         gameSettings,
         None,
+        fps=16,
         walls = {
             'top' : Wall(arena,vertical=False, p1=Vector('0:px', '0:px'),p2=Vector('100:w%', '0:px')),
             'bottom' : Wall(arena,vertical=False, p1=Vector('0:px', '100:h%'),p2=Vector('100:w%', '100:h%')),
-            'left' : Wall(arena,vertical=True, p1=Vector('0:px', '0:px'),p2=Vector('0:px', '100:h%')),
-            'right' : Wall(arena,vertical=True, p1=Vector('100:w%', '0:h%'),p2=Vector('100:w%', '100:h%')),
             },
-        winZones={},
+        winZones={            
+            'left' : WinZone(PlayerManager.player2,arena,vertical=True, p1=Vector('0:px', '0:px'),p2=Vector('0:px', '100:h%')),
+            'right' : WinZone(PlayerManager.player1,arena,vertical=True, p1=Vector('100:w%', '0:h%'),p2=Vector('100:w%', '100:h%')),
+        },
         balls=[
             Ball(
                 arena,
-                walls = ['top', 'bottom','left','right'],
-                winZones = [],
-                acceleration=100,
-                initialSpeed=1000
+                walls = ['top', 'bottom'],
+                winZones = ['left','right'],
+                acceleration=10,
+                initialSpeed=300
             )
         ]
     )
+    
+    def roundEnd(res):
+        global p1Score
+        global p2Score
+        print("Round Over ",res)
+        physics.pause()
+        game.pause()
+        if res == PlayerManager.player1:p1Score += 1
+        elif res == PlayerManager.player2:p2Score += 1
+        updateScores(p1Score, p2Score)
 
+          
+    game = createRound()    
+    World = world(game, roundEnd)
+    physics = Daemon(arena.getTkObj(),PHYSICSFPS, World.work)
+    
     # This part looks ugly but you win some you lose some ig
     def onEnd():
         game.forceQuit()
+        physics.pause()
     return onEnd

@@ -345,7 +345,9 @@ class Arena(Frame): # ?
                 p2 += self.renderInfo['position']
             item.absoluteInfo['p1'] = p1
             item.absoluteInfo['p2'] = p2
+            item.absoluteInfo['color'] = item.color
             item.canvasID =  self.canvas.create_line(p1.x,p1.y,p2.x,p2.y,fill = item.color, dash = item.dash, width = item.size)
+            item.init()
             
         
         elif item.type == 'circle':
@@ -357,6 +359,7 @@ class Arena(Frame): # ?
             item.absoluteInfo['radius'] = r
             item.canvasID = self.canvas.create_oval(c.x - r, c.y - r,c.x + r, c.y + r, fill = item.color)
             #item.canvasID = self.canvas.create_rectangle(c.x - r, c.y - r,c.x + r, c.y + r, fill = item.color, tag='ball')
+            item.init()
             
         else:
             print("Invalid Item")
@@ -366,6 +369,7 @@ class Arena(Frame): # ?
 
     def moveItem(self, itemID, amount):
         self.canvas.move(self.canvasIDs[itemID],amount.x,amount.y)
+
 
     def render(self, first = False):
         def _render():

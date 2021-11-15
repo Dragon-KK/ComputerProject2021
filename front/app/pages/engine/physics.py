@@ -1,3 +1,5 @@
+from ...common.tools import Vector
+from . import entities
 class CollisionData:
     x = 0
     y = 1
@@ -7,34 +9,75 @@ class CollisionData:
         self.collisionAxis = collisionAxis
 
 class world:
-    def __init__(self, balls, walls):
-        self.balls = balls
-        self.walls = walls
+    def __init__(self, game, onRoundFinish):
+        self.balls = game.balls
+        self.walls = game.walls
+        for i in game.winZones:
+            self.walls[i] = game.winZones[i]
+        self.game = game
+        self.onRoundFinish = onRoundFinish
         
 
     def calculateNextCollidingWall(self,ball):
         potentialWalls = {}
-        for i in ball.walls:
+        for i in ball.walls + ball.winZones:
+            
             absInfo = self.walls[i].getAbsoluteInfo()
             if self.walls[i].vertical:
+                
                 tmp = ball.direction.x * (-ball.position.x + absInfo['p1'].x)
                 if tmp > 0:
-                    potentialWalls[tmp] = self.walls[i]
+                    r = ball.info()['radius']
+                    r *= -1 if ball.direction.x < 0 else 1
+                    tmp = absInfo['p1'].x - ball.position.x - r
+                    usedJuice = tmp / ball.direction.x
+                    yCheck = usedJuice * ball.direction.y + ball.position.y
+                    if absInfo['p1'].y < yCheck < absInfo['p2'].y:
+                        potentialWalls[tmp] = self.walls[i]
             else:
                 tmp = ball.direction.y * (-ball.position.y + absInfo['p2'].y)
                 if tmp > 0:
-                    potentialWalls[tmp] = self.walls[i]
+                    r = ball.info()['radius']
+                    r *= -1 if ball.direction.y < 0 else 1
+                    tmp = absInfo['p1'].y - ball.position.y - r
+                    usedJuice = tmp / ball.direction.y
+                    xCheck = usedJuice * ball.direction.x + ball.position.x
+                    if absInfo['p1'].x < xCheck < absInfo['p2'].x:
+                        potentialWalls[tmp] = self.walls[i]
         if len(potentialWalls.values()) == 0:
-            # Maybe raise some error here ?
+            print("No go")
             pass
         else:
             ball.nextCollidingWall = potentialWalls[min(potentialWalls.keys())]
+        ball.hasCollidedSinceCheck = False
 
-    def handleBall(self,ball):
-        for ball in self.balls:
-            ball.update()
-            self.calculateNextCollidingWall(ball)
-            print(ball.nextCollidingWall.p1, ball.nextCollidingWall.p2) if ball.nextCollidingWall else print("Not bounded")
+    def handleBallCollision(self, currPos, juice, direction, wall):
+        newPos = Vector(0,0)
+        return (newPos, juice, newDirection)
+
+    def roundHasEnded(self,res):
+        print("Round over")
+        
+        self.game.reset()
+        self.onRoundFinish(res)
+        
+
+    def handleBall(self,ball, dt):
+        juice = ball.speed * dt
+        while juice > 0:
+            if (ball.hasCollidedSinceCheck):self.calculateNextCollidingWall(ball)
+            if type(ball.nextCollidingWall) is entities.Wall:
+                juice -= ball.nextCollidingWall.checkForCollisionAndMove(ball, juice)
+            else:
+                (roundFinish, result) = ball.nextCollidingWall.checkForWinOrMove(ball, juice)
+                if roundFinish:
+                    self.roundHasEnded(result)
+                else:
+                    juice = 0
+
+            
+
+        ball.speed += ball.acceleration * dt
         # options :
         # do collision check each frame
         # after each collision calculate the next colliding wall and when the wall is passed handle collision and repeat !!! Do this
@@ -42,4 +85,4 @@ class world:
 
     def work(self, dt = 0.1):
         for ball in self.balls:
-            self.handleBall(ball)
+            self.handleBall(ball, dt)

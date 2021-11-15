@@ -1,7 +1,9 @@
 # this is the reason we had to remake our entire project :(
 from ...common.tools import Vector
-
+player1 = 1
+player2 = -1
 class playerManager:
+
     def __init__(self):
         pass
 

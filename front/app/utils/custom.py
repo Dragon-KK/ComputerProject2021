@@ -304,6 +304,15 @@ class Arena(Frame): # ?
 
         }
         self.itemNumber = 0
+        self.queries = []
+
+    def answerQueries(self):
+        for item in self.queries:
+            if item['queryType'] == 'absolute_wrt_self':
+                item['callback'](self.getAbsoluteValue(item['query'], wrt=self))
+
+    def query(self,queryType, query, callback):
+        self.queries.append({'queryType':queryType,'query':query,'callback':callback})
 
     def registerItem(self,item):
         self.items[self.itemNumber] = item
@@ -334,6 +343,7 @@ class Arena(Frame): # ?
         self.renderInfo['position'] = Vector(self.clientRect[-2], self.clientRect[-1])
         self.renderInfo['size'] = Vector(w, h)
         self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], dash = self.css.border['dash'],tag='button', smooth=True)
+        self.answerQueries()
         self.render(first = True)
 
     def renderItem(self, item):

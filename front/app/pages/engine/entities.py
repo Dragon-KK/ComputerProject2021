@@ -135,5 +135,31 @@ class Ball:
 
 
 class Player:
-    def __init__(self):
-        pass
+    def setBoundsX(self,v):
+        self.absoluteBounds.x = v
+    def setBoundsY(self,v):
+        self.absoluteBounds.y = v
+    def __init__(self,leftPlayer, bounds,arena):
+        self.arena = arena
+        self.walls = []
+        self.bounds = bounds
+        self.absoluteBounds = Vector(0, 0)
+        self.arena.query('absolute_wrt_self', bounds.x, self.setBoundsX)
+        self.arena.query('absolute_wrt_self', bounds.y, self.setBoundsY)
+
+        =     
+        # Player will basically just have 3 walls and each wall will be moved in displace
+        
+    def debug(self):
+        print(self.absoluteBounds)
+
+    def displace(self, amount):
+        
+        self.totalDisplacement += amount
+
+    def draw(self):
+        self.arena.moveItem(self.itemID, self.totalDisplacement)
+
+    def reset(self):
+        self.arena.renderItem(self.arena.items[self.itemID])
+        self.totalDisplacement = Vector(0, 0)

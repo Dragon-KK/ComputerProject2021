@@ -1,7 +1,6 @@
 from .entities import Ball,Player,Wall,WinZone
 from typing import List
-from .playerManagers import playerManager
-from .util import Daemon
+from ...utils.daemon import Daemon
 from .physics import world
 
 # This is where the pong part happens
@@ -29,10 +28,9 @@ class Game:
     # setting msPerFrame to 1 gives nice graphics but takes 12% ram.. : D
     # I think the main issue is that tkinter really isnt built for this kind of stuff
     # We shouldve just used pygame lol
-    def __init__(self, arena, settings : GameSettings, playerManager : playerManager,fps = 10,walls = {}, winZones = {}, balls  = []):
+    def __init__(self, arena, settings : GameSettings, grbvfcd '''here''',fps = 10,walls = {}, winZones = {}, balls  = []):
         self.settings = settings
         self.arena = arena
-        self.playerManager = playerManager
         self.balls = balls
         self.walls = walls
         self.drawInterval = fps

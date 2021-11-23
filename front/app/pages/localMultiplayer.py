@@ -37,6 +37,7 @@ class localMultiplayer(page.definition):
             print("Error")
 
     def onDestruction(self):
+        print("Closing local multiplayer")
         self.onEnd()
 
     def render(self):

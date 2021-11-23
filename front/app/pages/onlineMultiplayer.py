@@ -9,7 +9,7 @@ class onlineMultiplayer(page.definition):
         super().__init__(*args, **kwargs)
 
     def onDestruction(self):
-        print("am die")
+        print("Closing online multiplayer")
 
     def render(self):
         self.container.config(background='black')

@@ -135,31 +135,32 @@ class Ball:
 
 
 class Player:
-    def setBoundsX(self,v):
+    def setBoundsYmin(self,v):
         self.absoluteBounds.x = v
-    def setBoundsY(self,v):
+    def setBoundsYmax(self,v):
         self.absoluteBounds.y = v
-    def __init__(self,leftPlayer, bounds,arena):
+    def __init__(self,arena, walls, playerType, bounds):
         self.arena = arena
-        self.walls = []
+        self.walls = walls
+        self.playerType = playerType
         self.bounds = bounds
         self.absoluteBounds = Vector(0, 0)
-        self.arena.query('absolute_wrt_self', bounds.x, self.setBoundsX)
-        self.arena.query('absolute_wrt_self', bounds.y, self.setBoundsY)
-
-        =     
+        self.arena.query('absolute_wrt_self', bounds.x, self.setBoundsYmin)
+        self.arena.query('absolute_wrt_self', bounds.y, self.setBoundsYmax)
+        self.totalDisplacement = Vector(0,0)
+             
         # Player will basically just have 3 walls and each wall will be moved in displace
         
     def debug(self):
         print(self.absoluteBounds)
 
-    def displace(self, amount):
-        
+    def displace(self, amount):        
         self.totalDisplacement += amount
 
     def draw(self):
-        self.arena.moveItem(self.itemID, self.totalDisplacement)
+        for i in self.walls.values():self.arena.moveItem(i.itemID, self.totalDisplacement)
+        self.totalDisplacement = Vector(0, 0)
 
     def reset(self):
         self.arena.renderItem(self.arena.items[self.itemID])
-        self.totalDisplacement = Vector(0, 0)
+        

@@ -10,6 +10,7 @@ from ..engine.pong import GameSettings,Ball,Game,Player,Wall,WinZone
 
 from ..engine.physics import world
 from ...utils.daemon import Daemon
+from ..engine import playerManager
 
 
 PHYSICSFPS = 30
@@ -82,16 +83,37 @@ def render(container, gameSettings, goTo = print):
         return Game(
         arena,
         gameSettings,
-        None,
+        playerManager.localMultiplayer(
+            Player( arena,   {
+                            "verticalWall" : Wall(arena,
+                                            p1=Vector('1:w%','35:h%'),
+                                            p2=Vector('1:w%','65:h%'),
+                                            size=5,
+                                            color="white"
+                                            )
+                            }, 
+                    playerManager.LEFTPLAYER, 
+                    Vector("0:px", "100:h%")), 
+            Player( arena,   {
+                            "verticalWall" : Wall(arena,
+                                            p1=Vector('99:w%','35:h%'),
+                                            p2=Vector('99:w%','65:h%'),
+                                            size=5,
+                                            color="white"
+                                            )
+                            }, 
+                    playerManager.LEFTPLAYER, 
+                    Vector("0:px", "100:h%")),
+            arena)
+            ,
         fps=16,
         walls = {
             'top' : Wall(arena,vertical=False, p1=Vector('0:px', '0:px'),p2=Vector('100:w%', '0:px')),
             'bottom' : Wall(arena,vertical=False, p1=Vector('0:px', '100:h%'),p2=Vector('100:w%', '100:h%')),
             },
-        winZones={   
-            tervdc         
-            'left' : WinZone(PlayerManager.player2,arena,vertical=True, p1=Vector('0:px', '0:px'),p2=Vector('0:px', '100:h%')),
-            'right' : WinZone(PlayerManager.player1,arena,vertical=True, p1=Vector('100:w%', '0:h%'),p2=Vector('100:w%', '100:h%')),
+        winZones={     
+            'left' : WinZone(playerManager.RIGHTPLAYER,arena,vertical=True, p1=Vector('0:px', '0:px'),p2=Vector('0:px', '100:h%')),
+            'right' : WinZone(playerManager.LEFTPLAYER,arena,vertical=True, p1=Vector('100:w%', '0:h%'),p2=Vector('100:w%', '100:h%')),
         },
         balls=[
             Ball(
@@ -110,8 +132,8 @@ def render(container, gameSettings, goTo = print):
         print("Round Over ",res)
         physics.pause()
         game.pause()
-        if res == PlayerManager.player1:p1Score += 1
-        elif res == PlayerManager.player2:p2Score += 1
+        if res == playerManager.LEFTPLAYER:p1Score += 1
+        elif res == playerManager.RIGHTPLAYER:p2Score += 1
         updateScores(p1Score, p2Score)
 
           

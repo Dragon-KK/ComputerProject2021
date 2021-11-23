@@ -9,7 +9,7 @@ class aboutUs(page.definition):
         super().__init__(*args, **kwargs)
 
     def onDestruction(self):
-        print("am die")
+        print("Closing about us")
 
     def render(self):
         self.container.config(background='black')        

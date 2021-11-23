@@ -56,7 +56,6 @@ class world:
         return (newPos, juice, newDirection)
 
     def roundHasEnded(self,res):
-        print("Round over")
         
         self.game.reset()
         self.onRoundFinish(res)

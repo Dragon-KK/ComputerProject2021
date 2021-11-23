@@ -14,6 +14,15 @@ To do:
     move ball stuff to physics
     work on player manager then set
 
+    ///////////////////////////////////
+
+    just need to work on player input
+
+    create a player class
+    create an inputmanager class
+
+    use them in play.py, pong.py and entities.py
+
     
 
 the game is bad

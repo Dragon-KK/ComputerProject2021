@@ -72,8 +72,6 @@ class childPage:
         self.container = customTK.Frame(root).updateStyles(
             top = '0:px', left = '0:px', width = '100:w%', height = '100:h%'
         )
-        
-        print(self.container.parent.child_nodes)
         self.pageSize = pageSize # Store this
         self.navigateTo = navigator # A way to talk to whoever initialized this page
         self.elements = {} # A dict of all elements in the page

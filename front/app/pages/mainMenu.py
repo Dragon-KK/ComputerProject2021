@@ -9,7 +9,7 @@ class mainMenu(page.definition):
         super().__init__(*args, **kwargs)
 
     def onDestruction(self):
-        print("am die")
+        print("Closing main Menu")
 
     def render(self):
         self.container.config(background='black')

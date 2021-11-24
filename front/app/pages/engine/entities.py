@@ -122,7 +122,7 @@ class Ball:
         self.totalDisplacement += displacement
 
     def reset(self):
-        self.arena.render()
+        
         self.initialize()
         # half of these variables are probably redundant but ig thats what i get for not writing comments ;_;
         self.hasCollidedSinceCheck = True
@@ -139,28 +139,42 @@ class Player:
         self.absoluteBounds.x = v
     def setBoundsYmax(self,v):
         self.absoluteBounds.y = v
-    def __init__(self,arena, walls, playerType, bounds):
+    def __init__(self,arena, walls, playerType, maxDisplacement):
         self.arena = arena
         self.walls = walls
         self.playerType = playerType
-        self.bounds = bounds
         self.absoluteBounds = Vector(0, 0)
-        self.arena.query('absolute_wrt_self', bounds.x, self.setBoundsYmin)
-        self.arena.query('absolute_wrt_self', bounds.y, self.setBoundsYmax)
+        self.position = Vector(0, 0)
+        self.arena.query('absolute_wrt_self', maxDisplacement.x, self.setBoundsYmin)
+        self.arena.query('absolute_wrt_self', maxDisplacement.y, self.setBoundsYmax)
         self.totalDisplacement = Vector(0,0)
-             
+        self.frameDisplacement = Vector(0, 0)
         # Player will basically just have 3 walls and each wall will be moved in displace
         
     def debug(self):
         print(self.absoluteBounds)
 
     def displace(self, amount):        
-        self.totalDisplacement += amount
+        #TODO fiz this unction its ass if framedisplacement is positive total displacement sometimes goes less than bounds vice versa
+        self.frameDisplacement += amount
+        if (self.frameDisplacement + self.totalDisplacement).y > self.absoluteBounds.y:
+            tmp  = Vector(0, self.absoluteBounds.y)
+            self.frameDisplacement = tmp - self.totalDisplacement
+            self.totalDisplacement = tmp
+        elif (self.frameDisplacement + self.totalDisplacement).y < self.absoluteBounds.x:
+            tmp  = Vector(0, self.absoluteBounds.x)
+            self.frameDisplacement = tmp - self.totalDisplacement
+            self.totalDisplacement = tmp
+        else:
+            self.totalDisplacement += self.frameDisplacement
+
 
     def draw(self):
-        for i in self.walls.values():self.arena.moveItem(i.itemID, self.totalDisplacement)
-        self.totalDisplacement = Vector(0, 0)
+        for i in self.walls.values():self.arena.moveItem(i.itemID, self.frameDisplacement)
+        self.frameDisplacement = Vector(0, 0)
 
     def reset(self):
-        self.arena.renderItem(self.arena.items[self.itemID])
+        self.frameDisplacement = Vector(0, 0)
+        self.totalDisplacement = Vector(0, 0)
+        
         

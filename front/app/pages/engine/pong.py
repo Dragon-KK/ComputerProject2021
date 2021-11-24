@@ -38,6 +38,9 @@ class Game:
         self.winZones = winZones
         self.renderSlave = Daemon(arena.getTkObj(), self.drawInterval, self.renderFrame)
         
+    def getPlayers(self):
+        return self.playerManager.getPlayers()
+
     def renderFrame(self, dt = 1):
         
         for i in self.balls:
@@ -46,15 +49,21 @@ class Game:
         self.renderSlave.tk.configure(cursor='arrow') # i just need that tk obj, you could do this in many ways, i did this cause im lazy
 
     def cont(self):
+        self.playerManager.cont()
         self.renderSlave.cont()
+        
+    
 
     def pause(self):
         self.renderSlave.pause()
+        self.playerManager.pause()
 
     def reset(self):
         self.pause()
         for i in self.balls:
             i.reset()
+        self.playerManager.reset()
+        self.arena.render()
 
     def forceQuit(self):
         self.playerManager.end()

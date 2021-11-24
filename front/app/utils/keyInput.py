@@ -3,7 +3,6 @@ class inputWatcher:
     def __init__(self, tkObj,callBackInterval = 20):
         
         self.binds = {}
-        print(tkObj)
         tkObj.bind_all("<KeyPress>",self.keyDown)
         tkObj.bind_all("<KeyRelease>",self.keyUp)
         self.tkObj = tkObj
@@ -15,7 +14,6 @@ class inputWatcher:
 
     def keyUp(self,e):
         if e.keysym in self.downs:
-            print("removing")
             self.downs.remove(e.keysym)  
 
     def keyDown(self,e):

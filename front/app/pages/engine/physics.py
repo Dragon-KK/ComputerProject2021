@@ -16,7 +16,9 @@ class world:
             self.walls[i] = game.winZones[i]
         self.game = game
         self.onRoundFinish = onRoundFinish
-        
+
+
+        self.players = game.getPlayers()
 
     def calculateNextCollidingWall(self,ball):
         potentialWalls = {}

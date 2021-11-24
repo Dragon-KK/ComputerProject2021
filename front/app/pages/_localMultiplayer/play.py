@@ -93,7 +93,7 @@ def render(container, gameSettings, goTo = print):
                                             )
                             }, 
                     playerManager.LEFTPLAYER, 
-                    Vector("0:px", "100:h%")), 
+                    Vector("-35:h%", "35:h%")), 
             Player( arena,   {
                             "verticalWall" : Wall(arena,
                                             p1=Vector('99:w%','35:h%'),
@@ -103,7 +103,7 @@ def render(container, gameSettings, goTo = print):
                                             )
                             }, 
                     playerManager.LEFTPLAYER, 
-                    Vector("0:px", "100:h%")),
+                    Vector("-35:h%", "35:h%")),
             arena)
             ,
         fps=16,
@@ -119,7 +119,7 @@ def render(container, gameSettings, goTo = print):
             Ball(
                 arena,
                 walls = ['top', 'bottom'],
-                winZones = ['left','right'],
+                #winZones = ['left','right'],
                 acceleration=10,
                 initialSpeed=300
             )

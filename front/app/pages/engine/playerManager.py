@@ -15,6 +15,12 @@ class playerManager:
     def render(self):
         for i in self.players:
             i.draw()
+    def pause(self):
+        pass
+    def cont(self):
+        pass
+    def reset(self):
+        pass
 
     def end(self):
         pass
@@ -38,9 +44,18 @@ class localMultiplayer(playerManager):
         elif k == "Up":self.p2.displace(Vector(0,-20))
         elif k == "Down":self.p2.displace(Vector(0, 20))
 
+    def reset(self):
+        self.p1.reset()
+        self.p2.reset()
+
     def end(self):
         print("Closing input watcher")
         self.input.pause()
+
+    def pause(self):
+        self.input.pause()
+    def cont(self):
+        self.input.cont()
 
 
 

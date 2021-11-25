@@ -27,6 +27,43 @@ class Wall:
     def getAbsoluteInfo(self):
         return self.arena.items[self.itemID].absoluteInfo
 
+    def checkForCollision(self, ball, juice,absoluteDisplacement):
+        # Need to restrucutre
+        # this function is exclusive to player and shoouldnt be on wall but meh it works ig
+        if self.vertical:
+            r = ball.info()['radius']
+            grace = r
+            r *= -1 if ball.direction.x < 0 else 1
+            
+            absoluteInfo = {'p1':self.arena.items[self.itemID].absoluteInfo['p1'] + absoluteDisplacement,'p2':self.arena.items[self.itemID].absoluteInfo['p2'] + absoluteDisplacement}
+            if (ball.position.x + r - absoluteInfo['p1'].x) * (ball.position.x + r + (ball.direction.x * juice) - absoluteInfo['p1'].x) < 0:
+                tmp = absoluteInfo['p1'].x - ball.position.x - r
+                usedJuice = tmp / ball.direction.x
+                
+                displacement = Vector(tmp,usedJuice * ball.direction.y)
+                if not((absoluteInfo['p1'].y < (displacement + ball.position).y + grace)and( (displacement + ball.position).y - grace< absoluteInfo['p2'].y)):return (False,0)
+                ball.displace(displacement)
+                ball.direction.x *= -1
+                ball.hasCollidedSinceCheck = True
+                return (True,usedJuice)
+        else:
+            r = ball.info()['radius']
+            r *= -1 if ball.direction.y < 0 else 1
+            absoluteInfo = {'p1':self.arena.items[self.itemID].absoluteInfo['p1'] + absoluteDisplacement,'p2':self.arena.items[self.itemID].absoluteInfo['p2'] + absoluteDisplacement}
+
+            if (ball.position.y + r - absoluteInfo['p1'].y) * (ball.position.y + r + juice * ball.direction.y - absoluteInfo['p1'].y) < 0:
+                tmp = absoluteInfo['p1'].y - ball.position.y - r
+                usedJuice = tmp / ball.direction.y
+                displacement = Vector(usedJuice * ball.direction.x,tmp)
+                if not(absoluteInfo['p1'].x < (displacement + ball.position).x < absoluteInfo['p2'].x):return (False,0)
+
+                ball.displace(displacement)
+                ball.direction.y *= -1
+                ball.hasCollidedSinceCheck = True
+                return (True, usedJuice)
+        
+        return (False,0) 
+
     def checkForCollisionAndMove(self, ball, juice):
         if self.vertical:
 
@@ -82,7 +119,7 @@ class Ball:
     
     def getRandomishDirection(self):
         #return Vector(-0.9805806756909202, -0.19611613513818404)
-        return Vector(plusMinus(randint(5,10)), plusMinus(randint(5, 10))).normalized()
+        return Vector(plusMinus(randint(5,10)), plusMinus(randint(0, 0))).normalized()
 
     def __init__(self,arena,walls = [], winZones = [],initialSpeed = 5, acceleration = 1, radius = '10:px', color = 'white'):
         self.itemID = arena.registerItem(
@@ -154,8 +191,7 @@ class Player:
     def debug(self):
         print(self.absoluteBounds)
 
-    def displace(self, amount):        
-        #TODO fiz this unction its ass if framedisplacement is positive total displacement sometimes goes less than bounds vice versa
+    def displace(self, amount):
         self.frameDisplacement += amount
         if (self.frameDisplacement + self.totalDisplacement).y > self.absoluteBounds.y:
             tmp  = Vector(0, self.absoluteBounds.y)
@@ -166,7 +202,7 @@ class Player:
             self.frameDisplacement = tmp - self.totalDisplacement
             self.totalDisplacement = tmp
         else:
-            self.totalDisplacement += self.frameDisplacement
+            self.totalDisplacement += amount
 
 
     def draw(self):

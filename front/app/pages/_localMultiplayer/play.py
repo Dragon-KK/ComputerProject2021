@@ -16,7 +16,7 @@ from ..engine import playerManager
 PHYSICSFPS = 30
 p1Score = 0
 p2Score = 0
-def render(container, gameSettings, goTo = print):
+def render(container, gameSettings : GameSettings, goTo = print):
     global p1Score
     global p2Score
     p1Score = 0
@@ -86,42 +86,50 @@ def render(container, gameSettings, goTo = print):
         playerManager.localMultiplayer(
             Player( arena,   {
                             "verticalWall" : Wall(arena,
-                                            p1=Vector('1:w%','35:h%'),
-                                            p2=Vector('1:w%','65:h%'),
-                                            size=5,
-                                            color="white"
+                                                p1=Vector('1:w%','35:h%'),
+                                                p2=Vector('1:w%','65:h%'),
+                                                size=5,
+                                                color="white"
                                             )
                             }, 
                     playerManager.LEFTPLAYER, 
                     Vector("-35:h%", "35:h%")), 
             Player( arena,   {
                             "verticalWall" : Wall(arena,
-                                            p1=Vector('99:w%','35:h%'),
-                                            p2=Vector('99:w%','65:h%'),
-                                            size=5,
-                                            color="white"
+                                                p1=Vector('99:w%','35:h%'),
+                                                p2=Vector('99:w%','65:h%'),
+                                                size=5,
+                                                color="white"
                                             )
                             }, 
                     playerManager.LEFTPLAYER, 
                     Vector("-35:h%", "35:h%")),
             arena)
             ,
-        fps=16,
+        fps=10,
         walls = {
-            'top' : Wall(arena,vertical=False, p1=Vector('0:px', '0:px'),p2=Vector('100:w%', '0:px')),
-            'bottom' : Wall(arena,vertical=False, p1=Vector('0:px', '100:h%'),p2=Vector('100:w%', '100:h%')),
+            'top' : Wall(arena,vertical=False, 
+                p1=Vector('0:px', '0:px'),
+                p2=Vector('100:w%', '0:px')),
+            'bottom' : Wall(arena,vertical=False, 
+                p1=Vector('0:px', '100:h%'),
+                p2=Vector('100:w%', '100:h%')),
             },
         winZones={     
-            'left' : WinZone(playerManager.RIGHTPLAYER,arena,vertical=True, p1=Vector('0:px', '0:px'),p2=Vector('0:px', '100:h%')),
-            'right' : WinZone(playerManager.LEFTPLAYER,arena,vertical=True, p1=Vector('100:w%', '0:h%'),p2=Vector('100:w%', '100:h%')),
+            'left' : WinZone(playerManager.RIGHTPLAYER,arena,vertical=True, 
+                p1=Vector('0:px', '0:px'),
+                p2=Vector('0:px', '100:h%')),
+            'right' : WinZone(playerManager.LEFTPLAYER,arena,vertical=True, 
+                p1=Vector('100:w%', '0:h%'),
+                p2=Vector('100:w%', '100:h%')),
         },
         balls=[
             Ball(
                 arena,
                 walls = ['top', 'bottom'],
-                #winZones = ['left','right'],
-                acceleration=10,
-                initialSpeed=300
+                winZones = ['left','right'],
+                acceleration=gameSettings.difficultySlope,
+                initialSpeed=gameSettings.speed
             )
         ]
     )
@@ -134,6 +142,13 @@ def render(container, gameSettings, goTo = print):
         game.pause()
         if res == playerManager.LEFTPLAYER:p1Score += 1
         elif res == playerManager.RIGHTPLAYER:p2Score += 1
+        # TODO
+        # Check for win logic goes here
+
+        # TODO
+        # Make and screen
+        # Make pause screen
+        # Then only multiplayer is left : )
         updateScores(p1Score, p2Score)
 
           

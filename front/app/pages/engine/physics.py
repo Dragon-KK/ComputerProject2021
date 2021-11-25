@@ -66,6 +66,16 @@ class world:
     def handleBall(self,ball, dt):
         juice = ball.speed * dt
         while juice > 0:
+            cont = True
+            # TODO fix checkForCollision function
+            for player in self.players:
+                
+                (collided, juiceUsed) = player.walls['verticalWall'].checkForCollision(ball,juice,player.totalDisplacement)
+                if collided:
+                    juice -= juiceUsed
+                    cont = False
+                    break
+            if not cont:continue
             if (ball.hasCollidedSinceCheck):self.calculateNextCollidingWall(ball)
             if type(ball.nextCollidingWall) is entities.Wall:
                 juice -= ball.nextCollidingWall.checkForCollisionAndMove(ball, juice)
@@ -79,9 +89,6 @@ class world:
             
 
         ball.speed += ball.acceleration * dt
-        # options :
-        # do collision check each frame
-        # after each collision calculate the next colliding wall and when the wall is passed handle collision and repeat !!! Do this
         pass
 
     def work(self, dt = 0.1):

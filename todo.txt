@@ -23,6 +23,20 @@ To do:
 
     use them in play.py, pong.py and entities.py
 
+    ///////////////////////////
+
+    Finished physics
+
+    TODO
+    Pause screen
+    End screen
+    Win checker
+
+    Preround Text?
+
+    Backend for online multiplayer
+    Frontend for online multiplayer
+
     
 
 the game is bad

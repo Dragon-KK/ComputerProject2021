@@ -56,7 +56,7 @@ def render(container, goTo = print):
                 'winCondition' : winCond,
                 'duece' : elements['duece']['input'].text == "Yes"
             })
-            setting = GameSettings(difficulty= speed,difficultySlope=difficulty,winCondition=winCond, duece=elements['duece']['input'].text == "Yes")
+            setting = GameSettings(difficulty= int(speed),difficultySlope=int(difficulty),winCondition=int(winCond), duece=elements['duece']['input'].text == "Yes")
             
             goTo('play',setting)
 

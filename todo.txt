@@ -32,7 +32,7 @@ To do:
     End screen
     Win checker
 
-    Preround Text?
+    Preround Message?
 
     Backend for online multiplayer
     Frontend for online multiplayer

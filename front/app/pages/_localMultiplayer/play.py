@@ -150,7 +150,18 @@ def render(container, gameSettings : GameSettings, goTo = print):
         # Make pause screen
         # Then only multiplayer is left : )
         updateScores(p1Score, p2Score)
+    elements['navigationButtons'] = {
 
+        'goBack' : TextBox(container, text = "back").updateStyles(
+
+            top = '5:h%', left = '3:w%', width = '10:w%', height = '5:h%',
+
+            font = {'color' : 'white', 'size' : 10, 'style' : 'ariel'},
+
+            border = {'size' : 2, 'color' : 'white', 'radius' : 5}
+
+        ).addEventListener('<Button-1>', lambda n: goTo('mainMenu'))
+    }
           
     game = createRound()    
     World = world(game, roundEnd)

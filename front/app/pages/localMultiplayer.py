@@ -20,24 +20,28 @@ class localMultiplayer(page.definition):
     def navigate(self,location,*args):
         self.elements['container'].destroy()
         self.args = args
-        self.onEnd()
+        
         if location == "play":
+            self.onEnd()
             for i in self.container.child_nodes:i.destroy()
             self.container.child_nodes.clear()
             self.activePage = 'play'
             self.render()
         elif location == 'settings':
+            self.onEnd()
             for i in self.container.child_nodes:i.destroy()
             self.container.child_nodes.clear()
             self.activePage = 'settings'
             self.render()
         elif location == "mainMenu":
-            self.navigateTo(location)
+            self.navigateTo("mainMenu")
         else:
             print("Error")
 
     def onDestruction(self):
         print("Closing local multiplayer")
+        for i in self.container.child_nodes:i.destroy()
+        self.container.child_nodes.clear()
         self.onEnd()
 
     def render(self):

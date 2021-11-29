@@ -2,10 +2,23 @@
 
 # **Pong**
 This is a clone of the game '*pong*'
-![Markdown Logo](https://t3.ftcdn.net/jpg/00/11/42/26/360_F_11422685_hqBAEKExIS2SiK83d5Ww112QnFe1d5lB.jpg)
+
+# **Dependencies**
+<ul>
+    <h2>
+        <li> python 3.8.5
+        <li> tkinter
+        <li> 
+            pydub (v0.25.1)
+            <pre><code>pip install pydub</code></pre>     
+        </li>
+        <li> 
+            simpleaudio (v1.0.4)
+            <pre><code>pip install simpleaudio</code></pre> 
+        </li>
+    </h2> 
+</ul>
 
 
-## Why
-This is for our cs project
-___
+
 

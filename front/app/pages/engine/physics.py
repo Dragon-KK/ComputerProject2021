@@ -1,5 +1,6 @@
 from ...common.tools import Vector
 from . import entities
+from ...utils.audioManager import audioFiles
 class CollisionData:
     x = 0
     y = 1
@@ -17,7 +18,7 @@ class world:
         self.game = game
         self.onRoundFinish = onRoundFinish
 
-
+        # self.bounceAudio = audioManager.LoadAudio(audioFiles.jump)
         self.players = game.getPlayers()
 
     def calculateNextCollidingWall(self,ball):
@@ -73,12 +74,15 @@ class world:
                 (collided, juiceUsed) = player.walls['verticalWall'].checkForCollision(ball,juice,player.totalDisplacement)
                 if collided:
                     juice -= juiceUsed
+                    #self.bounceAudio.PlayAsync()
                     cont = False
                     break
             if not cont:continue
             if (ball.hasCollidedSinceCheck):self.calculateNextCollidingWall(ball)
             if type(ball.nextCollidingWall) is entities.Wall:
                 juice -= ball.nextCollidingWall.checkForCollisionAndMove(ball, juice)
+                # if juice > 0:
+                #     self.bounceAudio.PlayAsync()
             else:
                 (roundFinish, result) = ball.nextCollidingWall.checkForWinOrMove(ball, juice)
                 if roundFinish:

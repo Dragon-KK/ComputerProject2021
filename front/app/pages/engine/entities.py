@@ -119,7 +119,7 @@ class Ball:
     
     def getRandomishDirection(self):
         #return Vector(-0.9805806756909202, -0.19611613513818404)
-        return Vector(plusMinus(randint(5,10)), plusMinus(randint(0, 0))).normalized()
+        return Vector(plusMinus(randint(5,10)), plusMinus(randint(5, 7))).normalized()
 
     def __init__(self,arena,walls = [], winZones = [],initialSpeed = 5, acceleration = 1, radius = '10:px', color = 'white'):
         self.itemID = arena.registerItem(

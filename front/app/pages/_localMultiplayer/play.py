@@ -1,6 +1,6 @@
 from ...utils.custom import TextBox,Frame,TextInput,Arena
 
-from ...utils import fileManager
+from ...utils import fileManager,audioManager
 
 from ...common.tools import Vector
 
@@ -11,9 +11,9 @@ from ..engine.pong import GameSettings,Ball,Game,Player,Wall,WinZone
 from ..engine.physics import world
 from ...utils.daemon import Daemon
 from ..engine import playerManager
+from .._common import settings as settingsScreen
 
-
-PHYSICSFPS = 30
+PHYSICSFPS = 20
 p1Score = 0
 p2Score = 0
 def render(container, gameSettings : GameSettings, goTo = print):
@@ -29,15 +29,31 @@ def render(container, gameSettings : GameSettings, goTo = print):
         top='10:h%',height = '90:h%',left='0:w%',width = '100:w%',
         border = {'color' : '#707070', 'size' : 3}
     )
-
+    def showCont(*args):
+        if elements.get('PauseContainer'):
+            elements['PauseContainer'].destroy()
+            del elements['PauseContainer']
+        elements['ContinueButton'] = TextBox(container,text="Continue").updateStyles(
+            left="40:w%",width="20:w%",height="10:h%",top="45:h%",background={'color':'blue'},font={'size':15,'color':'white'}
+        ).addEventListener('<Button-1>', cont)
+        elements['ContinueButton'].draw()
     def pause(*args):
-        if physics.paused:
-            game.cont()
-            physics.cont()
-        else:
-            game.pause()
-            physics.pause()
-        return
+        game.pause()
+        physics.pause()
+        elements['PauseContainer'] = Frame(container).updateStyles(
+            top='0:px',left='0:px',height="100:h%",width='100:w%',background={'color':None}
+        )
+        settingsScreen.render(elements['PauseContainer'], showCont)
+        elements['PauseContainer'].draw()
+
+    
+
+
+    def cont(*args):
+        elements['ContinueButton'].destroy() if elements.get('ContinueButton') else 0
+        del elements['ContinueButton']
+        game.cont()
+        physics.cont()
 
     def updateScores(p1,p2):
 
@@ -106,7 +122,7 @@ def render(container, gameSettings : GameSettings, goTo = print):
                     Vector("-35:h%", "35:h%")),
             arena)
             ,
-        fps=10,
+        fps=21,
         walls = {
             'top' : Wall(arena,vertical=False, 
                 p1=Vector('0:px', '0:px'),
@@ -150,6 +166,7 @@ def render(container, gameSettings : GameSettings, goTo = print):
         # Make pause screen
         # Then only multiplayer is left : )
         updateScores(p1Score, p2Score)
+        showCont()
     elements['navigationButtons'] = {
 
         'goBack' : TextBox(container, text = "back").updateStyles(
@@ -162,10 +179,16 @@ def render(container, gameSettings : GameSettings, goTo = print):
 
         ).addEventListener('<Button-1>', lambda n: goTo('mainMenu'))
     }
-          
     game = createRound()    
     World = world(game, roundEnd)
     physics = Daemon(arena.getTkObj(),PHYSICSFPS, World.work)
+
+    game.pause()
+    physics.pause()
+
+    elements['ContinueButton'] = TextBox(container,text="Continue").updateStyles(
+            left="40:w%",width="20:w%",height="10:h%",top="45:h%",background={'color':'blue'},font={'size':15,'color':'white'}
+        ).addEventListener('<Button-1>', cont)
     # This part looks ugly but you win some you lose some ig
     def onEnd():
         game.forceQuit()

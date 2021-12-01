@@ -4,7 +4,7 @@ from ...utils.custom import TextBox,Frame,TextInput
 from ...utils import fileManager
 from ..engine.pong import GameSettings
 
-def render(container, goTo = print):
+def render(container, goTo = print, audioManager = None):
 
 
     container.updateStyles(background = {'color' : 'black'})

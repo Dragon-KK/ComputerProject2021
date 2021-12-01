@@ -1,7 +1,7 @@
 # Imports
 import tkinter as tk # this is the thing that lets us handle GUI easily
 from app.pages import mainMenu,freePlay,localMultiplayer,onlineMultiplayer,aboutUs
-from app.utils import page
+from app.utils import page,audioManager
 from app.common.tools import Vector # Import Vector
 
 # References -
@@ -22,6 +22,11 @@ root.title("Pong") # Setting the title to the window
 root.resizable(0,0) # We dont want it to be resizable
 # < />
 
+# < set {audio} >
+AudioManager = audioManager.PongAudioManager()
+AudioManager.startBGMusic()
+# < />
+
 # < set {app} >
 app = page.container(root, WINDOW_SIZE, {
     "mainMenu" : mainMenu.mainMenu,
@@ -29,11 +34,15 @@ app = page.container(root, WINDOW_SIZE, {
     "freePlay" : freePlay.freePlay,
     "localMultiplayer" : localMultiplayer.localMultiplayer,
     "onlineMultiplayer" : onlineMultiplayer.onlineMultiplayer
-})
+}, 
+    audioManager = AudioManager
+)
 app.open("mainMenu")
 
 def onClose():
+    
     app.destroy() # I destroy the current page
+    AudioManager.EndAll() # End all audio
     print("Closing app")
     root.destroy() # I close the window
 

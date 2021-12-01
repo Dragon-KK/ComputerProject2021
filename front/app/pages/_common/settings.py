@@ -1,8 +1,7 @@
 from ...utils.page import childPage
 from ...utils.custom import TextBox,Frame,TextInput
-def getCurrentSettings():
-    return {'Music' : True}
-def render(container, Return = print):
+
+def render(container, Return = print,audioManager = None):
     elements = {}
     elements['navigationButtons'] = {
 
@@ -38,8 +37,6 @@ def render(container, Return = print):
     
     
 
-    data = getCurrentSettings()
-
     
     
 
@@ -61,7 +58,9 @@ def render(container, Return = print):
 
     
     def MusicClick(*args):
-        elements['Music']['input'].text = "Yes" if elements['Music']['input'].text == "No" else "No"
+        audioManager.stopBGMusic() if audioManager.bgMusicIsPlaying else audioManager.startBGMusic()
+        elements['Music']['input'].text = "Yes" if audioManager.bgMusicIsPlaying else "No"
+        
         elements['Music']['input'].update()
     
     elements['Music'] = {
@@ -74,7 +73,7 @@ def render(container, Return = print):
 
         ),
 
-        "input" : TextBox(elements['SettingsContainers']['Music'], text = "Yes" if data['Music'] else "No").updateStyles(
+        "input" : TextBox(elements['SettingsContainers']['Music'], text = "Yes" if audioManager.bgMusicIsPlaying else "No").updateStyles(
 
         top = '0:px',left = '50:w%', width = '50:w%', height = '100:h%',
         background = {'color' : '#202020'},

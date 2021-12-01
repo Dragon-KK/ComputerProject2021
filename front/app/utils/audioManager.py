@@ -49,3 +49,15 @@ class AudioManager:
         for audio in self.Audios:
             audio.EndAllPlayers()
 
+class PongAudioManager(AudioManager):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.bgMusicIsPlaying = False
+    def startBGMusic(self):
+        self.bgMusicIsPlaying = True
+        self.LoadAudio(audioFiles.GetRandomBackgroundMusic()).PlayAsync(keepTrack=True)
+    def stopBGMusic(self):
+        self.bgMusicIsPlaying = False
+        self.EndAll()
+
+

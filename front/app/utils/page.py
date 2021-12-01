@@ -2,11 +2,12 @@ from . import custom as customTK
 from typing import Dict
 class definition:
 
-    def __init__(self, root, pageSize, navigator):
+    def __init__(self, root, pageSize, navigator, audioManager = None):
         self.root = root # Store this (i refer to this as parent sometimes)
         self.container = customTK.container(root) # Each page has a container which contains all the other elements
         self.container.place(relx = 0, rely = 0, relwidth = 1, relheight = 1) # Place it to fill the whole parent
         self.container.activate()
+        self.audioManager = audioManager
         self.pageSize = pageSize # Store this
         self.navigateTo = navigator # A way to talk to whoever initialized this page
         self.elements = {} # A dict of all elements in the page
@@ -51,31 +52,34 @@ class container:
         name : page
     } -> A dict with all sibling pages
     '''
-    def __init__(self, root, size ,pages : Dict[str, definition]):
+    def __init__(self, root, size ,pages : Dict[str, definition], audioManager = None):
         self.pages = pages
         self.root = root
         self.size = size
+        self.audioManager = audioManager
         self.currentActive = definition(root, size, self.open)
 
     def open(self, pageName, force = True):
         if not self.pages.get(pageName):return False
         if not self.currentActive.destroy(force = force):
             return False
-        self.currentActive = self.pages[pageName](self.root, self.size, self.open)
+        self.currentActive = self.pages[pageName](self.root, self.size, self.open, audioManager = self.audioManager)
 
     def destroy(self):
         self.currentActive.destroy(force=True)
 
 class childPage:
-    def __init__(self, root, pageSize, navigator):
+    def __init__(self, root, pageSize, navigator, audioManager = None):
         self.root = root # Store this (i refer to this as parent sometimes)
         self.container = customTK.Frame(root).updateStyles(
             top = '0:px', left = '0:px', width = '100:w%', height = '100:h%'
         )
         self.pageSize = pageSize # Store this
+        self.audioManager = audioManager
         self.navigateTo = navigator # A way to talk to whoever initialized this page
         self.elements = {} # A dict of all elements in the page
         self.container.draw()
+        
         self.render()
         
 

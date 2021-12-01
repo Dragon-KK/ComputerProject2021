@@ -1,6 +1,6 @@
-from ...utils.custom import TextBox,Frame,TextInput,Arena
+from ...utils.custom import TextBox,Frame,TextInput,Arena,ImageBox
 
-from ...utils import fileManager,audioManager
+from ...utils import fileManager,audioManager,imageManager
 
 from ...common.tools import Vector
 
@@ -16,7 +16,7 @@ from .._common import settings as settingsScreen
 PHYSICSFPS = 20
 p1Score = 0
 p2Score = 0
-def render(container, gameSettings : GameSettings, goTo = print):
+def render(container, gameSettings : GameSettings,audioManager = None, goTo = print):
     global p1Score
     global p2Score
     p1Score = 0
@@ -33,8 +33,8 @@ def render(container, gameSettings : GameSettings, goTo = print):
         if elements.get('PauseContainer'):
             elements['PauseContainer'].destroy()
             del elements['PauseContainer']
-        elements['ContinueButton'] = TextBox(container,text="Continue").updateStyles(
-            left="40:w%",width="20:w%",height="10:h%",top="45:h%",background={'color':'blue'},font={'size':15,'color':'white'}
+        elements['ContinueButton'] = ImageBox(elements['Arena'],img=imageManager.loadImage('play.png')).updateStyles(
+            left="50:w%",width="10:h%",height="10:h%",top="50:h%",font={'size':15,'color':'white'},border={'radius':20}
         ).addEventListener('<Button-1>', cont)
         elements['ContinueButton'].draw()
     def pause(*args):
@@ -43,15 +43,16 @@ def render(container, gameSettings : GameSettings, goTo = print):
         elements['PauseContainer'] = Frame(container).updateStyles(
             top='0:px',left='0:px',height="100:h%",width='100:w%',background={'color':None}
         )
-        settingsScreen.render(elements['PauseContainer'], showCont)
+        settingsScreen.render(elements['PauseContainer'], showCont, audioManager = audioManager)
         elements['PauseContainer'].draw()
 
     
 
 
     def cont(*args):
-        elements['ContinueButton'].destroy() if elements.get('ContinueButton') else 0
-        del elements['ContinueButton']
+        if elements.get('ContinueButton'):
+            elements['ContinueButton'].destroy()
+            del elements['ContinueButton']
         game.cont()
         physics.cont()
 
@@ -186,8 +187,8 @@ def render(container, gameSettings : GameSettings, goTo = print):
     game.pause()
     physics.pause()
 
-    elements['ContinueButton'] = TextBox(container,text="Continue").updateStyles(
-            left="40:w%",width="20:w%",height="10:h%",top="45:h%",background={'color':'blue'},font={'size':15,'color':'white'}
+    elements['ContinueButton'] = ImageBox(elements['Arena'],img=imageManager.loadImage('play.png')).updateStyles(
+            left="50:w%",width="10:h%",height="10:h%",top="50:h%",background={'color':'blue'},font={'size':15,'color':'white'},border={'radius':20}
         ).addEventListener('<Button-1>', cont)
     # This part looks ugly but you win some you lose some ig
     def onEnd():

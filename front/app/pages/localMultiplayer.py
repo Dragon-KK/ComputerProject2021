@@ -49,9 +49,9 @@ class localMultiplayer(page.definition):
             top = '0:px',left = '0:px',width = '100:w%',height = '100:h%'
         )
         if self.activePage == 'settings':        
-            self.onEnd = settings.render(self.elements['container'], *self.args, goTo = self.navigate)
+            self.onEnd = settings.render(self.elements['container'], *self.args,audioManager=self.audioManager, goTo = self.navigate)
         elif self.activePage == 'play':
-            self.onEnd = play.render(self.elements['container'], *self.args, goTo = self.navigate)
+            self.onEnd = play.render(self.elements['container'], *self.args,audioManager=self.audioManager, goTo = self.navigate)
         
         
         self.container.draw()

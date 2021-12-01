@@ -2,7 +2,7 @@ import tkinter as tk
 from ._custom.util import rect # we dont even use this but it sounded cool so i kept it in
 from ._custom.styling import options,css
 from ..common.tools import Vector # If we didnt have our Vector class the code wouldve been 10 times worse
-
+from ..utils import imageManager
 # I just added stuff as i needed (without commenting)
 # Half of this is probably useless
 # But now im too deep in i cant go through and exactly figure out the best way to do things
@@ -253,7 +253,31 @@ class TextBox(Frame): # Label wouldve been a more pythonic name
         self.canvasIDs['container'] = self.create_polygon(self.clientRect,width=self.css.border['size'],outline=self.css.border['color'],fill=self.css.background['color'], tag='button', smooth=True)
         self.canvasIDs['text'] = self.create_text(self.clientRect[-2] + w/2, self.clientRect[-1] + h/2, text=self.text, tags="button", fill=self.css.font['color'], font=(self.css.font['style'], self.css.font['size']), justify="center")
 
-class TextInput(Frame): # we shouldve just made an imput element and give it the type of input in the args, it wouldve been more 'furute proof'
+class ImageBox(Frame):
+    def __init__(self,*args, img=None, **kwargs):
+        self.img = img
+        self.photoImage = None
+        super().__init__(*args,**kwargs)
+
+    def relativeToCentreCorrection(self,w,h):
+        w/=2
+        h/=2
+        for i in range(0,len(self.clientRect),2):self.clientRect[i] -= w
+        for i in range(1,len(self.clientRect),2):self.clientRect[i] -= h
+
+    def onDraw(self):
+        w = self.getAbsoluteValue(self.css.width)
+        h = self.getAbsoluteValue(self.css.height)
+        self._getRenderPoints()
+        self.relativeToCentreCorrection(w,h) # ImageBoxs dont take left corner and right corner they take centre of element so we correct it here
+        
+        self.renderInfo['position'] = Vector(self.clientRect[-2], self.clientRect[-1])
+        self.renderInfo['size'] = Vector(w, h)
+        self.photoImage = imageManager.tkImage(self.img.resize((int(w),int(h))))
+        self.canvasIDs['img'] = self.create_image(self.clientRect[-2], self.clientRect[-1],anchor='nw',image = self.photoImage)
+        
+
+class TextInput(Frame): # we shouldve just made an imput element and give it the type of input in the args, it wouldve been more 'future proof'
     def __init__(self, *args, numeric = False,**kwargs):
         self.value = ""
         super().__init__(*args,**kwargs)

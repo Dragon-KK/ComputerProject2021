@@ -1,0 +1,1 @@
+from .Arcade import Document

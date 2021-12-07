@@ -1,3 +1,17 @@
 {
-    
+    ".title" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Centre",
+                "Position" : ["50:w%", "20:h%"],
+                "FontSize" : 50,
+                "BackgroundColor" : "#131313",
+                "CornerRadius" : "50",
+                "ForegroundColor" : "White",
+                "BorderStroke" : 5,
+                "Size" : ["50:w%","30:h%"]
+            }
+        }
+    ]
 }

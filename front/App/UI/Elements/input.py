@@ -47,7 +47,7 @@ class input(div):
             anchor = 'w',
             font = (
                 self.Styles.FontStyle,
-                self.Styles.FontSize if self.Styles.FontSize else 10
+                self.Styles.FontSize
             )
         )
 
@@ -63,7 +63,7 @@ class input(div):
                 anchor='w',
                 font = (
                     self.Styles.FontStyle,
-                    self.Styles.FontSize if self.Styles.FontSize else 10
+                    self.Styles.FontSize
                 )
             )
 

@@ -9,4 +9,4 @@ class Document(doc):
     Name = "Pong/LocalMultiplayer"
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.Children += label(name=".title",text="Local",ResizeCorrectionConst=1.6)
+        self.Children += label(name=".title",text="Arcade",ResizeCorrectionConst=1.6)

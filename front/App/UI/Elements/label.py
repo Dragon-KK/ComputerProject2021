@@ -18,7 +18,7 @@ class label(div):
             justify='center',
             font = (
                 self.Styles.FontStyle,
-                self.Styles.FontSize if self.Styles.FontSize else 10
+                self.Styles.FontSize
             )
         )
 
@@ -43,7 +43,7 @@ class label(div):
                 justify='center',
                 font = (
                     self.Styles.FontStyle,
-                    self.Styles.FontSize if self.Styles.FontSize else 10
+                    self.Styles.FontSize
                 )
             )
             

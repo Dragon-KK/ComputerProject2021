@@ -28,8 +28,25 @@ class Style:
         "FontStyle"
     ]
 
+    Default = {
+        "OriginType" : Positions.TopLeft,
+        "Size" : (0,0),
+        "Position" : (0,0),
+        "CornerRadius" : "0",
+        "Visible" : True,
+        "BackgroundColor" : None,
+        "ForegroundColor" : None,
+        "BorderColor" : None,
+        "BorderStroke" : 1,
+        "FontSize" : 10,
+        "FontStyle" : "ariel"
+    }
+
     def __getattr__(self, name):
-        return self.__dict__.get(name, None) # If a property isnt set just return None and dont give error
+        if self.__dict__.get(name):
+            return self.__dict__.get(name)
+        else:
+            return Style.Default.get(name, None) # If the style hasnt been set just return the default
 
     def OnUpdate(self):
         # Needs to be overwritten by element

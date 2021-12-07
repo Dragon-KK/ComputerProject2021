@@ -7,6 +7,9 @@ class Element:
     # handle text overflow
     # Just have a rough take on how big a string will be and handle according to that
 
+    # TODO!!DoMeFirst
+    # Lock aspect ratio
+
     # TODO
     # SetTimout and SetInterval
 

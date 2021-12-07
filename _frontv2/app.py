@@ -47,5 +47,4 @@ def onClose():
     root.destroy() # I close the window
 
 root.protocol("WM_DELETE_WINDOW", onClose) # When user closes the window, I want to do some extra stuff
-
 root.mainloop() # Start running window

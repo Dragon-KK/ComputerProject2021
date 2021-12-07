@@ -1,6 +1,0 @@
-python 3.8.5
-
-packages:
-    pydub (v0.25.1)
-    simpleaudio (v1.0.4)
-    pillow (v7.2.0)

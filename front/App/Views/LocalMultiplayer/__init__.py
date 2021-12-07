@@ -1,0 +1,1 @@
+from .LocalMultiplayer import Document

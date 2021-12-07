@@ -1,0 +1,46 @@
+{
+    ".myDiv" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BorderColor" : "Red",
+                "BackgroundColor" : "blue",
+                "CornerRadius" : "10:w%",
+                "Size" : ["50:w%", "50:h%"],
+                "Position" : ["50:w%", "50:h%"],
+                "OriginType" : "Centre",
+                "BorderStroke" : 10,
+                "ForegroundColor" : "White",
+                "FontSize" : 30
+            }
+        },
+        {
+            "State" : "KeyboardFocused",
+            "Styles" : {
+                "BackgroundColor" : "White",
+                "ForegroundColor" : "Black"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BorderColor" : "Pink"
+            }
+        }
+    ],
+    ".title" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Centre",
+                "Position" : ["50:w%", "20:h%"],
+                "FontSize" : 50,
+                "BackgroundColor" : "#131313",
+                "CornerRadius" : "50",
+                "ForegroundColor" : "White",
+                "BorderStroke" : 5,
+                "Size" : ["50:w%","30:h%"]
+            }
+        }
+    ]
+}

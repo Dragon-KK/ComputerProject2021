@@ -44,10 +44,11 @@ class Window:
         Console.info("Closing Window")
 
     def __InstantiateDocument(self, docConstructor):
+        Console.info(f"Rendering document {docConstructor.Name}")
         self._Document = docConstructor(self)
         # The minimum size of the window is given by the document it is rendering
         self.MinSize = self._Document.MinSize
-        Console.info(f"Rendering document {self._Document.Name}")
+        
         self._Document.Render()
 
     #region Document
@@ -58,7 +59,7 @@ class Window:
     def Document(self, docConstructor):
         if self.Document:
             self.Document.Destroy()
-        self.Timeouts.SetTimeout(1, lambda : self.__InstantiateDocument(docConstructor))
+        self.Timeouts.SetTimeout(1, lambda : self.__InstantiateDocument(docConstructor)) # THis is to avoid long error messages
     #endregion
 
 

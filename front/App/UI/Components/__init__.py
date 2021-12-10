@@ -1,1 +1,2 @@
 from .AspectRatioPreservedContainer import AspectRatioPreservedContainer
+from .GameContainer import GameContainer

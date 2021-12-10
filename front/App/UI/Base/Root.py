@@ -38,7 +38,6 @@ class Root:
             
     def Remove(self):
         '''Removes the element and its children visually'''
-
         if self._CanvasIDs.list:self.Window.Document._RemoveVisual(self._CanvasIDs.list)
         self._CanvasIDs.clear()
         for child in self.Children:

@@ -110,9 +110,12 @@ class Element:
         self.EventListeners.Set()
         self.InitialRenderDone = True
 
+    def _Remove(self):
+        pass
+
     def Remove(self):
         '''Removes the element and its children visually'''
-
+        self._Remove()
         if self._CanvasIDs.list:self.Window.Document._RemoveVisual(self._CanvasIDs.list)
         self.Parent.Children.Remove(self)
         self._CanvasIDs.clear()

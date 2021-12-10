@@ -1,0 +1,19 @@
+World talks to Gamecontainer
+
+World contains reference to Gamecontainer
+
+World has physics
+World has entities
+Physics needs entites and changes the position of entites
+World renders stuff
+
+Player input is somethign that talks with the World
+Same way online worker will talk to World
+
+world should be able to give an image at any time
+
+
+# TODO
+# Make it very generalized
+# Make functions for the smallest shit
+# So that we can have an easy time when workign with online multiplayer

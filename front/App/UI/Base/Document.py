@@ -62,10 +62,12 @@ class Document(Root, Canvas):
         self.__KeyboardFocusedElement = value
         value.State += States.KeyboardFocused
         
-
+    def _Destroy(self):
+        pass
 
     def Destroy(self):
         Console.info(f"Closing Document {self.Name}")
+        self._Destroy()
         self.Remove() # Element.Remove
         self.destroy() # Canvas.destroy
 

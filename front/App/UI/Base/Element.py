@@ -30,8 +30,8 @@ class Element:
         self.State.OnChange = self.UpdateBasedOnStyleSheet
         self._CanvasIDs = CanvasIDContainer()  # Storing the tkinter canvas ids
 
-        self.__Styles = Style()  # How the element looks
-        self.__ComputedStyles = None  # Computed Styles
+        self._Styles = Style()  # How the element looks
+        self._ComputedStyles = None  # Computed Styles
         self.EventListeners = EventListenersHolder(self)
 
         self.EventListeners += EventListener("<Enter>", lambda *args,**kwargs: self.__OnMouseEnter())
@@ -122,33 +122,37 @@ class Element:
 
         self.EventListeners.RemoveAll()
 
-    def Update(self, propogationDepth=0, ReRender=True):
-        self.__ComputedStyles = ComputeStyles(self.Styles, self)
-        self._Update(updateRender=ReRender)  # In case an inherited class has to do some extra stuff on update
+    def ComputeStyles(self):
+        self._ComputedStyles = ComputeStyles(self.Styles, self)
 
+    def Update(self, propogationDepth=0, ReRender=True):
+        self.ComputeStyles()
+        self._Update(updateRender=ReRender)  # In case an inherited class has to do some extra stuff on update
+        
         if propogationDepth:  # How deep do we want to update our stuff
             for child in self.Children:
                 child.Update(propogationDepth - 1, ReRender=ReRender)
+        self._Update(updateRender=ReRender) # This seems to fix some stuff idk why
 
     # region ComputedStyles
     @property
     def ComputedStyles(self):
-        if self.__ComputedStyles:
-            return self.__ComputedStyles
+        if self._ComputedStyles:
+            return self._ComputedStyles
         else:
-            self.__ComputedStyles = ComputeStyles(self.Styles, self)
-            return self.__ComputedStyles
+            self.ComputeStyles()
+            return self._ComputedStyles
     # endregion
 
     # region Styles
     @property
     def Styles(self):
-        return self.__Styles
+        return self._Styles
 
     @Styles.setter
     def Styles(self, value):
-        self.__Styles = value
-        self.__ComputedStyles = ComputeStyles(self.Styles, self)
+        self._Styles = value
+        self.ComputeStyles()
         self.Update(propogationDepth=float('inf'))
     # endregion
 

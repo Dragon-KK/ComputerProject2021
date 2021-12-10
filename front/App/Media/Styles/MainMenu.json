@@ -1,4 +1,13 @@
 {
+    ".container" : [
+        {
+            "State" : "Visible",
+            "Styles" :{
+                "Size" : ["100:vw", "100:vh"],
+                "BackgroundColor" : "Gray"
+            }
+        }
+    ],
     ".title" : [
         {
             "State" : "Visible",

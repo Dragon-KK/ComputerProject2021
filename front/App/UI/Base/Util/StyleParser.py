@@ -7,6 +7,7 @@ class ComputedStyles:
         self.Position = Vector(0, 0) # x, y
         self.Origin = Vector(0, 0) # x, y
         self.TopLeft = Vector(0, 0) # x, y
+        self.FontSize = 10
         self.SelfOriginType = Positions.TopLeft # Position
         self.CornerRadius = (0, 0, 0, 0) # (topleft, topright, bottomright, bottomleft)
         self.Visible = True
@@ -24,6 +25,8 @@ def ComputeStyles(styles, element):
             return element.Parent.ComputedStyles.Size.y / 100
         elif unit == "w%": # width %
             return element.Parent.ComputedStyles.Size.x / 100
+        elif unit == "em": # emphemeral unit
+            return element.STYLE_UNITS['em']
         else:
             Console.error(f"Invalid unit {unit} on {element}")
             return 0
@@ -73,6 +76,8 @@ def ComputeStyles(styles, element):
             except Exception:
                 Console.error(f'Invalid style for {element} | "{propName}" : {dic[propName]} : ',errorLevel="UI 1")
                 continue
+        elif propName == 'FontSize':
+            retVal.FontSize = int(GetComputedValue(dic[propName]))
         elif propName == 'Visibile':
             retVal.Visible = dic[propName]
         else:
@@ -101,4 +106,5 @@ def ComputeStyles(styles, element):
     # endregion
 
     retVal.TopLeft = retVal.Origin + retVal.Position + offset
+    
     return retVal

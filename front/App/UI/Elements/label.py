@@ -18,22 +18,21 @@ class label(div):
             justify='center',
             font = (
                 self.Styles.FontStyle,
-                self.Styles.FontSize
+                self.ComputedStyles.FontSize
             )
         )
 
     def _Update(self, updateRender = True):
         if updateRender:
+            
             textID = self._CanvasIDs.list[1]
             boxID = self._CanvasIDs.list[0]
-
-            
 
             # Move our text
             self.Window.Document.moveto(
                 textID,
-                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - len(self.Text) * self.Styles.FontSize / self.ResizeCorrectionConst,
-                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.Styles.FontSize, 
+                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - len(self.Text) * self.ComputedStyles.FontSize / self.ResizeCorrectionConst,
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
             )
             # Item config our text item
             self.Window.Document.itemconfig(
@@ -43,7 +42,7 @@ class label(div):
                 justify='center',
                 font = (
                     self.Styles.FontStyle,
-                    self.Styles.FontSize
+                    self.ComputedStyles.FontSize
                 )
             )
             

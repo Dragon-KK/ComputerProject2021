@@ -38,7 +38,7 @@ class Style:
         "ForegroundColor" : None,
         "BorderColor" : None,
         "BorderStroke" : 1,
-        "FontSize" : 10,
+        "FontSize" : "1:rem",
         "FontStyle" : "ariel"
     }
 

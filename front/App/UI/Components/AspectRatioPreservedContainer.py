@@ -24,9 +24,13 @@ class AspectRatioPreservedContainer(div):
             mySize = (parentSize.y * self.AspectRatio, parentSize.y )# Adjust based on aspect ratio
         else:
             mySize = (parentSize.x , parentSize.x / self.AspectRatio )# Adjust based on aspect ratio
-            
+
         self._Styles.Size = mySize
         self._ComputedStyles = ComputeStyles(self.Styles, self) # Compute our styles
+        self.SetStyleUnits()
+
+    def _GetStyleUnits(self):
+        return {'em':self.ComputedStyles.Size.x / 100}
 
         
 

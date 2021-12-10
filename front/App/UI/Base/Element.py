@@ -1,7 +1,7 @@
 from .Util import ComputeStyles,EventListenersHolder, CanvasIDContainer, Children,HelperClasses , StateHolder, States
 from ..Styles import Style
 from ...Core.DataTypes.UI import EventListener
-
+import inspect
 class Element:
     # TODO
     # handle text overflow
@@ -33,6 +33,8 @@ class Element:
         self._Styles = Style()  # How the element looks
         self._ComputedStyles = None  # Computed Styles
         self.EventListeners = EventListenersHolder(self)
+
+        self.__STYLE_UNITS = {}
 
         self.EventListeners += EventListener("<Enter>", lambda *args,**kwargs: self.__OnMouseEnter())
         self.EventListeners += EventListener("<Button-1>", lambda *args,**kwargs: self.GainKeyboardFocus())        
@@ -122,17 +124,34 @@ class Element:
 
         self.EventListeners.RemoveAll()
 
+    def SetStyleUnits(self):
+        
+        self.__STYLE_UNITS = self._GetStyleUnits()
+
     def ComputeStyles(self):
         self._ComputedStyles = ComputeStyles(self.Styles, self)
+        
 
     def Update(self, propogationDepth=0, ReRender=True):
         self.ComputeStyles()
-        self._Update(updateRender=ReRender)  # In case an inherited class has to do some extra stuff on update
-        
+        self.SetStyleUnits()      
+        self._Update(updateRender=ReRender)  # In case an inherited class has to do some extra stuff on update        
         if propogationDepth:  # How deep do we want to update our stuff
             for child in self.Children:
-                child.Update(propogationDepth - 1, ReRender=ReRender)
-        self._Update(updateRender=ReRender) # This seems to fix some stuff idk why
+                child.Update(propogationDepth = propogationDepth - 1,ReRender= ReRender)
+
+        # FIXME
+        # So
+        # I have no clue why doing it once doesnt work but if we do our thing twice bang everything is fine
+        # It should be ok cause we dont have that many elements but this is something to check
+
+        # region braindamage
+        self._Update(updateRender=ReRender)
+        self.SetStyleUnits()
+        if propogationDepth:  # How deep do we want to update our stuff
+            for child in self.Children:
+                child.Update(propogationDepth = propogationDepth - 1,ReRender= ReRender)
+        # endregion
 
     # region ComputedStyles
     @property
@@ -170,6 +189,20 @@ class Element:
                 self.Styles.Set(prop, tmp[prop])
             self.Update()
     # endregion
+
+    @property
+    def STYLE_UNITS(self):
+        if self.__STYLE_UNITS:
+            return self.__STYLE_UNITS
+        else:
+            self.SetStyleUnits()
+            return self.__STYLE_UNITS
+    
+    def _GetStyleUnits(self):
+        return self.Parent.STYLE_UNITS
+
+    
+    
 
     def _Render(self):
         '''Called when element is to be rendered. ! Inheritors must overwrite this function to render themselves'''

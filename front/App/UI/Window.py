@@ -23,7 +23,6 @@ class Window:
 
         Console.info("Initializing Window")
 
-
     def Run(self):
         Console.info("Showing Window")
         self._tkRoot.mainloop() # Starts UI loop

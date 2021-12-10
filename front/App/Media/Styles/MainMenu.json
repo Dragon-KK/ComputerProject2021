@@ -16,7 +16,7 @@
             "Styles" : {
                 "OriginType" : "Centre",
                 "Position" : ["50:w%", "20:h%"],
-                "FontSize" : 50,
+                "FontSize" : "4:em",
                 "BackgroundColor" : "#131313",
                 "CornerRadius" : "50",
                 "ForegroundColor" : "White",
@@ -31,7 +31,7 @@
                 "BackgroundColor" : "#131313",
                 "CornerRadius" : "5:w%",
                 "OriginType" : "Centre",
-                "FontSize" : 20,
+                "FontSize" : "1:em",
                 "Size" : ["30:w%", "10:w%"],
                 "ForegroundColor" : "White"
             }

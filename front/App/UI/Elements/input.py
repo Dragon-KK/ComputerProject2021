@@ -41,13 +41,13 @@ class input(div):
         self._CanvasIDs += self.Window.Document.create_polygon(self._GetVisualRectBox(),width=self.Styles.BorderStroke,outline=self.Styles.BorderColor,fill=self.Styles.BackgroundColor, smooth=True)
         self._CanvasIDs += self.Window.Document.create_text(
             self.ComputedStyles.TopLeft.x + self.Styles.BorderStroke,
-            self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.Styles.FontSize, 
+            self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
             text=self.__value, 
             fill=self.Styles.ForegroundColor,
             anchor = 'w',
             font = (
                 self.Styles.FontStyle,
-                self.Styles.FontSize
+                self.ComputedStyles.FontSize
             )
         )
 
@@ -63,7 +63,7 @@ class input(div):
                 anchor='w',
                 font = (
                     self.Styles.FontStyle,
-                    self.Styles.FontSize
+                    self.ComputedStyles.FontSize
                 )
             )
 
@@ -71,7 +71,7 @@ class input(div):
             self.Window.Document.moveto(
                 textID,
                 self.ComputedStyles.TopLeft.x + self.Styles.BorderStroke,
-                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.Styles.FontSize, 
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
             )
             
             # Move our box

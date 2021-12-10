@@ -17,3 +17,35 @@ world should be able to give an image at any time
 # Make it very generalized
 # Make functions for the smallest shit
 # So that we can have an easy time when workign with online multiplayer
+
+world{
+    physics{
+        changes entites in world
+    }
+    enitities [
+        enitity {
+            sprite{
+                mesh #the shape of our sprite,
+                canvasID # Its just an element, it is mesh specific
+                draw() # type of draw is mesh specific
+            }
+            entitySpecific methods ...
+        }
+    ]
+    renderer{
+        talks with Gamecontainer
+        renderEntities()
+    }
+}
+
+playerInput{
+    Seperate from world
+    
+    talks with world
+}
+
+network{
+    Seperate from world
+
+    talks with world
+}

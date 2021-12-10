@@ -4,7 +4,6 @@ from ....UI.Base import Document as doc
 from ....UI.Components import *
 from ....UI.Elements import *
 
-
 class Document(doc):
     MinSize = Vector(1000, 500)
     Name = "Pong/LocalMultiplayer/NewGame"

@@ -1,11 +1,5 @@
-from .HelperClasses import EventListenerID
 from ....Core.DataTypes.UI import Event
 
-
-'''
-How to give back the eventlistenerID when and event is added?
-
-'''
 
 class EventHandler:
     '''

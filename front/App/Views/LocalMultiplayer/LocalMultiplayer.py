@@ -1,12 +1,13 @@
+from ...Core.Diagnostics.Debugging import Console
 from ...UI.Base import Document as doc
-from ...UI.Elements import *
-from ...UI import Styles
-from ...Core.DataTypes.Standard import Vector
-
 
 class Document(doc):
-    MinSize = Vector(1000, 500)
+    '''This is just used for redirecting'''
     Name = "Pong/LocalMultiplayer"
+    
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.Children += label(name=".title",text="Local",ResizeCorrectionConst=1.6)
+        super().__init__(*args, **kwargs)        
+        from .NewGame import Document as NewGame
+        Console.info("Redirecting to new game : )")
+        self.Window.Document = NewGame
+        

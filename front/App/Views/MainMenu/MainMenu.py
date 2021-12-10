@@ -1,9 +1,8 @@
 from ...Core.DataTypes.UI import EventListener
 from ...Core.DataTypes.Standard import Vector
 from ...UI.Base import Document as doc
-from ...UI.Elements import *
 from ...UI.Components import *
-from ...UI import Styles
+from ...UI.Elements import *
 
 class Document(doc):
     Name = "Pong/MainMenu"
@@ -26,10 +25,12 @@ class Document(doc):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.config(bg="black")
+        self.config(bg="black") # Let the background be black
 
+        # Container (since we want our page to preserve aspect ratio)
         container = AspectRatioPreservedContainer(name=".container",aspectRatio=16/9)        
         self.Children += container
+
         # Title
         container.Children += label(name=".title",text="PONG",ResizeCorrectionConst=1.6)        
 
@@ -37,7 +38,7 @@ class Document(doc):
         LocalMultiplayerButton = label(name=".navigationButton", text="Local", ResizeCorrectionConst=2.7)
         LocalMultiplayerButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("LocalMultiplayer"))
         LocalMultiplayerButton.Styles.Set(
-            "Position", ("30:w%", "60:h%")
+            "Position", ("37:w%", "70:h%")
         )
         container.Children += LocalMultiplayerButton
         # endregion
@@ -46,7 +47,7 @@ class Document(doc):
         OnlineMultiplayerButton = label(name=".navigationButton", text="Online",  ResizeCorrectionConst=2.5)
         OnlineMultiplayerButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("OnlineMultiplayer"))
         OnlineMultiplayerButton.Styles.Set(
-            "Position", ("70:w%", "60:h%")
+            "Position", ("63:w%", "70:h%")
         )
         container.Children += OnlineMultiplayerButton
         # endregion
@@ -55,7 +56,7 @@ class Document(doc):
         AboutUsButton = label(name=".navigationButton", text="About", ResizeCorrectionConst=2.2)
         AboutUsButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("AboutUs"))
         AboutUsButton.Styles.Set(
-            "Position", ("30:w%", "80:h%")
+            "Position", ("37:w%", "85:h%")
         )
         container.Children += AboutUsButton
         # endregion
@@ -64,7 +65,7 @@ class Document(doc):
         ArcadeButton = label(name=".navigationButton", text="Arcade", ResizeCorrectionConst=2.28)
         ArcadeButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("Arcade"))
         ArcadeButton.Styles.Set(
-            "Position", ("70:w%", "80:h%")
+            "Position", ("63:w%", "85:h%")
         )
         container.Children += ArcadeButton
         # endregion

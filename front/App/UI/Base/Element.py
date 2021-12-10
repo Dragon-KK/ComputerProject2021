@@ -1,6 +1,6 @@
-from .Util import ComputeStyles,EventListenersHolder, CanvasIDContainer, Children,HelperClasses , StateHolder, States
+from .Util import ComputeStyles,EventListenersHolder, CanvasIDContainer, Children , StateHolder, States
 from ..Styles import Style
-from ...Core.DataTypes.UI import EventListener
+from ...Core.DataTypes.UI import EventListener,ContentContainer
 import inspect
 class Element:
     # TODO
@@ -9,9 +9,6 @@ class Element:
 
     # TODO
     # SetTimout and SetInterval
-
-    # TODO
-    # Maybe create a new unit? like rem or something to have a decent approximation of font size and maybe even use it in arena
 
     # TODO
     # html knockoff is done :)
@@ -23,7 +20,7 @@ class Element:
         self.InitialRenderDone = False  # Just for some checks
         self.Children = Children(self)  # The children of this element
         self.Window = None
-        self.Content = HelperClasses.ContentContainer()
+        self.Content = ContentContainer()
 
         self.State = StateHolder()
         self.State += "Visible"
@@ -116,7 +113,7 @@ class Element:
     def Remove(self):
         '''Removes the element and its children visually'''
 
-        self.Window.Document._RemoveVisual(self._CanvasIDs.list)
+        if self._CanvasIDs.list:self.Window.Document._RemoveVisual(self._CanvasIDs.list)
         self.Parent.Children.Remove(self)
         self._CanvasIDs.clear()
         for child in self.Children:

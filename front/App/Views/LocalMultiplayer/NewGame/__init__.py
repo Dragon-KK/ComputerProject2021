@@ -1,0 +1,1 @@
+from .NewGame import Document

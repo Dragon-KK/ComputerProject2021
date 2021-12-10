@@ -5,8 +5,8 @@ from ...Core.DataTypes.Standard import Vector
 from ...Core.Diagnostics.Debugging import Console
 from ..Styles import Style
 from .Util.StyleParser import ComputedStyles
-from .Util import HelperClasses ,States,EventHandler
-from ...Core.DataTypes.UI import Event
+from .Util import States,EventHandler
+from ...Core.DataTypes.UI import Event,ContentContainer
 
 
 # The intersection between tkinter and our custom thing
@@ -22,7 +22,7 @@ class Document(Root, Canvas):
         cstyles = ComputedStyles()
         cstyles.Size = window.ViewPort
 
-        self.Content = HelperClasses.ContentContainer()
+        self.Content = ContentContainer()
 
         Root.__init__(self, window,cstyles,self.StyleSheet) # Init root
         Canvas.__init__(self,window._tkRoot,bg="white") # Init canvas
@@ -34,10 +34,10 @@ class Document(Root, Canvas):
         self.__KeyboardFocusedElement = None # No element is focused at the beginning
 
     def Render(self):
-        '''Renders the element and its children'''
-        self.InitialRenderDone = True
+        '''Renders the element and its children'''        
         for child in self.Children:
             child.Render()
+        self.InitialRenderDone = True
         self.EventHandler.SetEventListeners()
 
     @property

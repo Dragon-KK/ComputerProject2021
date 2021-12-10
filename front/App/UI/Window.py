@@ -1,7 +1,8 @@
-import tkinter as tk
+from .Base.Util import IntervalContainer, TimeoutContainer
+from ..Core.Diagnostics.Debugging import Console
 from ..Core.DataTypes.Standard import Vector
 from .Base import Document
-from ..Core.Diagnostics.Debugging import Console
+import tkinter as tk
 class Window:
     '''Create a new window'''
 
@@ -15,6 +16,9 @@ class Window:
 
         self.Title = title # Sets title
         self._Document = None
+
+        self.Intervals = IntervalContainer(self)
+        self.Timeouts = TimeoutContainer(self)
 
         if not resizable: self._tkRoot.resizable(0,0) # This makes the window unresizable
 
@@ -34,8 +38,17 @@ class Window:
 
     def OnClose(self):
         self.Document.Destroy() if self.Document else None # Destroy the document
+        self.Timeouts.EndAll()
+        self.Intervals.EndAll()
         self._tkRoot.destroy() # Destroy the tkinter window
         Console.info("Closing Window")
+
+    def __InstantiateDocument(self, docConstructor):
+        self._Document = docConstructor(self)
+        # The minimum size of the window is given by the document it is rendering
+        self.MinSize = self._Document.MinSize
+        Console.info(f"Rendering document {self._Document.Name}")
+        self._Document.Render()
 
     #region Document
     @property
@@ -44,13 +57,8 @@ class Window:
     @Document.setter
     def Document(self, docConstructor):
         if self.Document:
-            self.Document.Destroy()        
-        self._Document = docConstructor(self)
-
-        # The minimum size of the window is given by the document it is rendering
-        self.MinSize = self._Document.MinSize
-        Console.info(f"Rendering document {self._Document.Name}")
-        self._Document.Render()
+            self.Document.Destroy()
+        self.Timeouts.SetTimeout(1, lambda : self.__InstantiateDocument(docConstructor))
     #endregion
 
 

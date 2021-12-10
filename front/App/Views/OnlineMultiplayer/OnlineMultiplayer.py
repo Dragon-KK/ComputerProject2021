@@ -6,7 +6,7 @@ from ...Core.DataTypes.Standard import Vector
 
 class Document(doc):
     MinSize = Vector(1000, 500)
-    Name = "Pong/LocalMultiplayer"
+    Name = "Pong/OnlineMultiplayer"
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.Children += label(name=".title",text="Local Mult",ResizeCorrectionConst=1.6)
+        self.Children += label(name=".title",text="Online Mult",ResizeCorrectionConst=1.6)

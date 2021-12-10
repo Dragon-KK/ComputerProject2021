@@ -7,24 +7,34 @@ from ...UI import Styles
 
 class Document(doc):
     Name = "Pong/MainMenu"
-    MinSize = Vector(500, 100)
+    MinSize = Vector(500, 500)
     StyleSheet = "Styles/MainMenu.json"
 
     def NavigateTo(self, destination):
-        print("Lcik")    
+        if destination == "LocalMultiplayer":
+            from ..LocalMultiplayer import Document as LocalMultiplayer
+            self.Window.Document = LocalMultiplayer
+        elif destination == "OnlineMultiplayer":
+            from ..OnlineMultiplayer import Document as OnlineMultiplayer
+            self.Window.Document = OnlineMultiplayer
+        elif destination == "AboutUs":
+            from ..AboutUs import Document as AboutUs
+            self.Window.Document = AboutUs
+        elif destination == "Arcade":
+            from ..Arcade import Document as Arcade
+            self.Window.Document = Arcade
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.config(bg="black")
 
-        c = div(name=".container")
-        container = AspectRatioPreservedContainer(aspectRatio=16/9)        
-        self.Children += c
-        c.Children += container
+        container = AspectRatioPreservedContainer(name=".container",aspectRatio=16/9)        
+        self.Children += container
         # Title
         container.Children += label(name=".title",text="PONG",ResizeCorrectionConst=1.6)        
 
         # region LocalMultiplayer Button
-        LocalMultiplayerButton = label(name=".navigationButton", text="Local", ResizeCorrectionConst=2.53)
+        LocalMultiplayerButton = label(name=".navigationButton", text="Local", ResizeCorrectionConst=2.7)
         LocalMultiplayerButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("LocalMultiplayer"))
         LocalMultiplayerButton.Styles.Set(
             "Position", ("30:w%", "60:h%")

@@ -18,20 +18,16 @@ class AspectRatioPreservedContainer(div):
 
     def ComputeStyles(self):
 
-        self._Styles.Size = ("100:w%", "100:h%") # Our size will always try to be 100%
-        self._Styles.OriginType = Positions.Centre # Our position will always be at the centre
-        self._Styles.Position = ("50:w%", "50:h%") # Always at the centre
+        parentSize = self.Parent.ComputedStyles.Size  # Our size will always try to be 100%
+        mySize = (0,0)
+        if parentSize.x/parentSize.y > self.AspectRatio: # If x value is too much
+            mySize = (parentSize.y * self.AspectRatio, parentSize.y )# Adjust based on aspect ratio
+        else:
+            mySize = (parentSize.x , parentSize.x / self.AspectRatio )# Adjust based on aspect ratio
+            
+        self._Styles.Size = mySize
         self._ComputedStyles = ComputeStyles(self.Styles, self) # Compute our styles
 
-        ourSize = self._ComputedStyles.Size
-
-        if ourSize.x/ourSize.y > self.AspectRatio: # If x value is too much
-            old = self._ComputedStyles.Size + (0,0) # This is just to create a new vector obj otherwise old would point to new
-            self._ComputedStyles.Size.x = ourSize.y * self.AspectRatio # Adjust based on aspect ratio
-            self.__SetPositionToCentre(old, self._ComputedStyles.Size) # Reposition it to the centre
-        else:
-            old = self._ComputedStyles.Size + (0,0) # Same deal as previous block
-            self._ComputedStyles.Size.y = ourSize.x / self.AspectRatio
-            self.__SetPositionToCentre(old, self._ComputedStyles.Size)
+        
 
 

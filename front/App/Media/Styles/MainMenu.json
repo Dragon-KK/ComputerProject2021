@@ -3,8 +3,10 @@
         {
             "State" : "Visible",
             "Styles" :{
-                "Size" : ["100:vw", "100:vh"],
-                "BackgroundColor" : "Gray"
+                "BackgroundColor" : "Gray",
+                "CornerRadius" : "0",
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","50:h%"]
             }
         }
     ],
@@ -26,9 +28,18 @@
         {
             "State" : "Visible",
             "Styles" : {
+                "BackgroundColor" : "#131313",
+                "CornerRadius" : "5:w%",
                 "OriginType" : "Centre",
+                "FontSize" : 20,
                 "Size" : ["30:w%", "10:w%"],
                 "ForegroundColor" : "White"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "Pink"
             }
         }
     ]

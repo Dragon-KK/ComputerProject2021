@@ -7,11 +7,11 @@ class Element:
     # handle text overflow
     # Just have a rough take on how big a string will be and handle according to that
 
-    # TODO!!DoMeFirst
-    # Lock aspect ratio
-
     # TODO
     # SetTimout and SetInterval
+
+    # TODO
+    # Maybe create a new unit? like rem or something to have a decent approximation of font size and maybe even use it in arena
 
     # TODO
     # html knockoff is done :)

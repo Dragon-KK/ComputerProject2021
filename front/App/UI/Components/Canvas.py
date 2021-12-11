@@ -1,6 +1,6 @@
 from ..Elements import div
 
-class GameContainer(div):
+class Canvas(div):
     '''
     The element that can interact with our Engine
     '''

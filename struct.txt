@@ -12,6 +12,13 @@ Same way online worker will talk to World
 
 world should be able to give an image at any time
 
+THe mesh needs its mesh specific shit
+Sprite has scale and position and it will manage changing mesh
+Entity has a sprite and it will have logic that will talk with a sprite
+
+So a mesh will be super specific
+A sprite is basically a wrapper that simplifies the mesh interface :)
+Canvas is an object that renders sprites on to the world
 
 # TODO
 # Make it very generalized

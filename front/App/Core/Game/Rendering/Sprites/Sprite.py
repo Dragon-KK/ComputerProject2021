@@ -7,8 +7,11 @@ class Sprite:
         self.__Position = Position
         self.__Scale = Scale
 
-    def Draw(self):
-        self.Mesh.Draw()
+    def Render(self):
+        self.Mesh.Render()
+
+    def Remove(self):
+        self.Mesh.Remove()
     
     @property
     def Position(self):

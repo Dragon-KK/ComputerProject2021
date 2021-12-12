@@ -1,9 +1,9 @@
 from . import Sprite
 from ..Meshes import Circle
 
-class Ball(Sprite):
+class BallSprite(Sprite):
     def __init__(self, Canvas):
-        super().__init__(Canvas, Circle(Canvas))
+        super().__init__(Canvas, Circle(Canvas,10,(0,0)),(0,0),2)
 
     def Draw(self):
         self.Mesh.Draw()

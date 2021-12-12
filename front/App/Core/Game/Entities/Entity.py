@@ -4,7 +4,18 @@ class Entity:
 
     def __init__(self, dynamic = False):
         self.Dynamic = dynamic
+        self.Canvas = None
+        self.Sprite = None
 
-    def Draw(self):
-        '''Called every frame'''
+    def Render(self):
         pass
+
+    def Remove(self):
+        pass
+
+    def Update(self,*args, **kwargs):
+        '''Called every frame if its dynamic else called only when needed'''
+        pass
+
+    def _SetParent(self, canvas):
+        self.Canvas = canvas

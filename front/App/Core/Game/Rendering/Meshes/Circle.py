@@ -2,8 +2,8 @@ from . import Mesh
 from ....DataTypes.Standard import Vector
 
 class Circle(Mesh):
-    def __init__(self, Canvas):
-        super().__init__(Circle, Canvas, Radius, Centre, DrawingArguments = {})
+    def __init__(self, Canvas, Radius, Centre, DrawingArguments = {}):
+        super().__init__(Circle, Canvas)
         self.Radius = Radius
         self.Centre = Centre
         self.OldCentre = Centre

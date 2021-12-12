@@ -18,6 +18,9 @@ class Document(doc):
         container = AspectRatioPreservedContainer(name=".container",aspectRatio=16/9)        
         self.Children += container
 
+        from ..Game import Document as Game
+        self.Window.Document = Game 
+
         
 
         

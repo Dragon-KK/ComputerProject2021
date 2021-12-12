@@ -1,0 +1,2 @@
+class GameSettings:
+    pass

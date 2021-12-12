@@ -1,0 +1,31 @@
+{
+    ".container" : [
+        {
+            "State" : "Visible",
+            "Styles" :{
+                "BackgroundColor" : "#111111",
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","50:h%"]
+            }
+        }
+    ],
+    ".toolbar" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#222222",
+                "Size" : ["100:w%", "10:h%"]
+            }
+        }
+    ],
+    ".worldContainer" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "Pink",
+                "Position" : ["0:px", "10:h%"],
+                "Size" : ["100:w%", "90:h%"]
+            }
+        }
+    ]
+}

@@ -2,6 +2,7 @@ from .Util import ComputeStyles,EventListenersHolder, CanvasIDContainer, Childre
 from ..Styles import Style
 from ...Core.DataTypes.UI import EventListener,ContentContainer
 import inspect
+from time import time
 class Element:
     # TODO
     # handle text overflow

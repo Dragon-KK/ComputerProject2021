@@ -7,6 +7,10 @@ class Mesh:
         self.CanvasID = -1
         self.Bounds = [ Vector(0, 0), Vector(0, 0), Vector(0, 0), Vector(0, 0)] # Every shape must have 4 marking points
 
-    def Draw(self, *args, **kwargs):
+    def Render(self, *args, **kwargs):
         '''Draws the mesh'''
+        pass
+
+    def Remove(self):
+        '''Deletes the mesh visually'''
         pass

@@ -1,0 +1,16 @@
+{
+    "Entities" : {
+        "Ball" : {
+
+        },
+        "Wall" : {
+
+        },
+        "Goal" : {
+
+        },
+        "Paddle" : {
+            
+        }
+    }
+}

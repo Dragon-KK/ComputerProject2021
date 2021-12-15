@@ -1,0 +1,30 @@
+Entity is added as child
+Entity tells sprite when to render
+Sprite asks mesh how to render
+
+Sprite has a position inbuilt
+Entity can update the position of sprite
+Mesh takes stuff from sprite
+
+
+Mesh will take css values for positioning
+Sprite contains absolute values
+Entities will also use absolute values
+
+Initial render is done using absolute values
+
+Further rerenders can be done using absolute values too
+
+###############################################
+###############################################
+
+
+The way its currently going is dogshit
+
+Instead
+
+Maybe just use elements for sprites also
+
+enitities hold referecne to the elements
+
+eez

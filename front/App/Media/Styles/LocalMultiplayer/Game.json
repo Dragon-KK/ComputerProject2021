@@ -27,5 +27,15 @@
                 "Size" : ["100:w%", "90:h%"]
             }
         }
+    ],
+    ".pause" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["95:w%","10:h%"],
+                "Size" : ["80:h%", "80:h%"],
+                "BackgroundColor" : "White"
+            }
+        }
     ]
 }

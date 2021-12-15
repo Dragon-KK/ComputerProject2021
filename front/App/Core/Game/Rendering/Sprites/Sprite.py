@@ -7,8 +7,14 @@ class Sprite:
         self.__Position = Position
         self.__Scale = Scale
 
+    def Update(self):
+        self.Mesh.Update()
+
     def Render(self):
         self.Mesh.Render()
+
+    def SetStyles(self, styles):
+        print(styles)
 
     def Remove(self):
         self.Mesh.Remove()
@@ -18,6 +24,7 @@ class Sprite:
         return self.__Position
     @Position.setter
     def Position(self, newPos):
+        self.Mesh.Move(self, newPos - self.__Position)
         self.__Position = newPos
 
     @property

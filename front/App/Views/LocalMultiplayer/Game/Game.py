@@ -1,3 +1,4 @@
+from ....Core.DataTypes.UI import EventListener
 from ....Core.Game import LocalMultiplayerPong
 from ....Core.DataTypes.Standard import Vector
 from ....UI.Base import Document as doc
@@ -20,13 +21,26 @@ class Document(doc):
         Container = AspectRatioPreservedContainer(name=".container",aspectRatio=16/9)        
         self.Children += Container
        
+       # region Toolbar
         Toolbar = div(name=".toolbar")
         Container.Children += Toolbar
+
+        PauseButton = div(name = '.pause')
+        Toolbar.Children += PauseButton
+        # endregion
 
         WorldContainer = Canvas(name=".worldContainer")
         Container.Children += WorldContainer
 
         self.Pong = LocalMultiplayerPong(WorldContainer)
+
+
+        # region Callbacks
+        def TogglePause(e):
+            self.Pong.TogglePause()
+        # endregion
+
+        PauseButton.EventListeners += EventListener("<Button-1>", TogglePause)
 
 
         

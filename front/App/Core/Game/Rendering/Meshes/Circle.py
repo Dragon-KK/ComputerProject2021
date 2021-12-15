@@ -6,17 +6,16 @@ class Circle(Mesh):
         super().__init__(Circle, Canvas)
         self.Radius = Radius
         self.Centre = Centre
-        self.OldCentre = Centre
         self.DrawingArguments = DrawingArguments
 
     def Update(self):
         self.Canvas.UpdateItem(
             self.CanvasID,
-            Displacement = self.Centre - self.OldCentre,
+            **self.DrawingArguments
             # TODO
         )        
 
-    def Draw(self):
+    def Render(self):
         if self.CanvasID > 0:
             self.Canvas.Remove(self.CanvasID)
         self.CanvasID = self.Canvas.CreateCircle(self.Centre, self.Radius, **self.DrawingArguments)

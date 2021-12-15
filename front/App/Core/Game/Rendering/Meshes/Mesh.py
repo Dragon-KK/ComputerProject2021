@@ -14,3 +14,7 @@ class Mesh:
     def Remove(self):
         '''Deletes the mesh visually'''
         pass
+
+    def Move(self, Amount):
+        '''Moves the item'''
+        self.Canvas.MoveItem(self.CanvasID, Amount)

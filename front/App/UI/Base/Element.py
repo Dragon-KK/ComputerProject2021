@@ -78,7 +78,7 @@ class Element:
                     if self.Styles.__dict__.get(prop):
                         del self.Styles.__dict__[prop]           
             
-    
+        
         for style in styleSheet:            
             if style['State'] in self.State:
                 for prop in style['Styles'].keys():

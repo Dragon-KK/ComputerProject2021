@@ -1,5 +1,5 @@
 from .div import div
 
-class checkbox(div):
+class radio(div):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

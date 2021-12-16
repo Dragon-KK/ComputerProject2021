@@ -9,12 +9,7 @@ class AspectRatioPreservedContainer(div):
     '''
     def __init__(self, * args, aspectRatio = 1,**kwargs):
         super().__init__(*args,**kwargs)
-
         self.AspectRatio = aspectRatio
-
-    def __SetPositionToCentre(self,oldSize, newSize):
-        self._ComputedStyles.TopLeft += (oldSize - newSize) / 2
-        self._ComputedStyles.Position += (oldSize - newSize) / 2
 
     def ComputeStyles(self):
 
@@ -30,6 +25,7 @@ class AspectRatioPreservedContainer(div):
         self.SetStyleUnits()
 
     def _GetStyleUnits(self):
+        # Aspect ratio conserved div acts as za em container thing thingy
         return {'em':self.ComputedStyles.Size.x / 100}
 
         

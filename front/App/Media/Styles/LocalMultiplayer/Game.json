@@ -22,7 +22,7 @@
         {
             "State" : "Visible",
             "Styles" : {
-                "BackgroundColor" : "Pink",
+                "BackgroundColor" : "#1e1e1e",
                 "Position" : ["0:px", "10:h%"],
                 "Size" : ["100:w%", "90:h%"]
             }

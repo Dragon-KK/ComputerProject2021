@@ -1,5 +1,5 @@
 from ....Core.DataTypes.UI import EventListener
-from ....Core.Game import LocalMultiplayerPong
+from ....Core.Engine.Pong import Pong
 from ....Core.DataTypes.Standard import Vector
 from ....UI.Base import Document as doc
 from ....UI.Components import *
@@ -29,10 +29,10 @@ class Document(doc):
         Toolbar.Children += PauseButton
         # endregion
 
-        WorldContainer = Canvas(name=".worldContainer")
+        WorldContainer = div(name=".worldContainer")
         Container.Children += WorldContainer
 
-        self.Pong = LocalMultiplayerPong(WorldContainer)
+        self.Pong = Pong(WorldContainer,None)
 
 
         # region Callbacks

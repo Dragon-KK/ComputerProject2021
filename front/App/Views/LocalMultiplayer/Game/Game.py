@@ -1,5 +1,5 @@
-from ....Core.DataTypes.UI import EventListener
-from ....Core.Engine.Pong import Pong
+from ....Core.DataTypes.UI import EventListener, Interval
+from ....Core.Engine.Pong import LocalMultiplayerPong
 from ....Core.DataTypes.Standard import Vector
 from ....UI.Base import Document as doc
 from ....UI.Components import *
@@ -32,7 +32,7 @@ class Document(doc):
         WorldContainer = div(name=".worldContainer")
         Container.Children += WorldContainer
 
-        self.Pong = Pong(WorldContainer,None)
+        self.Pong = LocalMultiplayerPong(WorldContainer,None)
 
 
         # region Callbacks
@@ -40,7 +40,17 @@ class Document(doc):
             self.Pong.TogglePause()
         # endregion
 
+        
+
         PauseButton.EventListeners += EventListener("<Button-1>", TogglePause)
+
+    def Render(self):
+        super().Render()
+        def Test():
+            self.Pong.World.Entities[0].Position += Vector(5, 0)
+        self.Pong.ContinueRound()
+        self.Window.Intervals += Interval(10, Test)
+        
 
 
         

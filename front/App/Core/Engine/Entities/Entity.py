@@ -21,4 +21,4 @@ class Entity:
 
     def Render(self):
         if not self.Dynamic:return
-        self.Sprite.Update(updateRender = True)
+        self.Sprite.Update(ReRender = True)

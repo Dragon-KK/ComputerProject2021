@@ -10,7 +10,7 @@ class Ball(Entity):
         self.Velocity = initialVelocity
         self.Acceleration = acceleration
 
-        self.Sprite.Styles.Set('Position', initialPosition) # Set the initial position of the ball
+        #self.Sprite.Styles.Set('Position', initialPosition) # Set the initial position of the ball
 
     # region Position
     @property
@@ -18,5 +18,6 @@ class Ball(Entity):
         return self.Sprite.ComputedStyles.Position
     @Position.setter
     def Position(self, NewPosition):
-        self.Sprite.ComputedStyles.Position = NewPosition
+            
+        self.Sprite.Styles.Set("Position", (NewPosition.x, NewPosition.y), update = False)
     # endregion

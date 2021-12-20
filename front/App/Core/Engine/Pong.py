@@ -1,4 +1,4 @@
-from . import World
+from . import World,Physics
 from . import Entities
 
 class Pong:
@@ -14,10 +14,9 @@ class Pong:
         walls = [],
         goals = [],
 
-        renderDelay = 15,
-        physicsDelay = 10
+        renderDelay = 15
         ):
-        self.World = World(worldContainer)
+        self.World = World(worldContainer, renderDelay=renderDelay)
 
         self.IsPaused = True
 
@@ -42,27 +41,34 @@ class Pong:
         self.World.Pause()
         self.IsPaused = True
 
-    '''
-    Idea :
-        Isolate updating renders completely
-        Just takes in list of entities and renders them
-
-    World has jsonify and dejsonify inbuilt
-    players are just entities
-    Pong class doesnt store anything it just acts as the medium
-
-    ** The entities itself just contain stuff they arent really doing any logic by themselves, physics will handle everything **
-    '''
-
 class LocalMultiplayerPong(Pong):
-    def __init__(self, container, settings):
+    def __init__(self, container, settings, physicsDelay = 10, renderDelay = 15):
+
+        balls = [
+            Entities.Ball(10, 10)
+        ]
+        walls = [ ]
+        goals = [ ]
+        players = ()
+
         super().__init__(
             container, 
             settings,
-            players = [],
-            walls = [],
-            goals = [],
-            balls = [
-                Entities.Ball(10, 10)
-            ]
+            players = players,
+            walls = walls,
+            goals = goals,
+            balls = balls,
+            renderDelay=renderDelay
         )
+
+        self.Physics = Physics(container, balls, walls, goals, physicsDelay)
+
+    def ContinueRound(self):
+        self.World.Continue()
+        self.Physics.Continue()
+        self.IsPaused = False
+
+    def PauseRound(self):
+        self.World.Pause()
+        self.Physics.Pause()
+        self.IsPaused = True

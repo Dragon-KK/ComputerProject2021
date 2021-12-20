@@ -46,10 +46,7 @@ class Document(doc):
 
     def Render(self):
         super().Render()
-        def Test():
-            self.Pong.World.Entities[0].Position += Vector(5, 0)
         self.Pong.ContinueRound()
-        self.Window.Intervals += Interval(10, Test)
         
 
 

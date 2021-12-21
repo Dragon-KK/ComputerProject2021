@@ -19,7 +19,8 @@ class label(div):
             font = (
                 self.Styles.FontStyle,
                 self.ComputedStyles.FontSize
-            )
+            ),
+            width = self.ComputedStyles.Size.x
         )
 
     def _Update(self, updateRender = True):
@@ -35,7 +36,8 @@ class label(div):
                 font = (
                     self.Styles.FontStyle,
                     self.ComputedStyles.FontSize
-                )
+                ),
+                width=self.ComputedStyles.Size.x
             )
             self.Window.Document.moveto(
                 textID,

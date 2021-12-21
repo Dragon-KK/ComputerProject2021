@@ -13,5 +13,20 @@
                 "Size" : ["50:w%","30:h%"]
             }
         }
+    ],
+    ".input" :[
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Centre",
+                "Position" : ["50:w%", "60:h%"],
+                "FontSize" : 50,
+                "BackgroundColor" : "#131313",
+                "CornerRadius" : "50",
+                "ForegroundColor" : "Pink",
+                "BorderStroke" : 5,
+                "Size" : ["50:w%","30:h%"]
+            }
+        }
     ]
 }

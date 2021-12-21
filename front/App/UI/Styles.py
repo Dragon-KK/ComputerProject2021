@@ -25,7 +25,8 @@ class Style:
         "BorderColor",
         "BorderStroke",
         "FontSize",
-        "FontStyle"
+        "FontStyle",
+        "PlaceHolderForegroundColor"
     ]
 
     Default = {
@@ -36,6 +37,7 @@ class Style:
         "Visible" : True,
         "BackgroundColor" : None,
         "ForegroundColor" : None,
+        "PlaceHolderForegroundColor" : "gray",
         "BorderColor" : None,
         "BorderStroke" : 1,
         "FontSize" : "1:rem",

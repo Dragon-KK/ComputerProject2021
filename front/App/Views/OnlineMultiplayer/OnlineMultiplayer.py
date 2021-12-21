@@ -10,3 +10,5 @@ class Document(doc):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.Children += label(name=".title",text="Online Mult",ResizeCorrectionConst=1.6)
+
+        self.Children += input(name=".input", placeHolder="Enter some text")

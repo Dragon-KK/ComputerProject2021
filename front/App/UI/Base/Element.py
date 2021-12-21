@@ -4,14 +4,6 @@ from ...Core.DataTypes.UI import EventListener,ContentContainer
 import inspect
 from time import time
 class Element:
-    # TODO
-    # handle text overflow
-    # Just have a rough take on how big a string will be and handle according to that
-
-    # TODO
-    # html knockoff is done :)
-    # see how to make background transparent
-
     def __init__(self, name="."):
         self.Parent = None
         self.__name = name
@@ -127,11 +119,11 @@ class Element:
         self.__STYLE_UNITS = self._GetStyleUnits()
 
     def ComputeStyles(self):
+        self.SetStyleUnits()
         self._ComputedStyles = ComputeStyles(self.Styles, self)
         
 
-    def Update(self, propogationDepth=0, ReRender=True):
-        self.SetStyleUnits()
+    def Update(self, propogationDepth=0, ReRender=True):        
         self.ComputeStyles()
         self._Update(updateRender = ReRender)
 

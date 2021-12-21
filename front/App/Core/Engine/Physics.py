@@ -15,11 +15,6 @@ class Physics:
 
         self.Time = Time()
 
-    # TODO
-
-    # Figure out a way to use em for positions too
-    # Maybe position has to be in % like forced %
-    # Ye so position is always 0,100 rendering takes it as respective % and renders
 
 
     def PhysicsLoop(self):

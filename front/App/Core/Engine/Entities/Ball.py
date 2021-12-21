@@ -5,7 +5,7 @@ class Ball(Entity):
     
     def __init__(self, initialVelocity, acceleration, initialPosition = ('50:w%', '50:h%')):
         '''Initial position of the'''
-        super().__init__(Sprite(), dynamic=True, tag="Ball") # TODO Sprite needs to acces styles based on tag
+        super().__init__(Sprite(), dynamic=True, tag="Ball")
 
         self.Velocity = initialVelocity
         self.Acceleration = acceleration

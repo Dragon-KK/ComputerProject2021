@@ -9,9 +9,6 @@ class Element:
     # Just have a rough take on how big a string will be and handle according to that
 
     # TODO
-    # SetTimout and SetInterval
-
-    # TODO
     # html knockoff is done :)
     # see how to make background transparent
 
@@ -83,11 +80,11 @@ class Element:
             if style['State'] in self.State:
                 for prop in style['Styles'].keys():
                     self.Styles.Set(prop, style['Styles'][prop], update=False)
-            
-        
-        self.Update(ReRender=False)
 
-    def Render(self, UpdateStyleSheet = True, ReRenderChildren = True):
+        self.SetStyleUnits()
+        self.ComputeStyles()      
+
+    def Render(self, UpdateStyleSheet = True, RenderChildren = True):
         '''Renders the element and its children'''
         if self.InitialRenderDone:
             # If i have already been rendered once i need to first delete my previous render
@@ -101,7 +98,7 @@ class Element:
         
         self._Render()  # In case an inherited class has to do some extra stuff on render
 
-        if ReRenderChildren:
+        if RenderChildren:
             for child in self.Children:
                 child.Render()
 
@@ -134,25 +131,13 @@ class Element:
         
 
     def Update(self, propogationDepth=0, ReRender=True):
-        self.ComputeStyles()
-        self.SetStyleUnits()      
-        self._Update(updateRender=ReRender)  # In case an inherited class has to do some extra stuff on update        
-        if propogationDepth:  # How deep do we want to update our stuff
-            for child in self.Children:
-                child.Update(propogationDepth = propogationDepth - 1,ReRender= ReRender)
-
-        # FIXME
-        # So
-        # I have no clue why doing it once doesnt work but if we do our thing twice bang everything is fine
-        # It should be ok cause we dont have that many elements but this is something to check
-
-        # region braindamage
-        self._Update(updateRender=ReRender)
         self.SetStyleUnits()
+        self.ComputeStyles()
+        self._Update(updateRender = ReRender)
+
         if propogationDepth:  # How deep do we want to update our stuff
             for child in self.Children:
                 child.Update(propogationDepth = propogationDepth - 1,ReRender= ReRender)
-        # endregion
 
     # region ComputedStyles
     @property

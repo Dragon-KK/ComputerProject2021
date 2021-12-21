@@ -20,7 +20,6 @@ So a mesh will be super specific
 A sprite is basically a wrapper that simplifies the mesh interface :)
 Canvas is an object that renders sprites on to the world
 
-# TODO
 # Make it very generalized
 # Make functions for the smallest shit
 # So that we can have an easy time when workign with online multiplayer

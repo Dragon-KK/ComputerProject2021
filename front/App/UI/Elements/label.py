@@ -27,14 +27,6 @@ class label(div):
             
             textID = self._CanvasIDs.list[1]
             boxID = self._CanvasIDs.list[0]
-
-            # Move our text
-            self.Window.Document.moveto(
-                textID,
-                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - len(self.Text) * self.ComputedStyles.FontSize / self.ResizeCorrectionConst,
-                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
-            )
-            # Item config our text item
             self.Window.Document.itemconfig(
                 textID,
                 fill=self.Styles.ForegroundColor,
@@ -45,6 +37,12 @@ class label(div):
                     self.ComputedStyles.FontSize
                 )
             )
+            self.Window.Document.moveto(
+                textID,
+                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - len(self.Text) * self.ComputedStyles.FontSize / self.ResizeCorrectionConst,
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
+            )
+            # Item config our text item
             
             # Move our box
             self.Window.Document.coords(boxID,*self._GetVisualRectBox()) 

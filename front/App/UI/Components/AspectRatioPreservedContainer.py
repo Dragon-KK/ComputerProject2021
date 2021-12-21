@@ -22,11 +22,19 @@ class AspectRatioPreservedContainer(div):
 
         self._Styles.Size = mySize
         self._ComputedStyles = ComputeStyles(self.Styles, self) # Compute our styles
-        self.SetStyleUnits()
 
     def _GetStyleUnits(self):
         # Aspect ratio conserved div acts as za em container thing thingy
         return {'em':self.ComputedStyles.Size.x / 100}
+
+    def Update(self, propogationDepth=0, ReRender=True):
+        self.ComputeStyles()      
+        self.SetStyleUnits()
+        self._Update(updateRender = ReRender)
+
+        if propogationDepth:  # How deep do we want to update our stuff
+            for child in self.Children:
+                child.Update(propogationDepth = propogationDepth - 1,ReRender= ReRender)
 
         
 

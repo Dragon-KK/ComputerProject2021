@@ -1,2 +1,1 @@
 from .AspectRatioPreservedContainer import AspectRatioPreservedContainer
-from .Sprite import Sprite

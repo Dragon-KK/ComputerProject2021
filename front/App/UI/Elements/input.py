@@ -7,6 +7,7 @@ from ...Core.DataTypes.UI import EventListener
 # Overflow Hidden
 # Overflow Scroll
 # Overflow Ellipse
+# Max len
 
 def floatCheck(curr, proposed, allowNegative):
     return proposed.isnumeric() or (proposed == '.' and '.' not in curr) or (proposed == '-' and len(curr) == 0 and allowNegative)

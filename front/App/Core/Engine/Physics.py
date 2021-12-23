@@ -19,9 +19,9 @@ class Physics:
 
     def PhysicsLoop(self):
         # TODO
-        dt = self.Time.DeltaTime * self.Canvas.STYLE_UNITS['em'] # I say dt but its more of a correction constant at this point ideally this will be removed when position is based on %
+        dt = self.Time.DeltaTime # I say dt but its more of a correction constant at this point ideally this will be removed when position is based on %
         # Use the same next colliding wall business we used in v2
-        self.Balls[0].Position += Vector(50,0) * dt
+        self.Balls[0].Position += Vector(10,10) * dt
 
     def Continue(self):
         self.Canvas.Window.Intervals += self.__PhysicsInterval

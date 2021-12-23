@@ -2,9 +2,7 @@
     "Entities" : {
         "Ball" : {
             "BackgroundColor" : "#CCCCCC",
-            "Size" : ["3:em", "3:em"],
-            "OriginType" : "Centre",
-            "CornerRadius" : "3.5:em"
+            "OriginType" : "Centre"
         },
         "Wall" : {
 

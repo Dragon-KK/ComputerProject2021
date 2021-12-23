@@ -1,11 +1,12 @@
-from ....UI.Components import Sprite
+from ....UI.Components.Sprites import Circle
+from ...DataTypes.Standard import Vector
 from . import Entity
 
 class Ball(Entity):
     
     def __init__(self, initialVelocity, acceleration, initialPosition = ('50:w%', '50:h%')):
         '''Initial position of the'''
-        super().__init__(Sprite(), dynamic=True, tag="Ball")
+        super().__init__(Circle(Vector(0, 0), 5), dynamic=True, tag="Ball")
 
         self.Velocity = initialVelocity
         self.Acceleration = acceleration
@@ -15,9 +16,8 @@ class Ball(Entity):
     # region Position
     @property
     def Position(self):
-        return self.Sprite.ComputedStyles.Position
+        return self.Sprite.Centre
     @Position.setter
     def Position(self, NewPosition):
-            
-        self.Sprite.Styles.Set("Position", (NewPosition.x, NewPosition.y), update = False)
+        self.Sprite.Centre = NewPosition
     # endregion

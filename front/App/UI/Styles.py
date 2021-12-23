@@ -38,7 +38,7 @@ class Style:
         "BackgroundColor" : None,
         "ForegroundColor" : None,
         "PlaceHolderForegroundColor" : "gray",
-        "BorderColor" : None,
+        "BorderColor" : "Black",
         "BorderStroke" : 1,
         "FontSize" : "1:rem",
         "FontStyle" : "ariel"

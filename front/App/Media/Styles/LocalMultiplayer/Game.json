@@ -14,7 +14,7 @@
             "State" : "Visible",
             "Styles" : {
                 "BackgroundColor" : "#222222",
-                "Size" : ["100:w%", "10:h%"]
+                "Size" : ["100:w%", "5:em"]
             }
         }
     ],
@@ -23,8 +23,8 @@
             "State" : "Visible",
             "Styles" : {
                 "BackgroundColor" : "#1e1e1e",
-                "Position" : ["0:px", "10:h%"],
-                "Size" : ["100:w%", "90:h%"]
+                "Position" : ["0:px", "5:em"],
+                "Size" : ["100:w%", "51.25:em"]
             }
         }
     ],

@@ -3,15 +3,17 @@ from ...DataTypes.Standard import Vector
 from . import Entity
 
 class Ball(Entity):
-    
-    def __init__(self, initialVelocity, acceleration, initialPosition = ('50:w%', '50:h%')):
-        '''Initial position of the'''
-        super().__init__(Circle(Vector(0, 0), 5), dynamic=True, tag="Ball")
+    def __init__(self, initialVelocity, acceleration, initialPosition = Vector(50, 24), radius = 1):
+        '''Initial position of the ball is by default the centre of the arena'''
+        super().__init__(Circle(initialPosition, radius), dynamic=True, tag="Ball")
 
-        self.Velocity = initialVelocity
-        self.Acceleration = acceleration
+        self.Velocity = initialVelocity # A Euler Velocity (refer to DataTypes/Physics.py)
+        self.Acceleration = acceleration # A number
 
-        #self.Sprite.Styles.Set('Position', initialPosition) # Set the initial position of the ball
+        self.Radius = radius
+
+        self.NextCollidingStaticBody = None # The next wall / goal the ball will collide with (unless it collides with a paddle)
+        self.PredictedCollisionPoint = Vector(0, 0) # The point of collision
 
     # region Position
     @property

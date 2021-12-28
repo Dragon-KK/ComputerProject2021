@@ -20,5 +20,5 @@ class Entity:
             self.Sprite.Styles.Set(prop, Styles[prop])
 
     def Render(self):
-        if not self.Dynamic:return
+        if not self.Dynamic:return # If im not dynamic dont frameupdate
         self.Sprite.FrameUpdate()

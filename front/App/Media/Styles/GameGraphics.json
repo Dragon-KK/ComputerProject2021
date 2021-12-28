@@ -4,12 +4,6 @@
             "BackgroundColor" : "#CCCCCC",
             "OriginType" : "Centre"
         },
-        "Wall" : {
-
-        },
-        "Goal" : {
-
-        },
         "Paddle" : {
             
         }

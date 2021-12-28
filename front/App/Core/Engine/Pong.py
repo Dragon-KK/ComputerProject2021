@@ -1,6 +1,7 @@
 from . import World,Physics
 from . import Entities
-
+from ..DataTypes.Standard import Vector
+from ..DataTypes.Physics import EulersVector
 class Pong:
     '''
     Deals with world physics and adding entitites
@@ -43,12 +44,25 @@ class Pong:
 
 class LocalMultiplayerPong(Pong):
     def __init__(self, container, settings, physicsDelay = 10, renderDelay = 15):
-
         balls = [
-            Entities.Ball(10, 10)
+            Entities.Ball(EulersVector(magnitude=10, direction=Vector(-1, 5).normalized()), 0)
         ]
-        walls = [ ]
-        goals = [ ]
+        walls = [
+            Entities.Wall( # The horizontal wall on top
+                Vector(0, 0),Vector(100, 0)
+            ),
+            Entities.Wall( # The horizontal wall on bottom
+                Vector(0, 51.25),Vector(100, 51.25)
+            )
+        ]
+        goals = [
+            Entities.Goal( # The goal on the left
+                Vector(0, 0), Vector(0, 51.25)
+            ),
+            Entities.Goal( # The goal on the right
+                Vector(100, 0), Vector(100, 51.25)
+            )
+        ]
         players = ()
 
         super().__init__(

@@ -9,8 +9,8 @@ class Circle(Sprite):
     def __init__(self, centre, radius, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._Radius = 5
-        self._Centre = Vector(0, 0)
+        self._Radius = radius
+        self._Centre = centre
 
         # This part has possible redundancy
         self.Radius = radius # This will also be a property

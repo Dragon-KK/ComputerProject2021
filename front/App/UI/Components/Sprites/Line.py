@@ -1,7 +1,7 @@
 from . import Sprite
 from ....Core.DataTypes.Standard import Vector
 
-# NOT TESTED
+# Havent tested moving a line but rendering and updating works (just a div)
 class Line(Sprite):
     """
     Tis but a line
@@ -10,8 +10,6 @@ class Line(Sprite):
     """
     def __init__(self, P1, P2, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.arg = arg
-
         self.P1 = P1
         self.P2 = P2
 
@@ -28,7 +26,7 @@ class Line(Sprite):
        self.Displacement += value - self.P1
        self.P2 += value - self.P1
        self.P1 = value
-       self.Styles.Set("Position", (f"{P1.x}:em", f"{P1.y}:em"))
+       self.Styles.Set("Position", (f"{self.P1.x}:em", f"{self.P1.y}:em"))
 
 
         

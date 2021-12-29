@@ -8,6 +8,17 @@ def sign(n):
     '''Returns the sign of the number n'''
     return 1 if n > 0 else -1 if n < 0 else 0
 
+# TODO
+# Add a continue button component to start each round
+# it will have a countdown timer and will call start round at the end of it
+# Make a way for pong to take a function to call on round end
+# Add logic for showing score in that function
+
+# Work on adding player
+# Work on input.py
+# Work on online multiplayers
+
+
 class Physics:
 
     def HandleBall(self, ball, dt):
@@ -35,6 +46,7 @@ class Physics:
 
                 else: # If what it collided with was a wall
                     FuelUsed = self.OnBallCollision(ball, staticBodyCollisionData)
+                    ball.Position = staticBodyCollisionData.PointOfCollision
                     fuel -= FuelUsed
                     continue
 
@@ -123,18 +135,22 @@ class Physics:
 
     def OnBallCollision(self, ball, collisionData):
         '''Called when the ball collides'''
-        return 10
+        if collisionData.CollidingBody.IsHorizontal:
+            ball.Velocity.Direction.y *= -1
+        else:
+            ball.Velocity.Direction.x *= -1
+        ball.NextCollidingStaticBody = None
+        return ball.Position / collisionData.PointOfCollision
 
     def OnGoal(self,ball,collisionData):
         '''Called when a ball reaches the goal'''
-        print("GOALLLLLL!")
+        self.OnGoalDone(collisionData.CollidingBody)
 
     def PhysicsLoop(self):
         '''
         The callback of self.__PhysicsInterval
         '''
         dt = self.Time.DeltaTime
-
         if dt == 0: # Sometimes dt is 0 (like when the game is just unpaused etc.)
             return
 
@@ -144,7 +160,7 @@ class Physics:
                 self.OnGoal(ball, GoalCollisionData)
                 break
 
-    def __init__(self, canvas, balls, walls, goals, physicsDelay):
+    def __init__(self, canvas, balls, walls, goals, physicsDelay, onGoal):
         self.__PhysicsInterval = Interval(physicsDelay, self.PhysicsLoop)
 
         self.Canvas = canvas
@@ -152,6 +168,8 @@ class Physics:
         self.Balls = balls
         self.Walls = walls
         self.Goals = goals
+
+        self.OnGoalDone = onGoal
 
         self.Time = Time()
 

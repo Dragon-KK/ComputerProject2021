@@ -63,6 +63,7 @@ class IntervalContainer:
 
 
     def CallInterval(self, interval):
+        if interval not in self.Intervals:return
         interval.Callback()
         interval._ID = self.root.after(interval.Delay, self.CallInterval, interval)
 

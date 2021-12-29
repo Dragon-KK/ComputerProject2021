@@ -11,8 +11,8 @@ class Entity:
 
         self.Tag = tag
 
-    def Initialize(self):
-        '''Anything that must be done before after rendering but before game starts must be done here'''
+    def Reset(self):
+        '''Called when world is reset'''
         pass
 
     def SetStyles(self, Styles):

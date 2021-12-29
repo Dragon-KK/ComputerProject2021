@@ -32,21 +32,34 @@ class Document(doc):
         WorldContainer = div(name=".worldContainer")
         Container.Children += WorldContainer
 
-        self.Pong = LocalMultiplayerPong(WorldContainer,None)
+        self.Pong = LocalMultiplayerPong(WorldContainer,None, onGoal=lambda:OnGoal())
+
 
 
         # region Callbacks
-        def TogglePause(e):
-            self.Pong.TogglePause()
-        # endregion
+        # TODO
+        # In the future change this to an image
+        tcb = TimedContinueButton(name=".startCountdown",text=" Start?", onfinish=lambda:OnCountdownFinish())
+        def OnCountdownFinish():
+            tcb.Remove()
+            self.Pong.StartRound()
+        def ShowCountDown():
+            tcb.Reset()
+            WorldContainer.Children += tcb
+        def UpdateScore():
+            print(self.Pong.Score)
+        def OnGoal():
+            UpdateScore()
+            ShowCountDown()
+        # endregion       
 
-        
+        PauseButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.Pong.TogglePause())
 
-        PauseButton.EventListeners += EventListener("<Button-1>", TogglePause)
+        ShowCountDown()
 
     def Render(self):
         super().Render()
-        self.Pong.ContinueRound()
+
         
 
 

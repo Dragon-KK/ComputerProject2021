@@ -19,6 +19,9 @@ class Children(list):
 
         return self
 
+    def __isub__(self, other):
+        self.Remove(other)
+
     def Remove(self, item):
         if item in self:
             self.remove(item)

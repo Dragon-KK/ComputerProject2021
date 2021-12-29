@@ -24,7 +24,7 @@ class label(div):
         )
 
     def _Update(self, updateRender = True):
-        if updateRender:
+        if updateRender and self._CanvasIDs.list:
             
             textID = self._CanvasIDs.list[1]
             boxID = self._CanvasIDs.list[0]

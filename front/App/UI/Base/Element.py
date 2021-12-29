@@ -111,8 +111,8 @@ class Element:
         self._CanvasIDs.clear()
         for child in self.Children:
             child.Remove()  # Removes every child
-
         self.EventListeners.RemoveAll()
+        self.Parent = None
 
     def SetStyleUnits(self):
         

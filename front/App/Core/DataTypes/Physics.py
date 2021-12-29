@@ -6,6 +6,6 @@ class EulersVector:
         self.Direction = direction
 
 class Collision:
-    def __init__(self, body, fuelSpent):
+    def __init__(self, body, pointOfCollision):
         self.CollidingBody = body # The entity that the ball collided with
-        self.FuelSpent = fuelSpent # The amount of fuel spent to reach the point of collision (Refer to Engine/Physics.py for what fuel is)
+        self.PointOfCollision = pointOfCollision # The point of collision

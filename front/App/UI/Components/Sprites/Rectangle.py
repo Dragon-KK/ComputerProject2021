@@ -2,10 +2,6 @@ from . import Sprite
 from ....Core.DataTypes.Standard import Vector
 
 
-# TODO
-# Add functionality to Rectangle
-# Start the physics : )
-
 # NOT TESTED
 class Rectangle(Sprite):
     """

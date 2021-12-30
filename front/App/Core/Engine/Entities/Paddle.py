@@ -61,9 +61,25 @@ class Paddle(Entity):
     def ActiveWalls(self, ball):
         """The ActiveWalls for a ceertain ball."""
         if self.Orientation == Paddle.OrientationTypes.Left:
-            return self.Walls
+            if ball.Velocity.Direction.x < 0:
+                if ball.Velocity.Direction.y > 0:
+                    return self.Walls[1:]
+                elif ball.Velocity.Direction.y < 0:
+                    return self.Walls[:2]
+                else:
+                    return self.Walls[1:2]
+            else:
+                return []
         elif self.Orientation == Paddle.OrientationTypes.Right:
-            return self.Walls
+            if ball.Velocity.Direction.x > 0:
+                if ball.Velocity.Direction.y > 0:
+                    return self.Walls[1:]
+                elif ball.Velocity.Direction.y < 0:
+                    return self.Walls[:2]
+                else:
+                    return self.Walls[1:2]
+            else:
+                return []
 
 
     # region Position

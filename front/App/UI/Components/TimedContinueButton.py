@@ -5,7 +5,7 @@ class TimedContinueButton(label):
 
     def __init__(self, *args,countdown = 5,onfinish = lambda:0,text="Begin", ResizeCorrectionConst = 2.8,**kwargs):
         super().__init__(*args, **kwargs, text=text)
-        self.Countdown = 5
+        self.Countdown = countdown
         self._BeginningText = text
         self._BeginningResizeCorrectionConst = ResizeCorrectionConst
         self.__Counter = 0

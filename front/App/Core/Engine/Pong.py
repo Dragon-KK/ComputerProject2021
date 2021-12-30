@@ -62,12 +62,13 @@ class LocalMultiplayerPong(Pong):
         def GetRandomDirection():
             return Vector(PlusMinus(randint(5, 10)), PlusMinus(randint(2,7))).normalized()
         def GetRandomVelocity():
+            
             return EulersVector(magnitude=settings.Difficulty, direction=GetRandomDirection())
         # endregion
 
         
         balls = [
-            Entities.Ball(GetRandomVelocity, settings.DifficultySlope)
+            Entities.Ball(GetRandomVelocity, settings.DifficultySlope,initialPosition=Vector(50, 25.625))
         ]
         walls = [
             Entities.Wall( # The horizontal wall on top

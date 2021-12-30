@@ -62,12 +62,35 @@ class Physics:
         Looks for collision with any of the paddles
         Return None if no collision else return Collision object
         '''
+        nextCollidingOptions = {}
         for paddle in self.Paddles:
 
             walls = paddle.ActiveWalls(ball)
-            for wall in walls:
-                pass
-        return None
+            for entity in walls: # I go through each of the walls it could theoretically collide with
+                if entity.IsHorizontal: # If the wall is horizontal,
+                    poc = ball.Position + Vector(0, sign(ball.Velocity.Direction.y) * ball.Radius)
+                    FuelNeeded = (entity.P1.y - poc.y) / ball.Velocity.Direction.y # distance.y / velocity.y
+                    if FuelNeeded > fuel:continue             
+                    xCoordOfCollision = poc.x + (FuelNeeded * ball.Velocity.Direction.x)
+                    if entity.P1.x < xCoordOfCollision < entity.P2.x: # The x coordinate of collision falls bw the ends of the wall/goal
+                        nextCollidingOptions[FuelNeeded] = (entity, Vector(xCoordOfCollision,ball.Position.y + (ball.Velocity.Direction.y * FuelNeeded)))
+                else: # If the wall is vertical,
+                    # The actual point of contact of the collision is going to be on the circumpherence of the ball
+                    # So we use the point on circumpherence to calculate collision but point of contact is still taken as position of centre of the ball when it collides
+
+                    poc = ball.Position + Vector(sign(ball.Velocity.Direction.x) * ball.Radius, 0)
+                    # The point on circumpherence that will collide (point of contact, poc)
+
+                    FuelNeeded = (entity.P1.x - poc.x) / ball.Velocity.Direction.x # distance.x / velocity.x
+                    if FuelNeeded > fuel:continue                
+                    yCoordOfCollision = poc.y + (FuelNeeded * ball.Velocity.Direction.y)
+                    if entity.P1.y < yCoordOfCollision < entity.P2.y: # The y coordinate of collision falls bw the ends of the wall/goal
+                        nextCollidingOptions[FuelNeeded] = (entity, Vector(ball.Position.x + (ball.Velocity.Direction.x * FuelNeeded), yCoordOfCollision))
+        if not nextCollidingOptions:
+            return None
+        
+        minIndex = min(nextCollidingOptions.keys())
+        return Collision(nextCollidingOptions[minIndex][0], nextCollidingOptions[minIndex][1])
 
     def CheckStaticBodyCollision(self, ball, fuel):
         '''

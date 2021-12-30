@@ -43,7 +43,7 @@ class Document(doc):
         # region Callbacks
         # TODO
         # In the future change this to an image
-        tcb = TimedContinueButton(name=".startCountdown",text=" Start?", onfinish=lambda:OnCountdownFinish())
+        tcb = TimedContinueButton(name=".startCountdown",text=" Start?",countdown=3, onfinish=lambda:OnCountdownFinish())
         def OnCountdownFinish():
             tcb.Remove()
             self.Pong.StartRound()

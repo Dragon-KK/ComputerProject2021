@@ -11,7 +11,7 @@ class Pong:
         self,
         worldContainer,
         gameSettings, # Settings
-        players = [],
+        paddles = [],
         balls = [], 
         walls = [],
         goals = [],
@@ -26,6 +26,7 @@ class Pong:
         for ball in balls:self.World.Entities += ball
         for wall in walls:self.World.Entities += wall
         for goal in goals:self.World.Entities += goal
+        for paddle in paddles:self.World.Entities += paddle
 
     def StartRound(self):
         for entity in self.World.Entities:
@@ -52,16 +53,21 @@ class Pong:
 
 
 class LocalMultiplayerPong(Pong):
-    def __init__(self, container, settings, physicsDelay = 10, renderDelay = 15, onGoal = lambda:0):
+    def __init__(self, container, settings, physicsDelay = 10, renderDelay = 15, onGoal = lambda winner="":0):
+
+        #region Random Velocity
         def PlusMinus(n):
             tmp = randint(0, 1)
             return n* (-1 if tmp else 1)
         def GetRandomDirection():
             return Vector(PlusMinus(randint(5, 10)), PlusMinus(randint(2,7))).normalized()
         def GetRandomVelocity():
-            return EulersVector(magnitude=100, direction=GetRandomDirection())
+            return EulersVector(magnitude=settings.Difficulty, direction=GetRandomDirection())
+        # endregion
+
+        
         balls = [
-            Entities.Ball(GetRandomVelocity, 0)
+            Entities.Ball(GetRandomVelocity, settings.DifficultySlope)
         ]
         walls = [
             Entities.Wall( # The horizontal wall on top
@@ -81,35 +87,50 @@ class LocalMultiplayerPong(Pong):
                 "P1Goal"
             )
         ]
-        players = ()
+        paddles = [
+            Entities.Paddle(Vector(2, 25.625), Vector(2, 10), Entities.Paddle.OrientationTypes.Left, name = "LeftPaddle"),
+            Entities.Paddle(Vector(98, 25.625), Vector(2, 10), Entities.Paddle.OrientationTypes.Right, name = "RightPaddle"),
+        ]
 
         super().__init__(
             container, 
             settings,
-            players = players,
+            paddles = paddles,
             walls = walls,
             goals = goals,
             balls = balls,
             renderDelay=renderDelay
         )
     	
-        self.Physics = Physics(container, balls, walls, goals, physicsDelay, self.OnGoal)
+        self.Physics = Physics(container, balls, walls, goals,paddles, physicsDelay, self.OnGoal)
         self.Score  = [0, 0]
         self.OnGoalCallback = onGoal
+
+        self.Settings = settings
 
     def ContinueRound(self):
         self.World.Continue()
         self.Physics.Continue()
         self.IsPaused = False
 
+    def CheckForWinner(self):
+        if self.Score[1] >= self.Settings.WinCondition and (not self.Settings.Duece or self.Score[1] - self.Score[0] > 1):
+            return "Player2"
+        elif self.Score[0] >= self.Settings.WinCondition and (not self.Settings.Duece or self.Score[0] - self.Score[1] > 1):
+            return "Player1"
+        else:
+            return ""
+
     def OnGoal(self, goal):
         self.PauseRound()
+        self.World.Render() # Soemtimes the world misses a render 
         self.RoundHasStarted = False
         if goal.GoalName == "P1Goal":
             self.Score[0] += 1
         elif goal.GoalName == "P2Goal":
             self.Score[1] += 1
-        self.OnGoalCallback()
+
+        self.OnGoalCallback(winner = self.CheckForWinner())
 
     def PauseRound(self):
         self.World.Pause()

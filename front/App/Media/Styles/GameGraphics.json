@@ -5,7 +5,8 @@
             "OriginType" : "Centre"
         },
         "Paddle" : {
-            
+            "BackgroundColor" : "#FFFFFF",
+            "OriginType" : "Centre"
         }
     }
 }

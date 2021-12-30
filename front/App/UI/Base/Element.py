@@ -53,6 +53,7 @@ class Element:
             self.Window = parent.Window  # Gets hold of the window object
 
     def UpdateBasedOnStyleSheet(self, removed = []):
+        if not self.Parent:return
         # Possibility of none type error here be careful
         self.__SetStylesBasedOnSheet(removed = removed)
         self.Update(ReRender=True)
@@ -78,6 +79,7 @@ class Element:
 
     def Render(self, UpdateStyleSheet = True, RenderChildren = True):
         '''Renders the element and its children'''
+        if not self.Parent:return
         if self.InitialRenderDone:
             # If i have already been rendered once i need to first delete my previous render
             self.Window.Document._RemoveVisual(self._CanvasIDs.list)
@@ -105,6 +107,7 @@ class Element:
 
     def Remove(self):
         '''Removes the element and its children visually'''
+        if not self.Parent:return
         self._Remove()
         if self._CanvasIDs.list:self.Window.Document._RemoveVisual(self._CanvasIDs.list)
         self.Parent.Children.Remove(self)

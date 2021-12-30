@@ -5,7 +5,7 @@ from ....UI.Base import Document as doc
 from ....UI.Components import *
 from ....UI.Elements import *
 from ....UI import Styles
-
+from ....Core.DataTypes.Game import GameSettings
 
 class Document(doc):
     MinSize = Vector(1000, 500)
@@ -14,6 +14,10 @@ class Document(doc):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # TODO
+        # Add a way to get settings from settings screen
+        settings = GameSettings(100, 1, 1, False, 5)
 
         self.config(bg="black") # Let the background be black
 
@@ -32,7 +36,7 @@ class Document(doc):
         WorldContainer = div(name=".worldContainer")
         Container.Children += WorldContainer
 
-        self.Pong = LocalMultiplayerPong(WorldContainer,None, onGoal=lambda:OnGoal())
+        self.Pong = LocalMultiplayerPong(WorldContainer,settings, onGoal=lambda *args,**kwargs:OnGoal(*args,**kwargs))
 
 
 
@@ -48,9 +52,15 @@ class Document(doc):
             WorldContainer.Children += tcb
         def UpdateScore():
             print(self.Pong.Score)
-        def OnGoal():
+        def OnGoal(winner = ""):
             UpdateScore()
-            ShowCountDown()
+            
+            if not winner:
+                ShowCountDown()
+            else:
+                # Show end screen
+                print("Winner has won",winner)
+                pass
         # endregion       
 
         PauseButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.Pong.TogglePause())

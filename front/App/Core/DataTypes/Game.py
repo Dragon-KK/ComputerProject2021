@@ -27,3 +27,16 @@ class EntityHolder(list):
     def __isub__(self, entity):
         self.RemoveEntity(entity)
         return self
+
+from dataclasses import dataclass
+
+
+@dataclass
+class GameSettings:
+    """Game Settings"""
+    Difficulty : float # Initial Speed
+    DifficultySlope : float # Accelereration
+    BallCount : int # Number of balls
+    Duece : bool # Are dueces to be considered
+    WinCondition : int # Best of how much
+    

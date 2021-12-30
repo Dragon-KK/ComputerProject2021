@@ -13,21 +13,27 @@ class Rectangle(Sprite):
     def __init__(self, Position, Size, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._Radius = 5
-        self._Centre = Vector(0, 0)
+        self.Size = Size
+        self._Position = Position
+        self.Position = Position # This will be a property
 
-        # This part has possible redundancy
-        self.Radius = radius # This will also be a property
-        self.Centre = centre # This will be a property
-
-    # region Centre
+    # region Position
     @property
-    def Centre(self):
-        return self._Centre
-    @Centre.setter
-    def Centre(self, value):
-        self.Displacement += value - self._Centre
-        self._Centre = value
-        self.Styles.Set("Position", (f"{self._Centre.x}:em", f"{self._Centre.y}:em"), update=False)
-        
+    def Position(self):
+        return self._Position
+    @Position.setter
+    def Position(self, value):
+        self.Displacement += value - self._Position
+        self._Position = value
+        self.Styles.Set("Position", (f"{self._Position.x}:em", f"{self._Position.y}:em"), update=False)        
+    # end Region
+
+    # region Size
+    @property
+    def Size(self):
+        return self._Size
+    @Size.setter
+    def Size(self, value):
+        self._Size = value
+        self.Styles.Set("Size", (f"{self._Size.x}:em", f"{self._Size.y}:em"), update=False)        
     # end Region

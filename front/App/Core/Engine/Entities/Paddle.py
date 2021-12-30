@@ -2,22 +2,77 @@ from ....UI.Components.Sprites import Rectangle
 from ...DataTypes.Standard import Vector
 from . import Entity
 
-class Paddle(Entity):
+class VirtualWall:
+    def __init__(self, P1, P2, isHorizontal = False):
+        self.P1 = P1
+        self.P2 = P2
+        self.IsHorizontal = isHorizontal
+
+    def Displace(self, displacement):
+        self.P1 += displacement
+        self.P2 += displacement
+
+class Orientation:
+    Left = 0 # The paddle defends the goal on the left
+    Right = 1 # The paddle defends the goal on the right
     
-    def __init__(self, initialPosition = ('50:w%', '50:h%')):
-        '''Initial position of the'''
-        super().__init__(Circle(Vector(0, 0), 5), dynamic=True, tag="Ball")
 
-        self.Velocity = initialVelocity
-        self.Acceleration = acceleration
+class Paddle(Entity):
+    OrientationTypes = Orientation
+    
+    def __init__(self, position, size,orientation,name = "Paddle"):
+        '''
+        Paddle code is kinda scuffed but its ok ig
+        '''
+        super().__init__(Rectangle(position, size), dynamic=True, tag="Paddle")
 
-        #self.Sprite.Styles.Set('Position', initialPosition) # Set the initial position of the ball
+        self.__InitArgs = {
+            'position' : position,
+            'size' : size
+        }
+        self.PaddleName = name
+        self.Size = size
+        self.Orientation = orientation
+        self.SetWalls()
+
+    def SetWalls(self):
+        w = self.Size.x / 2 # Just some variables to help in finding the virtual wall positions
+        h = self.Size.y / 2
+        if self.Orientation == Paddle.OrientationTypes.Left:           
+
+            self.Walls = [
+                VirtualWall(self.Position + (-w, h), self.Position + (w, h), isHorizontal=True), # The wall on top
+                VirtualWall(self.Position + (w,-h), self.Position + (w, h)), # The wall on the right of the rectangle
+                VirtualWall(self.Position + (-w, -h), self.Position + (w, -h), isHorizontal=True), # The wall on the bottom
+            ]
+        elif self.Orientation == Paddle.OrientationTypes.Right:
+            self.Walls = [
+                VirtualWall(self.Position + (-w, h), self.Position + (w, h), isHorizontal=True), # The wall on top
+                VirtualWall(self.Position + (-w,-h), self.Position + (-w, h)), # The wall on the left of the rectangle
+                VirtualWall(self.Position + (-w, -h), self.Position + (w, -h), isHorizontal=True), # The wall on the bottom
+            ]
+
+    def Reset(self):
+        self.Position = self.__InitArgs['position']
+        self.Size = self.__InitArgs['size']
+        self.Sprite.Size = self.__InitArgs['size']
+
+
+    def ActiveWalls(self, ball):
+        """The ActiveWalls for a ceertain ball."""
+        if self.Orientation == Paddle.OrientationTypes.Left:
+            return self.Walls
+        elif self.Orientation == Paddle.OrientationTypes.Right:
+            return self.Walls
+
 
     # region Position
     @property
     def Position(self):
-        return self.Sprite.Centre
+        return self.Sprite.Position
     @Position.setter
     def Position(self, NewPosition):
-        self.Sprite.Centre = NewPosition
+        for wall in self.Walls:
+            wall.Displace(NewPosition - self.Position)
+        self.Sprite.Position = NewPosition
     # endregion

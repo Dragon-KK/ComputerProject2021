@@ -62,6 +62,11 @@ class Physics:
         Looks for collision with any of the paddles
         Return None if no collision else return Collision object
         '''
+        for paddle in self.Paddles:
+
+            walls = paddle.ActiveWalls(ball)
+            for wall in walls:
+                pass
         return None
 
     def CheckStaticBodyCollision(self, ball, fuel):
@@ -70,10 +75,11 @@ class Physics:
         Return None if no collision else return Collision object
         '''
         # FIXME We can reduce this if statement by a shitload
-        if (ball.Position.x < ball.PredictedCollisionPoint.x < ball.Position.x + (fuel * ball.Velocity.Direction.x)) or \
-           (ball.Position.y < ball.PredictedCollisionPoint.y < ball.Position.y + (fuel * ball.Velocity.Direction.y)) or \
-           (ball.Position.x > ball.PredictedCollisionPoint.x > ball.Position.x + (fuel * ball.Velocity.Direction.x)) or \
-           (ball.Position.y > ball.PredictedCollisionPoint.y > ball.Position.y + (fuel * ball.Velocity.Direction.y)):
+        MaxPosition = ball.Position + (ball.Velocity.Direction * fuel)
+        if (ball.Position.x < ball.PredictedCollisionPoint.x < MaxPosition.x) or \
+           (ball.Position.y < ball.PredictedCollisionPoint.y < MaxPosition.y) or \
+           (ball.Position.x > ball.PredictedCollisionPoint.x > MaxPosition.x) or \
+           (ball.Position.y > ball.PredictedCollisionPoint.y > MaxPosition.y):
            return Collision(ball.NextCollidingStaticBody, ball.PredictedCollisionPoint)
 
         return None
@@ -81,33 +87,24 @@ class Physics:
     def CalculateNextCollidingStaticBody(self, ball):
         '''
         Calculates the point of collision and next colliding wall or goal for a ball
-        '''
-        
-        
+        '''      
         nextCollidingOptions = {} # A dictionary with the key being distance and value being (nextcollidingbody, point of collision)
 
         for entity in self.Walls + self.Goals: # Loop through all the static bodies
-
-            if entity.IsHorizontal: # If its a horizontal wall/goal
-                
+            if entity.IsHorizontal: # If its a horizontal wall/goal                
                 # The actual point of contact of the collision is going to be on the circumpherence of the ball
                 # So we use the point on circumpherence to calculate collision but point of contact is still taken as position of centre of the ball when it collides
-
                 poc = ball.Position + Vector(0, sign(ball.Velocity.Direction.y) * ball.Radius)
                 # The point on circumpherence that will collide (point of contact, poc)
-
                 if sign(entity.P1.y - poc.y) * sign(ball.Velocity.Direction.y) <= 0:
                     # The ball will 100% never collide with this entity
                     continue
-
-                FuelNeeded = (entity.P1.y - poc.y) / ball.Velocity.Direction.y # distance.y / velocity.y
-                
+                FuelNeeded = (entity.P1.y - poc.y) / ball.Velocity.Direction.y # distance.y / velocity.y             
                 xCoordOfCollision = poc.x + (FuelNeeded * ball.Velocity.Direction.x)
                 if entity.P1.x < xCoordOfCollision < entity.P2.x: # The x coordinate of collision falls bw the ends of the wall/goal
                     nextCollidingOptions[FuelNeeded] = (entity, Vector(xCoordOfCollision,ball.Position.y + (ball.Velocity.Direction.y * FuelNeeded)))
 
-            else: # If its a vertical wall/goal
-                
+            else: # If its a vertical wall/goal                
                 # The actual point of contact of the collision is going to be on the circumpherence of the ball
                 # So we use the point on circumpherence to calculate collision but point of contact is still taken as position of centre of the ball when it collides
 
@@ -118,8 +115,7 @@ class Physics:
                     # The ball will 100% never collide with this entity
                     continue
 
-                FuelNeeded = (entity.P1.x - poc.x) / ball.Velocity.Direction.x # distance.x / velocity.x
-                
+                FuelNeeded = (entity.P1.x - poc.x) / ball.Velocity.Direction.x # distance.x / velocity.x                
                 yCoordOfCollision = poc.y + (FuelNeeded * ball.Velocity.Direction.y)
                 if entity.P1.y < yCoordOfCollision < entity.P2.y: # The y coordinate of collision falls bw the ends of the wall/goal
                     nextCollidingOptions[FuelNeeded] = (entity, Vector(ball.Position.x + (ball.Velocity.Direction.x * FuelNeeded), yCoordOfCollision))
@@ -128,6 +124,7 @@ class Physics:
             Console.error("No next colliding bodies !!!", errorLevel=10)            
             return False
 
+        # :)
         minIndex = min(nextCollidingOptions.keys())
         ball.NextCollidingStaticBody = nextCollidingOptions[minIndex][0] # The entity
         ball.PredictedCollisionPoint = nextCollidingOptions[minIndex][1] # The poc
@@ -157,10 +154,11 @@ class Physics:
         for ball in self.Balls:
             GoalCollisionData = self.HandleBall(ball, dt)
             if GoalCollisionData:
+                ball.Position = ball.PredictedCollisionPoint
                 self.OnGoal(ball, GoalCollisionData)
                 break
 
-    def __init__(self, canvas, balls, walls, goals, physicsDelay, onGoal):
+    def __init__(self, canvas, balls, walls, goals,paddles, physicsDelay, onGoal):
         self.__PhysicsInterval = Interval(physicsDelay, self.PhysicsLoop)
 
         self.Canvas = canvas
@@ -168,6 +166,7 @@ class Physics:
         self.Balls = balls
         self.Walls = walls
         self.Goals = goals
+        self.Paddles = paddles
 
         self.OnGoalDone = onGoal
 

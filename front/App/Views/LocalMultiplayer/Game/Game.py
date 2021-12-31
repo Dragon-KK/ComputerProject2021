@@ -17,7 +17,7 @@ class Document(doc):
 
         # TODO
         # Add a way to get settings from settings screen
-        settings = GameSettings(100, 1, 1, False, 5)
+        settings = GameSettings(20, 1, 1, False, 5)
 
         self.config(bg="black") # Let the background be black
 

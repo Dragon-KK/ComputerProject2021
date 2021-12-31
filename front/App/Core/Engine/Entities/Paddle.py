@@ -20,7 +20,7 @@ class Orientation:
 class Paddle(Entity):
     OrientationTypes = Orientation
     
-    def __init__(self, position, size,orientation,name = "Paddle"):
+    def __init__(self, position, size,orientation,paddleVelocity = Vector(0, 1),name = "Paddle"):
         '''
         Paddle code is kinda scuffed but its ok ig
         '''
@@ -30,8 +30,10 @@ class Paddle(Entity):
             'position' : position,
             'size' : size
         }
+        self.PaddleVelocity = paddleVelocity
         self.PaddleName = name
         self.Size = size
+        self.Bounds = (self.Size.y / 2, 51.25 - (self.Size.y/2)) # (lowerBounds, higherBounds)
         self.Orientation = orientation
         self.SetWalls()
 
@@ -88,6 +90,10 @@ class Paddle(Entity):
         return self.Sprite.Position
     @Position.setter
     def Position(self, NewPosition):
+        if NewPosition.y < self.Bounds[0]:
+            NewPosition.y = self.Bounds[0]
+        elif NewPosition.y > self.Bounds[1]:
+            NewPosition.y = self.Bounds[1]
         for wall in self.Walls:
             wall.Displace(NewPosition - self.Position)
         self.Sprite.Position = NewPosition

@@ -10,7 +10,8 @@ class EventHandler:
         self.Document = doc
         self.nextListenerID = 0
         self.Listeners = {}
-        self.Document.bind_all('<Key>', self.__OnKeyEvent)
+        self.Document.bind_all('<KeyPress>', self.__OnKeyEvent)
+        self.Document.bind_all('<KeyRelease>', self.__OnKeyEvent)
         
 
     def AddEventListener(self, code, element):
@@ -96,6 +97,9 @@ class EventListenersHolder:
             self.eventListeners[eventListener.Code] = {}
         self.eventListeners[eventListener.Code][self.nextListenerID] = eventListener
         self.nextListenerID += 1
+        if self.HasBeenSet:
+            self.element.Window.Document.EventHandler.AddEventListener(eventListener.Code, self.element)
+            if self.element.InitialRenderDone:self.element.Window.Document.EventHandler.SetEventListenersForElement(self.element)
         return self.nextListenerID - 1
 
     def __add__(self, eventListener):
@@ -103,6 +107,9 @@ class EventListenersHolder:
             self.eventListeners[eventListener.Code] = {}
         self.eventListeners[eventListener.Code][self.nextListenerID] = eventListener
         self.nextListenerID += 1
+        if self.HasBeenSet:
+            self.element.Window.Document.EventHandler.AddEventListener(eventListener.Code, self.element)
+            if self.element.InitialRenderDone:self.element.Window.Document.EventHandler.SetEventListenersForElement(self.element)
         return self
 
     def Remove(self, ID):

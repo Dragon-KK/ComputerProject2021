@@ -1,0 +1,14 @@
+Add player input to local multiplayer -- Done
+
+# TODO
+Collisions dont register if the ball hits the paddle at its corner
+
+InputManagers should be created input manager for local will just take keyboard input while inpt manager for online will be the part talking with the server and stuff --Done
+
+Work on window.resources and add a pause menu screen
+Add in music again
+Images ?
+Then work on input.py atleast add max text cut off
+
+
+Work on online multiplayer

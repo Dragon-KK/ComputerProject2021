@@ -30,6 +30,8 @@ class input(div):
 
     def __OnKeyInput(self, e):
         if States.KeyboardFocused not in self.State:return
+        if str(e.args[0].type) != "KeyPress":return
+
         char = e.args[0].char
 
         if (isSpecial(char)):

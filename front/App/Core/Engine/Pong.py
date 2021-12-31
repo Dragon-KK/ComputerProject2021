@@ -2,6 +2,7 @@ from . import World,Physics
 from . import Entities
 from ..DataTypes.Standard import Vector
 from ..DataTypes.Physics import EulersVector
+from .Helpers import LocalMultiplayer
 from random import randint
 class Pong:
     '''
@@ -106,10 +107,11 @@ class LocalMultiplayerPong(Pong):
         self.Physics = Physics(container, balls, walls, goals,paddles, physicsDelay, self.OnGoal)
         self.Score  = [0, 0]
         self.OnGoalCallback = onGoal
-
+        self.InputManager = LocalMultiplayer.InputManager(container,paddles)
         self.Settings = settings
 
     def ContinueRound(self):
+        self.InputManager.Continue()
         self.World.Continue()
         self.Physics.Continue()
         self.IsPaused = False
@@ -135,5 +137,6 @@ class LocalMultiplayerPong(Pong):
 
     def PauseRound(self):
         self.World.Pause()
+        self.InputManager.Pause()
         self.Physics.Pause()
         self.IsPaused = True

@@ -9,14 +9,12 @@ def sign(n):
     return 1 if n > 0 else -1 if n < 0 else 0
 
 # TODO
-# Add a continue button component to start each round
-# it will have a countdown timer and will call start round at the end of it
-# Make a way for pong to take a function to call on round end
-# Add logic for showing score in that function
+# Collisions dont get detected if the ball hits the corner of the paddle
 
-# Work on adding player
-# Work on input.py
-# Work on online multiplayers
+# Add some unseen padding
+# Add a 4th backup wall for both paddles?
+
+
 
 
 class Physics:
@@ -70,7 +68,7 @@ class Physics:
                 if entity.IsHorizontal: # If the wall is horizontal,
                     poc = ball.Position + Vector(0, sign(ball.Velocity.Direction.y) * ball.Radius)
                     FuelNeeded = (entity.P1.y - poc.y) / ball.Velocity.Direction.y # distance.y / velocity.y
-                    if FuelNeeded > fuel:continue             
+                    if FuelNeeded > fuel or FuelNeeded < 0:continue             
                     xCoordOfCollision = poc.x + (FuelNeeded * ball.Velocity.Direction.x)
                     if entity.P1.x < xCoordOfCollision < entity.P2.x: # The x coordinate of collision falls bw the ends of the wall/goal
                         nextCollidingOptions[FuelNeeded] = (entity, Vector(xCoordOfCollision,ball.Position.y + (ball.Velocity.Direction.y * FuelNeeded)))
@@ -82,7 +80,7 @@ class Physics:
                     # The point on circumpherence that will collide (point of contact, poc)
 
                     FuelNeeded = (entity.P1.x - poc.x) / ball.Velocity.Direction.x # distance.x / velocity.x
-                    if FuelNeeded > fuel:continue                
+                    if FuelNeeded > fuel or FuelNeeded < 0:continue                
                     yCoordOfCollision = poc.y + (FuelNeeded * ball.Velocity.Direction.y)
                     if entity.P1.y < yCoordOfCollision < entity.P2.y: # The y coordinate of collision falls bw the ends of the wall/goal
                         nextCollidingOptions[FuelNeeded] = (entity, Vector(ball.Position.x + (ball.Velocity.Direction.x * FuelNeeded), yCoordOfCollision))

@@ -1,6 +1,7 @@
 from ...DataTypes.UI import Interval, EventListener
 
 class InputManager:
+    '''Scuffed'''
     def __init__(self, canvas,paddles, keyHoldDelay = 20, keybinds = {
         'w' : 'LeftPaddle+',
         's' : 'LeftPaddle-',
@@ -40,6 +41,7 @@ class InputManager:
     def Pause(self):
         self.Canvas.EventListeners -= self.__KeyEventListener
         self.Window.Intervals -= self.__KeyCallbackInterval
+        self.__PressedKeys.clear()
 
     def Continue(self):
         self.Canvas.EventListeners += self.__KeyEventListener

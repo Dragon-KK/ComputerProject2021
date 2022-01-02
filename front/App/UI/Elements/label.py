@@ -1,5 +1,4 @@
 from .div import div
-from ..Styles import Style
 class label(div):
     def __init__(self,*args,text = "My Text",ResizeCorrectionConst = 2, **kwargs):
         super().__init__(*args, **kwargs)

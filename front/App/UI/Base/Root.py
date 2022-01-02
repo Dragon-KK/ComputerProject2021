@@ -1,6 +1,5 @@
-from .Util import ComputeStyles,CanvasIDContainer,Children
+from .Util import ComputeStyles,CanvasIDContainer,Children,Style
 from ...Core.DataManagers import FileManager
-from ..Styles import Style
 class Root:
     '''Like an element but without a parent'''
     def __init__(self, window, computedStyles, stylePath):

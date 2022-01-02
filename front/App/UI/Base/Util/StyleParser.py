@@ -1,5 +1,5 @@
 from ....Core.DataTypes.Standard import Vector
-from ...Styles import Positions,Style
+from .Styles import Positions,Style
 from ....Core.Diagnostics.Debugging import Console
 class ComputedStyles:
     def __init__(self):

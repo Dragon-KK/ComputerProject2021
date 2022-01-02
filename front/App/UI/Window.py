@@ -1,6 +1,7 @@
 from .Base.Util import IntervalContainer, TimeoutContainer
 from ..Core.Diagnostics.Debugging import Console
 from ..Core.DataTypes.Standard import Vector
+from .Base.Util.Resources import ResourceManager
 from .Base import Document
 import tkinter as tk
 class Window:
@@ -16,6 +17,8 @@ class Window:
 
         self.Title = title # Sets title
         self._Document = None
+
+        self.Resources = ResourceManager()
 
         self.Intervals = IntervalContainer(self)
         self.Timeouts = TimeoutContainer(self)

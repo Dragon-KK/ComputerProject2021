@@ -1,5 +1,5 @@
-from ..Core.Diagnostics.Debugging import Console
-from ..Core.DataTypes.Standard import Vector
+from ....Core.Diagnostics.Debugging import Console
+from ....Core.DataTypes.Standard import Vector
 # These are just some arbitrary values
 class Positions:
     Left = -1
@@ -45,10 +45,8 @@ class Style:
     }
 
     def __getattr__(self, name):
-        if self.__dict__.get(name):
-            return self.__dict__.get(name)
-        else:
-            return Style.Default.get(name, None) # If the style hasnt been set just return the default
+        # If the style hasnt been set just return the default
+        return Style.Default.get(name, None)
 
     def OnUpdate(self):
         # Needs to be overwritten by element

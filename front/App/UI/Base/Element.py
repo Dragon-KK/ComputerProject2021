@@ -1,5 +1,4 @@
-from .Util import ComputeStyles,EventListenersHolder, CanvasIDContainer, Children , StateHolder, States
-from ..Styles import Style
+from .Util import ComputeStyles,EventListenersHolder,Style, CanvasIDContainer, Children , StateHolder, States
 from ...Core.DataTypes.UI import EventListener,ContentContainer
 import inspect
 from time import time

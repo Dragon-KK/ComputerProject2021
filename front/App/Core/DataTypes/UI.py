@@ -22,6 +22,19 @@ class Interval:
         self.Callback = callback
         self._ID = -1
 
+class Resource:
+    def __init__(self, name):
+        self.Name = name
+
+    def Unload(self):
+        '''Called when resource is removed'''
+        pass
+
+    def Load(self):
+        '''Called when the resource is added'''
+        pass
+
 # Just an empty class
 class ContentContainer:
     pass
+

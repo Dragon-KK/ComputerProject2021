@@ -3,7 +3,6 @@ from ...Core.DataTypes.UI import Event
 from tkinter import Canvas
 from ...Core.DataTypes.Standard import Vector
 from ...Core.Diagnostics.Debugging import Console
-from ..Styles import Style
 from .Util.StyleParser import ComputedStyles
 from .Util import States,EventHandler
 from ...Core.DataTypes.UI import Event,ContentContainer

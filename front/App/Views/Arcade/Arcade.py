@@ -1,6 +1,5 @@
 from ...UI.Base import Document as doc
 from ...UI.Elements import *
-from ...UI import Styles
 from ...Core.DataTypes.Standard import Vector
 
 

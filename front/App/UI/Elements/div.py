@@ -1,6 +1,5 @@
 from ..Base import Element
 from ...Core.DataTypes.Standard import Vector
-from ..Styles import Style
 class div(Element):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)

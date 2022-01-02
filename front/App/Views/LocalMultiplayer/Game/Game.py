@@ -4,7 +4,6 @@ from ....Core.DataTypes.Standard import Vector
 from ....UI.Base import Document as doc
 from ....UI.Components import *
 from ....UI.Elements import *
-from ....UI import Styles
 from ....Core.DataTypes.Game import GameSettings
 
 class Document(doc):

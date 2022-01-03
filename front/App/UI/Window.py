@@ -40,6 +40,7 @@ class Window:
             self.ViewPort = Vector(event.width, event.height)
 
     def OnClose(self):
+        self.Resources.RemoveAll()
         self.Document.Destroy() if self.Document else None # Destroy the document
         self.Timeouts.EndAll()
         self.Intervals.EndAll()

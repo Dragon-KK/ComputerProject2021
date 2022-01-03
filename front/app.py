@@ -1,19 +1,26 @@
 from App.UI import Window
 from App.UI.Elements import div
 from App.Core.DataTypes.Standard import Vector
+from App.Core import Resources
 from App.Views.MainMenu import Document
 import ctypes
 
 # To improve resolution
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
-w = Window(
+MyWindow = Window(
     resizable=True,
     title="Pong",
     windowSize=Vector(1000, 600)
 )
- 
 
+# Add Resources
+MyWindow.Resources += Resources.Storage()
+MyWindow.Resources += Resources.Audio()
+MyWindow.Resources += Resources.Images()
 
-w.Document = Document
-w.Run()
+# Set document
+MyWindow.Document = Document
+
+# Run window
+MyWindow.Run()

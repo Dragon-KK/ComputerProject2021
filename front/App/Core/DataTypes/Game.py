@@ -39,4 +39,14 @@ class GameSettings:
     BallCount : int # Number of balls
     Duece : bool # Are dueces to be considered
     WinCondition : int # Best of how much
+
+    @classmethod
+    def FromJson(cls, data):
+        return cls(
+            data['Difficulty'],
+            data['DifficultySlope'],
+            data['BallCount'],
+            data['Duece'],
+            data['WinCondition']
+        )
     

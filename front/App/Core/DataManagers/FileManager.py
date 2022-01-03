@@ -13,3 +13,13 @@ class FileManager:
             return parsedJson
         else:
             raise FileNotFoundError(f"The file {file} does not exist")
+
+    @staticmethod
+    def WriteJson(file, obj):
+        '''Writes an object as json to a file relative to App/Media'''
+        try:
+            with open(FileManager.MediaPath.joinpath(file), "w") as f:
+                f.write(json.dumps(obj))
+            return None
+        except Exception as e:
+            return e

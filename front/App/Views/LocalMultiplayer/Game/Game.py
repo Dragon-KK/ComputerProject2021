@@ -14,9 +14,7 @@ class Document(doc):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # TODO
-        # Add a way to get settings from settings screen
-        settings = GameSettings(20, 1, 1, False, 5)
+        settings = GameSettings.FromJson(self.Window.Resources.Storage.LocalMultiplayer['GameSettings'])
 
         self.config(bg="black") # Let the background be black
 

@@ -10,6 +10,7 @@ class Document(doc):
     MinSize = Vector(1000, 500)
     Name = "Pong/LocalMultiplayer/Game"
     StyleSheet = "Styles/LocalMultiplayer/Game.json"
+    ResourceKey = "LocalMultiplayer"
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,7 +40,8 @@ class Document(doc):
 
         # region Callbacks
         # TODO
-        # In the future change this to an image
+        # make tcb a compoundcomponent
+        # create a compoundcomponent class and go from there
         tcb = TimedContinueButton(name=".startCountdown",text=" Start?",countdown=3, onfinish=lambda:OnCountdownFinish())
         def OnCountdownFinish():
             tcb.Remove()

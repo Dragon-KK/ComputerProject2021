@@ -45,7 +45,7 @@ class input(div):
 
 
     def _Render(self):
-        self._CanvasIDs += self.Window.Document.create_polygon(self._GetVisualRectBox(),width=self.Styles.BorderStroke,outline=self.Styles.BorderColor,fill=self.Styles.BackgroundColor, smooth=True)
+        super()._Render()
         self._CanvasIDs += self.Window.Document.create_text(
             self.ComputedStyles.TopLeft.x + self.Styles.BorderStroke,
             self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
@@ -60,9 +60,9 @@ class input(div):
         )
 
     def _Update(self, updateRender = True):
+        super()._Update(updateRender=updateRender)
         if updateRender:
             textID = self._CanvasIDs.list[1]
-            boxID = self._CanvasIDs.list[0]
 
             # Item config our text item
             self.Window.Document.itemconfig(
@@ -81,17 +81,6 @@ class input(div):
                 textID,
                 self.ComputedStyles.TopLeft.x + self.Styles.BorderStroke,
                 self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
-            )
-            
-            # Move our box
-            self.Window.Document.coords(boxID,*self._GetVisualRectBox()) 
-
-            # Item config our box       
-            self.Window.Document.itemconfig(
-                boxID,
-                width=self.Styles.BorderStroke,
-                outline=self.Styles.BorderColor,
-                fill=self.Styles.BackgroundColor
             )
 
     # region Text

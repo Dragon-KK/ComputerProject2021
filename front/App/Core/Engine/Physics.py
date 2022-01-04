@@ -10,7 +10,7 @@ def sign(n):
 
 # TODO
 # Collisions dont get detected if the ball hits the corner of the paddle
-
+# Or make the ball a square then eez
 # Add some unseen padding
 # Add a 4th backup wall for both paddles?
 

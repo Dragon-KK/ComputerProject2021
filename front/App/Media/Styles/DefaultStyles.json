@@ -28,5 +28,16 @@
                 "Size" : ["50:w%","30:h%"]
             }
         }
+    ],
+    ".img" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Centre",
+                "Position" : ["50:w%", "50:h%"],
+                "BackgroundColor" : "#131313",
+                "Size" : ["5:w%","5:w%"]
+            }
+        }
     ]
 }

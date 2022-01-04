@@ -3,6 +3,7 @@ from ..Core.Diagnostics.Debugging import Console
 from ..Core.DataTypes.Standard import Vector
 from .Base.Util.Resources import ResourceManager
 from .Base import Document
+from ..Core import Resources
 import tkinter as tk
 class Window:
     '''Create a new window'''
@@ -19,6 +20,10 @@ class Window:
         self._Document = None
 
         self.Resources = ResourceManager()
+        # Add Resources
+        self.Resources += Resources.Storage()
+        self.Resources += Resources.Audio()
+        self.Resources += Resources.Images()
 
         self.Intervals = IntervalContainer(self)
         self.Timeouts = TimeoutContainer(self)

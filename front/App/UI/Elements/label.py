@@ -7,7 +7,7 @@ class label(div):
 
     def _Render(self):
         #, font=(self.css.font['style'], self.css.font['size'])
-        self._CanvasIDs += self.Window.Document.create_polygon(self._GetVisualRectBox(),width=self.Styles.BorderStroke,outline=self.Styles.BorderColor,fill=self.Styles.BackgroundColor, smooth=True)
+        super()._Render()
         self._CanvasIDs += self.Window.Document.create_text(
             self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2),
             self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2), 
@@ -23,10 +23,10 @@ class label(div):
         )
 
     def _Update(self, updateRender = True):
+        super()._Update(updateRender=updateRender)
         if updateRender and self._CanvasIDs.list:
             
             textID = self._CanvasIDs.list[1]
-            boxID = self._CanvasIDs.list[0]
             self.Window.Document.itemconfig(
                 textID,
                 fill=self.Styles.ForegroundColor,
@@ -42,18 +42,6 @@ class label(div):
                 textID,
                 self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - len(self.Text) * self.ComputedStyles.FontSize / self.ResizeCorrectionConst,
                 self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
-            )
-            # Item config our text item
-            
-            # Move our box
-            self.Window.Document.coords(boxID,*self._GetVisualRectBox()) 
-
-            # Item config our box       
-            self.Window.Document.itemconfig(
-                boxID,
-                width=self.Styles.BorderStroke,
-                outline=self.Styles.BorderColor,
-                fill=self.Styles.BackgroundColor
             )
 
     # region Text

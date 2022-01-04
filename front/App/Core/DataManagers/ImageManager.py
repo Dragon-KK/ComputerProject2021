@@ -1,2 +1,23 @@
+from PIL import Image, ImageTk
+from .FileManager import FileManager
+
 class ImageManager:
-    pass
+    ImagePath = FileManager.MediaPath.joinpath("Images")
+    @staticmethod
+    def ResizedImage(img, resolution):
+        # Since all our images are tiny we really dont need anti aliasing
+        # But ideally we would use Image.ANTIALIASING instead as the images look cleaner
+        return img.resize((int(resolution.x), int(resolution.y)), Image.NEAREST) # second param basically tells it not to worry about antialiasing and just use nearest pixel value
+
+    @staticmethod
+    def TkImage(img):
+        return ImageTk.PhotoImage(img)
+
+    @staticmethod
+    def ProcessedImage(img, resolution):
+        return ImageManager.TkImage(ImageManager.ResizedImage(img, resolution))
+
+    @staticmethod
+    def Load(path):
+        '''Path is relative to images folder'''
+        return Image.open(ImageManager.ImagePath.joinpath(path))

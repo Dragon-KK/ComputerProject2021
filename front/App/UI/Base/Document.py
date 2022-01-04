@@ -15,6 +15,7 @@ class Document(Root, Canvas):
     Name = "Default"
     MinSize = Vector(0, 0)
     StyleSheet = "Styles/DefaultStyles.json"
+    ResourceKey = "None"
 
     def __init__(self, window):
 
@@ -25,6 +26,10 @@ class Document(Root, Canvas):
 
         Root.__init__(self, window,cstyles,self.StyleSheet) # Init root
         Canvas.__init__(self,window._tkRoot,bg="white") # Init canvas
+
+        # Load resources
+        self.Window.Resources.Images.LoadResources(self.ResourceKey)
+
 
         self.EventHandler = EventHandler(self)
         self.place(relx = 0,rely = 0,relheight =1, relwidth = 1) # tkinter stuff
@@ -67,6 +72,10 @@ class Document(Root, Canvas):
     def Destroy(self):
         Console.info(f"Closing Document {self.Name}")
         self._Destroy()
+
+        #Unload resources
+        self.Window.Resources.Images.UnloadResources(self.ResourceKey)
+
         self.Remove() # Element.Remove
         self.destroy() # Canvas.destroy
 

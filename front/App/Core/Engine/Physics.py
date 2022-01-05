@@ -8,15 +8,6 @@ def sign(n):
     '''Returns the sign of the number n'''
     return 1 if n > 0 else -1 if n < 0 else 0
 
-# TODO
-# Collisions dont get detected if the ball hits the corner of the paddle
-# Or make the ball a square then eez
-# Add some unseen padding
-# Add a 4th backup wall for both paddles?
-
-
-
-
 class Physics:
 
     def HandleBall(self, ball, dt):

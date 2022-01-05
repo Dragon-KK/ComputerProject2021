@@ -68,6 +68,7 @@ class Document(doc):
 
     def Render(self):
         super().Render()
+        self.Pong.StartRound()
 
         
 

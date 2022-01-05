@@ -20,9 +20,10 @@ def isSpecial(proposed):
 
 class input(div):   
 
-    def __init__(self,*args,Type=str,allowNegative = True, placeHolder = None, **kwargs):
+    def __init__(self,*args,Type=str,allowNegative = True, placeHolder = None,maxLength = float('inf'), **kwargs):
         super().__init__(*args, **kwargs)
         self.Type = Type
+        self.MaximumInputLength = maxLength
         self.allowNegative = allowNegative
         self.__value = ""
         self.PlaceHolder = placeHolder
@@ -39,7 +40,7 @@ class input(div):
                 self.__value = str(self.__value)[:-1]
                 if len(self._CanvasIDs.list) == 2:self.Window.Document.itemconfig(self._CanvasIDs.list[1],text=self.Value, fill = self.Styles.ForegroundColor if not self.__IsShowingPlaceholder else self.Styles.PlaceHolderForegroundColor)
 
-        elif (self.Type == str) or (self.Type == int and intCheck(self.__value, char, self.allowNegative)) or (self.Type == float and floatCheck(self.__value, char, self.allowNegative)):
+        elif len(self.__value) < self.MaximumInputLength and ((self.Type == str) or (self.Type == int and intCheck(self.__value, char, self.allowNegative)) or (self.Type == float and floatCheck(self.__value, char, self.allowNegative))):
             self.__value += char            
             # Basically just update the value
             if len(self._CanvasIDs.list) == 2:self.Window.Document.itemconfig(self._CanvasIDs.list[1],text=self.Value, fill = self.Styles.ForegroundColor if not self.__IsShowingPlaceholder else self.Styles.PlaceHolderForegroundColor)

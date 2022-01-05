@@ -45,12 +45,18 @@ class Paddle(Entity):
             self.Walls = [
                 VirtualWall(self.Position + (-w, h), self.Position + (w, h), isHorizontal=True), # The wall on top
                 VirtualWall(self.Position + (w,-h), self.Position + (w, h)), # The wall on the right of the rectangle
+
+                VirtualWall(self.Position + (w / 2,-h), self.Position + (w / 2, h)), # The backup wall since our collision detection is trash
+
                 VirtualWall(self.Position + (-w, -h), self.Position + (w, -h), isHorizontal=True), # The wall on the bottom
             ]
         elif self.Orientation == Paddle.OrientationTypes.Right:
             self.Walls = [
                 VirtualWall(self.Position + (-w, h), self.Position + (w, h), isHorizontal=True), # The wall on top
                 VirtualWall(self.Position + (-w,-h), self.Position + (-w, h)), # The wall on the left of the rectangle
+
+                VirtualWall(self.Position + (w / 2,-h), self.Position + (w / 2, h)), # The backup wall since our collision detection is trash
+
                 VirtualWall(self.Position + (-w, -h), self.Position + (w, -h), isHorizontal=True), # The wall on the bottom
             ]
 
@@ -67,9 +73,9 @@ class Paddle(Entity):
                 if ball.Velocity.Direction.y > 0:
                     return self.Walls[1:]
                 elif ball.Velocity.Direction.y < 0:
-                    return self.Walls[:2]
+                    return self.Walls[:3]
                 else:
-                    return self.Walls[1:2]
+                    return self.Walls[1:3]
             else:
                 return []
         elif self.Orientation == Paddle.OrientationTypes.Right:
@@ -77,9 +83,9 @@ class Paddle(Entity):
                 if ball.Velocity.Direction.y > 0:
                     return self.Walls[1:]
                 elif ball.Velocity.Direction.y < 0:
-                    return self.Walls[:2]
+                    return self.Walls[:3]
                 else:
-                    return self.Walls[1:2]
+                    return self.Walls[1:3]
             else:
                 return []
 

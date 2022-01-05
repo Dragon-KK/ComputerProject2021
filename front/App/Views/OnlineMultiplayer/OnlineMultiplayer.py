@@ -10,4 +10,4 @@ class Document(doc):
         super().__init__(*args, **kwargs)
         self.Children += label(name=".title",text="Online Mult")
 
-        self.Children += input(name=".input", placeHolder="Enter some text")
+        self.Children += input(name=".input", maxLength=10,placeHolder="Enter some text")

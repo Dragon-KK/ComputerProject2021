@@ -1,6 +1,7 @@
 from .div import div
 from ..Base.Util import States
 from ...Core.DataTypes.UI import EventListener
+from tkinter.font import Font
 
 # TODO
 # Overflow Hidden
@@ -55,8 +56,7 @@ class input(div):
             font = (
                 self.Styles.FontStyle,
                 self.ComputedStyles.FontSize
-            ),
-            width = self.ComputedStyles.Size.x
+            )
         )
 
     def _Update(self, updateRender = True):
@@ -72,8 +72,7 @@ class input(div):
                 font = (
                     self.Styles.FontStyle,
                     self.ComputedStyles.FontSize
-                ),
-                width = self.ComputedStyles.Size.x
+                )
             )
 
             # Move our text

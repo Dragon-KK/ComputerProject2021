@@ -7,7 +7,7 @@ InputManagers should be created input manager for local will just take keyboard 
 
 Work on window.resources and add a pause menu screen
 Add in music again
-Images ?
+Images  -- Done
 Then work on input.py atleast add max text cut off
 
 

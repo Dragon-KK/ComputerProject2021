@@ -1,9 +1,10 @@
 from .div import div
+from tkinter import font as tkFont
+
 class label(div):
-    def __init__(self,*args,text = "My Text",ResizeCorrectionConst = 2, **kwargs):
+    def __init__(self,*args,text = "My Text", **kwargs):
         super().__init__(*args, **kwargs)
         self.__text = text
-        self.ResizeCorrectionConst = ResizeCorrectionConst
 
     def _Render(self):
         #, font=(self.css.font['style'], self.css.font['size'])
@@ -38,9 +39,12 @@ class label(div):
                 ),
                 width=self.ComputedStyles.Size.x
             )
+
+            textSize = tkFont.Font(self.Window.Document, family=self.Styles.FontStyle,size = self.ComputedStyles.FontSize).measure(self.Text)
+
             self.Window.Document.moveto(
                 textID,
-                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - len(self.Text) * self.ComputedStyles.FontSize / self.ResizeCorrectionConst,
+                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - textSize / 2,
                 self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
             )
 

@@ -1,6 +1,5 @@
 from ...UI.Base import Document as doc
 from ...UI.Elements import *
-from ...UI import Styles
 from ...Core.DataTypes.Standard import Vector
 
 
@@ -9,4 +8,4 @@ class Document(doc):
     Name = "Pong/LocalMultiplayer"
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.Children += label(name=".title",text="About",ResizeCorrectionConst=1.6)
+        self.Children += label(name=".title",text="About")

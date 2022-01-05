@@ -2,8 +2,10 @@ from ..Elements import img,label
 from ...Core.DataTypes.UI import Interval,EventListener
 
 class TimedContinueButton:
+    # TODO
+    # Move this to compounditems.timedcontinuebutton
 
-    def __init__(self, *args,countdown = 5,onfinish = lambda:0,text="Begin", ResizeCorrectionConst = 2.8,**kwargs):
+    def __init__(self, *args,countdown = 5,onfinish = lambda:0,text="Begin",**kwargs):
         return
         # self.Countdown = countdown
         # self._BeginningText = text

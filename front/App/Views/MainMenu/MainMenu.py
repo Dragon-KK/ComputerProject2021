@@ -32,10 +32,10 @@ class Document(doc):
         self.Children += container
 
         # Title
-        container.Children += label(name=".title",text="PONG",ResizeCorrectionConst=1.6)        
+        container.Children += label(name=".title",text="PONG")        
 
         # region LocalMultiplayer Button
-        LocalMultiplayerButton = label(name=".navigationButton", text="Local", ResizeCorrectionConst=2.7)
+        LocalMultiplayerButton = label(name=".navigationButton", text="Local")
         LocalMultiplayerButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("LocalMultiplayer"))
         LocalMultiplayerButton.Styles.Set(
             "Position", ("37:w%", "70:h%")
@@ -44,7 +44,7 @@ class Document(doc):
         # endregion
 
         # region OnlineMultiplayer Button
-        OnlineMultiplayerButton = label(name=".navigationButton", text="Online",  ResizeCorrectionConst=2.5)
+        OnlineMultiplayerButton = label(name=".navigationButton", text="Online")
         OnlineMultiplayerButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("OnlineMultiplayer"))
         OnlineMultiplayerButton.Styles.Set(
             "Position", ("63:w%", "70:h%")
@@ -53,7 +53,7 @@ class Document(doc):
         # endregion
 
         # region AboutUs Button
-        AboutUsButton = label(name=".navigationButton", text="About", ResizeCorrectionConst=2.2)
+        AboutUsButton = label(name=".navigationButton", text="About")
         AboutUsButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("AboutUs"))
         AboutUsButton.Styles.Set(
             "Position", ("37:w%", "85:h%")
@@ -62,7 +62,7 @@ class Document(doc):
         # endregion
 
         # region Arcade Button
-        ArcadeButton = label(name=".navigationButton", text="Arcade", ResizeCorrectionConst=2.28)
+        ArcadeButton = label(name=".navigationButton", text="Arcade")
         ArcadeButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.NavigateTo("Arcade"))
         ArcadeButton.Styles.Set(
             "Position", ("63:w%", "85:h%")

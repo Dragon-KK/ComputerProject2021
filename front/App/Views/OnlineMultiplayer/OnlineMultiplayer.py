@@ -8,6 +8,6 @@ class Document(doc):
     Name = "Pong/OnlineMultiplayer"
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.Children += label(name=".title",text="Online Mult",ResizeCorrectionConst=1.6)
+        self.Children += label(name=".title",text="Online Mult")
 
         self.Children += input(name=".input", placeHolder="Enter some text")

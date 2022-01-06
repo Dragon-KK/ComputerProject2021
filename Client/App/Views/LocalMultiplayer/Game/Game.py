@@ -2,7 +2,8 @@ from ....Core.DataTypes.UI import EventListener, Interval
 from ....Core.Engine.Pong import LocalMultiplayerPong
 from ....Core.DataTypes.Standard import Vector
 from ....UI.Base import Document as doc
-from ....UI.Components import *
+from ....UI.CompoundItems import TimedContinueButton
+from ....UI.Components import AspectRatioPreservedContainer
 from ....UI.Elements import *
 from ....Core.DataTypes.Game import GameSettings
 
@@ -27,7 +28,7 @@ class Document(doc):
         Toolbar = div(name=".toolbar")
         Container.Children += Toolbar
 
-        PauseButton = div(name = '.pause')
+        PauseButton = img(self.Window.Resources.Images.LocalMultiplayer.Pause,name = '.pause')
         Toolbar.Children += PauseButton
         # endregion
 
@@ -37,18 +38,11 @@ class Document(doc):
         self.Pong = LocalMultiplayerPong(WorldContainer,settings, onGoal=lambda *args,**kwargs:OnGoal(*args,**kwargs))
 
 
-
-        # region Callbacks
-        # TODO
-        # make tcb a compoundcomponent
-        # create a compoundcomponent class and go from there
-        tcb = TimedContinueButton(name=".startCountdown",text=" Start?",countdown=3, onfinish=lambda:OnCountdownFinish())
+        tcb = TimedContinueButton(WorldContainer,lambda : OnCountdownFinish(), self.Window.Resources.Images.LocalMultiplayer.Play, 3)
         def OnCountdownFinish():
-            tcb.Remove()
             self.Pong.StartRound()
         def ShowCountDown():
             tcb.Reset()
-            WorldContainer.Children += tcb
         def UpdateScore():
             print(self.Pong.Score)
         def OnGoal(winner = ""):
@@ -64,11 +58,9 @@ class Document(doc):
 
         PauseButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.Pong.TogglePause())
 
-        ShowCountDown()
 
     def Render(self):
         super().Render()
-        self.Pong.StartRound()
 
         
 

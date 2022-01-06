@@ -26,6 +26,7 @@ class Style:
         "BorderStroke",
         "FontSize",
         "FontStyle",
+        "ImagePadding",
         "PlaceHolderForegroundColor"
     ]
 
@@ -41,7 +42,8 @@ class Style:
         "BorderColor" : "Black",
         "BorderStroke" : 1,
         "FontSize" : "1:rem",
-        "FontStyle" : "ariel"
+        "FontStyle" : "ariel",
+        "ImagePadding" : "0:em"
     }
 
     def __getattr__(self, name):

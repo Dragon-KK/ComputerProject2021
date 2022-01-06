@@ -10,6 +10,7 @@ class ComputedStyles:
         self.FontSize = 10
         self.SelfOriginType = Positions.TopLeft # Position
         self.CornerRadius = (0, 0, 0, 0) # (topleft, topright, bottomright, bottomleft)
+        self.ImagePadding = (0, 0, 0, 0) # (left, up, right, down)
         self.Visible = True
 
 
@@ -78,6 +79,17 @@ def ComputeStyles(styles, element):
                 continue
         elif propName == 'FontSize':
             retVal.FontSize = int(GetComputedValue(dic[propName]))
+        elif propName == 'ImagePadding':
+            try:
+                x = dic[propName].split(',')
+                if len(x) == 1:
+                    r = GetComputedValue(x[0])
+                    retVal.ImagePadding = (r,r,r,r)
+                elif len(x) == 4:
+                    retVal.ImagePadding = (GetComputedValue(x[0]),GetComputedValue(x[1]),GetComputedValue(x[2]),GetComputedValue(x[3]))
+            except Exception:
+                Console.error(f'Invalid style for {element} | "{propName}" : {dic[propName]} : ',errorLevel="UI 1")
+                continue
         elif propName == 'Visibile':
             retVal.Visible = dic[propName]
         else:

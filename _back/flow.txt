@@ -1,4 +1,0 @@
-client connects
-client either hosts game or joins game, sends message
-then playes are added
-game starts

@@ -1,6 +1,7 @@
 {
     "LocalMultiplayer" : {
-        "Play" : "play.png"
+        "Play" : "play.png",
+        "Pause" : "pause.png"
     },
     "Arcade" : {
         "Play" : "play.png"

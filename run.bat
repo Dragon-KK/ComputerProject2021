@@ -1,3 +1,3 @@
 @echo off
-cd front
+cd Client
 app.py

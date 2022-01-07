@@ -1,5 +1,4 @@
 from App.UI import Window
-from App.UI.Elements import div
 from App.Core.DataTypes.Standard import Vector
 from App.Views.MainMenu import Document
 import ctypes
@@ -7,16 +6,19 @@ import ctypes
 # To improve resolution
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
+
+
+# Create a window
 MyWindow = Window(
     resizable=True,
     title="Pong",
     windowSize=Vector(1000, 600)
 )
 
-
-
 # Set document
 MyWindow.Document = Document
 
 # Run window
 MyWindow.Run()
+
+# eeeez game done. gn

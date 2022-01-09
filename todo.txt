@@ -9,5 +9,11 @@ Work on window.resources and add a pause menu screen
 Add in music again
 Images  -- Done
 Then work on input.py atleast add max text cut off --Done
+
+!!!
+Finish arcade
+!!!
+
+
 Work on online multiplayer
 Work on input

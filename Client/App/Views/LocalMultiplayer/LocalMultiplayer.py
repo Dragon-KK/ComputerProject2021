@@ -10,6 +10,6 @@ class Document(doc):
         
     def Render(self):
         from .NewGame import Document as NewGame
-        Console.info("Redirecting to new game : )")
+        Console.info("Redirecting to new local multiplayer game")
         self.Window.Document = NewGame
         

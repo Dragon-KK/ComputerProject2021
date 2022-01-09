@@ -1,9 +1,10 @@
 from .Protocol import Protocol
+import json
 
 class Helper:
     @staticmethod
     def ParseMessage(msg):
-        return msg.decode("utf-8")
+        return json.loads(msg.decode("utf-8"))
 
     @staticmethod
     def ParseHeader(header):
@@ -11,7 +12,8 @@ class Helper:
 
     @staticmethod
     def EncodeMessage(msg):
-        return msg.encode("utf-8")
+        # msg must be a dictionary
+        return json.dumps(msg).encode("utf-8")
 
     @staticmethod
     def GetHeader(msg):

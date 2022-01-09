@@ -31,7 +31,7 @@ class Server:
             self.ActiveConnections += 1
             Console.info(f"Total active connections : {self.ActiveConnections}")
 
-
+    
         
     def HandleClient(self, conn : socket.socket, addr):
         Console.clientLog(addr, "Connected to server")
@@ -50,7 +50,7 @@ class Server:
             # region Check For Special Commands
             if msg == Protocol.Commands.DISCONNECT: # If we have to disconnect
                 break # Break out of this loop
-            
+
             # endregion
 
             Console.clientLog(addr, msg)

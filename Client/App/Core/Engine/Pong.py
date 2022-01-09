@@ -37,7 +37,9 @@ class Pong:
 
 
     def TogglePause(self):
+
         if not self.RoundHasStarted:return
+        print("Toglle")
         if self.IsPaused:
             self.ContinueRound()
         else:

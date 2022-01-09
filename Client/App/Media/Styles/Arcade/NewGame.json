@@ -1,0 +1,26 @@
+{
+    ".container" : [
+        {
+            "State" : "Visible",
+            "Styles" :{
+                "BackgroundColor" : "#111111",
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","50:h%"]
+            }
+        }
+    ],    
+    ".title" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Centre",
+                "Position" : ["50:w%", "20:h%"],
+                "FontSize" : "4:em",
+                "BackgroundColor" : "#131313",
+                "CornerRadius" : "5:em",
+                "ForegroundColor" : "White",
+                "Size" : ["50:w%","30:h%"]
+            }
+        }
+    ]
+}

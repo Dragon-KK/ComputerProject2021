@@ -24,6 +24,7 @@ class Window:
         self.Resources += Resources.Storage()
         self.Resources += Resources.Audio()
         self.Resources += Resources.Images()
+        self.Resources += Resources.Networking()
 
         self.Intervals = IntervalContainer(self)
         self.Timeouts = TimeoutContainer(self)

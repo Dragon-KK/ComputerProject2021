@@ -4,6 +4,8 @@
         "Pause" : "pause.png"
     },
     "Arcade" : {
-        "Play" : "play.png"
+        "Play" : "play.png",
+        "Pause" : "pause.png",
+        "Home" : "home.png"
     }
 }

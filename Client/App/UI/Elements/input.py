@@ -38,27 +38,32 @@ class input(div):
         if (isSpecial(char)):
             if char == '\x08':
                 self.__value = str(self.__value)[:-1]
-                if len(self._CanvasIDs.list) == 2:self.Window.Document.itemconfig(self._CanvasIDs.list[1],text=self.Value, fill = self.Styles.ForegroundColor if not self.__IsShowingPlaceholder else self.Styles.PlaceHolderForegroundColor)
+                if len(self._CanvasIDs.list) == 2:self.Window.Document.itemconfig(self._CanvasIDs.list[1],text=self.__value if self.__value else self.PlaceHolder if self.PlaceHolder else self.Type(), fill = self.Styles.ForegroundColor if self.__value else self.Styles.PlaceHolderForegroundColor)
 
         elif len(self.__value) < self.MaximumInputLength and ((self.Type == str) or (self.Type == int and intCheck(self.__value, char, self.allowNegative)) or (self.Type == float and floatCheck(self.__value, char, self.allowNegative))):
             self.__value += char            
             # Basically just update the value
-            if len(self._CanvasIDs.list) == 2:self.Window.Document.itemconfig(self._CanvasIDs.list[1],text=self.Value, fill = self.Styles.ForegroundColor if not self.__IsShowingPlaceholder else self.Styles.PlaceHolderForegroundColor)
+            if len(self._CanvasIDs.list) == 2:self.Window.Document.itemconfig(self._CanvasIDs.list[1],text=self.__value if self.__value else self.PlaceHolder if self.PlaceHolder else self.Type(), fill = self.Styles.ForegroundColor if self.__value else self.Styles.PlaceHolderForegroundColor)
 
 
     def _Render(self):
         super()._Render()
         self._CanvasIDs += self.Window.Document.create_text(
-            self.ComputedStyles.TopLeft.x + self.Styles.BorderStroke,
+            self.ComputedStyles.TopLeft.x + (self.STYLE_UNITS['em'] / 2),
             self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
-            text=self.Value, 
-            fill=self.Styles.ForegroundColor if not self.__IsShowingPlaceholder else self.Styles.PlaceHolderForegroundColor,
+            text=self.__value if self.__value else self.PlaceHolder if self.PlaceHolder else self.Type(), 
+            fill=self.Styles.ForegroundColor if self.__value else self.Styles.PlaceHolderForegroundColor,
             anchor = 'w',
             font = (
                 self.Styles.FontStyle,
                 self.ComputedStyles.FontSize
             )
         )
+        self.Window.Document.moveto(
+                self._CanvasIDs.list[1],
+                self.ComputedStyles.TopLeft.x + (self.STYLE_UNITS['em'] / 2),
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
+            )
 
     def _Update(self, updateRender = True):
         super()._Update(updateRender=updateRender)
@@ -68,7 +73,7 @@ class input(div):
             # Item config our text item
             self.Window.Document.itemconfig(
                 textID,
-                fill=self.Styles.ForegroundColor if not self.__IsShowingPlaceholder else self.Styles.PlaceHolderForegroundColor,
+                fill=self.Styles.ForegroundColor if self.__value else self.Styles.PlaceHolderForegroundColor,
                 anchor='w',
                 font = (
                     self.Styles.FontStyle,
@@ -79,22 +84,17 @@ class input(div):
             # Move our text
             self.Window.Document.moveto(
                 textID,
-                self.ComputedStyles.TopLeft.x + self.Styles.BorderStroke,
+                self.ComputedStyles.TopLeft.x + (self.STYLE_UNITS['em'] / 2),
                 self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
             )
 
     # region Text
     @property
     def Value(self):
-        if not self.__value:
-            self.__IsShowingPlaceholder = True
-            return self.PlaceHolder if self.PlaceHolder else self.Type()
         try:
-            self.__IsShowingPlaceholder = False
             return self.Type(self.__value)
         except:
-            self.__IsShowingPlaceholder = True
-            return self.PlaceHolder if self.PlaceHolder else self.Type()
+            return self.Type()
     @Value.setter
     def Value(self, value):
         self.__value = str(value)

@@ -1,2 +1,2 @@
 from .AspectRatioPreservedContainer import AspectRatioPreservedContainer
-from .TimedContinueButton import TimedContinueButton
+from .Counter import Counter

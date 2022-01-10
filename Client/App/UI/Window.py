@@ -47,19 +47,20 @@ class Window:
 
     def OnClose(self):
         self.Resources.RemoveAll()
-        self.Document.Destroy() if self.Document else None # Destroy the document
         self.Timeouts.EndAll()
         self.Intervals.EndAll()
+        self.Document.Destroy() if self.Document else None # Destroy the document
         self._tkRoot.destroy() # Destroy the tkinter window
         Console.info("Closing Window")
 
     def __InstantiateDocument(self, docConstructor):
         Console.info(f"Rendering document {docConstructor.Name}")
-        self._Document = docConstructor(self)
+            
+        self._Document = docConstructor(self) # Set the new document
         # The minimum size of the window is given by the document it is rendering
         self.MinSize = self._Document.MinSize
         
-        self._Document.Render()
+        self._Document.Render() # Render the new document
 
     #region Document
     @property
@@ -68,7 +69,9 @@ class Window:
     @Document.setter
     def Document(self, docConstructor):
         if self.Document:
-            self.Document.Destroy()
+            self.Intervals.EndAll()
+            self.Timeouts.EndAll()
+            self._Document.Destroy()
         self.Timeouts.SetTimeout(1, lambda : self.__InstantiateDocument(docConstructor)) # THis is to avoid long error messages
     #endregion
 

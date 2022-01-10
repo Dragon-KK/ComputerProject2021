@@ -2,7 +2,7 @@ from . import World,Physics
 from . import Entities
 from ..DataTypes.Standard import Vector
 from ..DataTypes.Physics import EulersVector
-from .Helpers import LocalMultiplayer
+from .Helpers import LocalMultiplayer,Arcade
 from random import randint
 class Pong:
     '''
@@ -39,7 +39,6 @@ class Pong:
     def TogglePause(self):
 
         if not self.RoundHasStarted:return
-        print("Toglle")
         if self.IsPaused:
             self.ContinueRound()
         else:
@@ -136,6 +135,79 @@ class LocalMultiplayerPong(Pong):
             self.Score[1] += 1
 
         self.OnGoalCallback(winner = self.CheckForWinner())
+
+    def PauseRound(self):
+        self.World.Pause()
+        self.InputManager.Pause()
+        self.Physics.Pause()
+        self.IsPaused = True
+
+class ArcadePong(Pong):
+    def __init__(self, container, settings, physicsDelay = 10, renderDelay = 15, onGoal = lambda:0):
+
+        #region Random Velocity
+        def PlusMinus(n):
+            tmp = randint(0, 1)
+            return n* (-1 if tmp else 1)
+        def GetRandomDirection():
+            return Vector((randint(5, 10)), PlusMinus(randint(1,6))).normalized()
+        def GetRandomVelocity():            
+            return EulersVector(magnitude=settings.Difficulty, direction=GetRandomDirection())
+        # endregion
+
+        
+        balls = [
+            Entities.Ball(GetRandomVelocity, settings.DifficultySlope,initialPosition=Vector(50, 25.625)) for _ in range(settings.BallCount)
+        ]
+        walls = [
+            Entities.Wall( # The horizontal wall on top
+                Vector(0, 0),Vector(100, 0)
+            ),
+            Entities.Wall( # The horizontal wall on bottom
+                Vector(0, 51.25),Vector(100, 51.25)
+            ),
+            Entities.Wall( # The wall on the right
+                Vector(100, 0), Vector(100, 51.25),horizontal=False
+            )
+        ]
+        goals = [
+            Entities.Goal( # The goal on the left
+                Vector(0, 0), Vector(0, 51.25),
+                "P2Goal"
+            )        
+        ]
+        paddles = [
+            Entities.Paddle(Vector(2, 25.625), Vector(2, 10), Entities.Paddle.OrientationTypes.Left, name = "LeftPaddle")
+        ]
+
+        super().__init__(
+            container, 
+            settings,
+            paddles = paddles,
+            walls = walls,
+            goals = goals,
+            balls = balls,
+            renderDelay=renderDelay
+        )
+    	
+        self.Physics = Physics(container, balls, walls, goals,paddles, physicsDelay, self.OnGoal)
+        self.Score  = [0, 0]
+        self.OnGoalCallback = onGoal
+        self.InputManager = Arcade.InputManager(container,paddles[0])
+        self.Settings = settings
+
+    def ContinueRound(self):
+        self.InputManager.Continue()
+        self.World.Continue()
+        self.Physics.Continue()
+        self.IsPaused = False
+
+    def OnGoal(self, goal):
+        self.PauseRound()
+        self.World.Render() # Soemtimes the world misses a render 
+        self.RoundHasStarted = False
+
+        self.OnGoalCallback()
 
     def PauseRound(self):
         self.World.Pause()

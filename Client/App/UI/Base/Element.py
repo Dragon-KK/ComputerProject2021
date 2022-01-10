@@ -59,7 +59,6 @@ class Element:
 
     def __SetStylesBasedOnSheet(self,removed = []):
         styleSheet = self.Window.Document.GetStylesByClassName(self.Name)
-
         for style in styleSheet:
             # Removed the styles that have been set by state
             if style['State'] in removed:
@@ -74,7 +73,7 @@ class Element:
                     self.Styles.Set(prop, style['Styles'][prop], update=False)
 
         self.SetStyleUnits()
-        self.ComputeStyles()      
+        self.ComputeStyles()    
 
     def Render(self, UpdateStyleSheet = True, RenderChildren = True):
         '''Renders the element and its children'''

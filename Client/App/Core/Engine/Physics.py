@@ -122,7 +122,7 @@ class Physics:
 
                 poc = ball.Position + Vector(sign(ball.Velocity.Direction.x) * ball.Radius, 0)
                 # The point on circumpherence that will collide (point of contact, poc)
-
+                
                 if sign(entity.P1.x - poc.x) * sign(ball.Velocity.Direction.x) <= 0:
                     # The ball will 100% never collide with this entity
                     continue
@@ -130,10 +130,11 @@ class Physics:
                 FuelNeeded = (entity.P1.x - poc.x) / ball.Velocity.Direction.x # distance.x / velocity.x                
                 yCoordOfCollision = poc.y + (FuelNeeded * ball.Velocity.Direction.y)
                 if entity.P1.y < yCoordOfCollision < entity.P2.y: # The y coordinate of collision falls bw the ends of the wall/goal
+
                     nextCollidingOptions[FuelNeeded] = (entity, Vector(ball.Position.x + (ball.Velocity.Direction.x * FuelNeeded), yCoordOfCollision))
 
         if not nextCollidingOptions: # If somehow the ball can phase out of the walls just return False
-            Console.error("No next colliding bodies !!!", errorLevel=10)            
+            Console.error("No next colliding bodies !!!", errorLevel=10)   
             return False
 
         # :)

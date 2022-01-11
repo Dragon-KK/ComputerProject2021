@@ -10,7 +10,8 @@ class ComputedStyles:
         self.FontSize = 10
         self.SelfOriginType = Positions.TopLeft # Position
         self.CornerRadius = (0, 0, 0, 0) # (topleft, topright, bottomright, bottomleft)
-        self.ImagePadding = (0, 0, 0, 0) # (left, up, right, down)
+        self.Padding = (0, 0, 0, 0) # (left, up, right, down)
+        self.Gap = Vector(0, 0) # x,y
         self.Visible = True
 
 
@@ -79,14 +80,31 @@ def ComputeStyles(styles, element):
                 continue
         elif propName == 'FontSize':
             retVal.FontSize = int(GetComputedValue(dic[propName]))
-        elif propName == 'ImagePadding':
+        elif propName == 'Gap':
             try:
                 x = dic[propName].split(',')
                 if len(x) == 1:
                     r = GetComputedValue(x[0])
-                    retVal.ImagePadding = (r,r,r,r)
+                    retVal.Gap = Vector(r,r)
+                elif len(x) == 2:
+                    r1 = GetComputedValue(x[0])
+                    r2 = GetComputedValue(x[1])
+                    retVal.Gap = Vector(r1,r2)
+            except Exception:
+                Console.error(f'Invalid style for {element} | {"{propName}" : {dic[propName]} : }')
+                continue
+        elif propName == 'Padding':
+            try:
+                x = dic[propName].split(',')
+                if len(x) == 1:
+                    r = GetComputedValue(x[0])
+                    retVal.Padding = (r,r,r,r)
+                elif len(x) == 2:
+                    r1 = GetComputedValue(x[0])
+                    r2 = GetComputedValue(x[1])
+                    retVal.Padding = (r1,r2,r1,r2)
                 elif len(x) == 4:
-                    retVal.ImagePadding = (GetComputedValue(x[0]),GetComputedValue(x[1]),GetComputedValue(x[2]),GetComputedValue(x[3]))
+                    retVal.Padding = (GetComputedValue(x[0]),GetComputedValue(x[1]),GetComputedValue(x[2]),GetComputedValue(x[3]))
             except Exception:
                 Console.error(f'Invalid style for {element} | "{propName}" : {dic[propName]} : ',errorLevel="UI 1")
                 continue

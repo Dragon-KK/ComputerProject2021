@@ -39,7 +39,7 @@
                 "BorderStroke" : 0,
                 "BorderColor" : "",
                 "CornerRadius" : "2:em",
-                "ImagePadding" : "1.1:em,1.1:em,1:em,1:em"
+                "Padding" : "1.1:em,1.1:em,1:em,1:em"
             }
         },
         {
@@ -71,7 +71,7 @@
             "Styles" : {
                 "Position" : ["95:w%","10:h%"],
                 "Size" : ["80:h%", "80:h%"],
-                "ImagePadding" : "1.1:em,1.1:em,1:em,1:em",
+                "Padding" : "1.1:em,1.1:em,1:em,1:em",
                 "BackgroundColor" : "",
                 "BorderStroke" : 0,
                 "CornerRadius" : "30:h%"

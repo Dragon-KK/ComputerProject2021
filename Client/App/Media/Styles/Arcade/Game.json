@@ -39,7 +39,7 @@
                 "BorderStroke" : 0,
                 "BorderColor" : "",
                 "CornerRadius" : "2:em",
-                "ImagePadding" : "1.1:em,1.1:em,1:em,1:em"
+                "Padding" : "1.1:em,1.1:em,1:em,1:em"
             }
         },
         {
@@ -71,7 +71,7 @@
             "Styles" : {
                 "Position" : ["95:w%","10:h%"],
                 "Size" : ["80:h%", "80:h%"],
-                "ImagePadding" : "1.1:em,1.1:em,1:em,1:em",
+                "Padding" : "1.1:em,1.1:em,1:em,1:em",
                 "BackgroundColor" : "",
                 "BorderStroke" : 0,
                 "CornerRadius" : "30:h%"
@@ -89,8 +89,9 @@
         {
             "State" : "Visible",
             "Styles" : {
-                "Position" : ["50:w%", "55:h%"],
+                "Position" : ["50:w%", "50:h%"],
                 "OriginType":"Centre",
+                "Padding" : "0,5:h%",
                 "FontSize":"3:em",
                 "ForegroundColor" : "#CCCCCC"
             }
@@ -105,7 +106,7 @@
                 "BackgroundColor" : "",
                 "BorderStroke" : 0,
                 "CornerRadius" : "30:h%",
-                "ImagePadding" : "1.1:em,1.1:em,1:em,1:em"
+                "Padding" : "1.1:em,1.1:em,1:em,1:em"
             }
         },
         {

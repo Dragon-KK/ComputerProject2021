@@ -12,6 +12,9 @@ class EventHandler:
         self.Listeners = {}
         self.Document.bind_all('<KeyPress>', self.__OnKeyEvent)
         self.Document.bind_all('<KeyRelease>', self.__OnKeyEvent)
+        self.Document.bind_all('<MouseWheel>', self.__OnScrollEvent)
+
+    
         
 
     def AddEventListener(self, code, element):
@@ -47,12 +50,22 @@ class EventHandler:
                     "!Key",
                     e
                 ))
+    def __OnScrollEvent(self, e):
+        if self.Listeners.get("!Scroll"):
+            for element in self.Listeners['!Scroll']:
+                element.EventListeners.Call(Event(
+                    self.Document.FocusedElement,
+                    "!Scroll",
+                    e
+                ))
 
     def SetEventListeners(self):
         for code in self.Listeners.keys():
             self.SetEventListenerForCode(code)
     def SetEventListenerForCode(self,code,element = None):
         if code == "!Key":
+            pass
+        elif code == "!Scroll":
             pass
         else:
             if not element:

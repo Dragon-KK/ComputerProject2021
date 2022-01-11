@@ -33,6 +33,9 @@ class Element:
         self.State -= States.Hovered
 
     def LoseFocus(self):
+        self.Window.Document.FocusedElement = None
+
+    def OnFocusLoss(self):
         self.State -= States.Focused
 
     def LoseKeyboardFocus(self):
@@ -43,6 +46,7 @@ class Element:
 
     def GainFocus(self):
         self.Window.Document.FocusedElement = self
+        self.State += States.Focused
 
     def _SetParent(self, parent):
         if self.Parent:

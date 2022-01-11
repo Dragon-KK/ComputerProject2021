@@ -51,9 +51,8 @@ class Document(Root, Canvas):
     @FocusedElement.setter
     def FocusedElement(self,value):
         if self.FocusedElement:
-            self.FocusedElement.LoseFocus()
+            self.FocusedElement.OnFocusLoss()
         self.__FocusedElement = value
-        value.State += States.Focused
 
     @property
     def KeyboardFocusedElement(self):

@@ -1,0 +1,35 @@
+{
+    ".container" : [
+        {
+            "State" : "Visible",
+            "Styles" :{
+                "BackgroundColor" : "#111111",
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","50:h%"]
+            }
+        }
+    ],
+    ".listbox" : [
+        {
+            "State" : "Visible",
+            "Styles" :{
+                "BackgroundColor" : "Pink",
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","50:h%"],
+                "Size" : ["80:w%", "80:h%"],
+                "Padding" : "7.5:h%,10:h%",
+                "Gap" : "2:em",
+                "CornerRadius" : "2:em"
+            }
+        }
+    ],
+    ".testItem" :[
+        {
+            "State" : "Visible",
+            "Styles" :{
+                "BackgroundColor" : "#aaaaaa",
+                "Size" : ["50:w%","10:h%"]
+            }
+        }
+    ]
+}

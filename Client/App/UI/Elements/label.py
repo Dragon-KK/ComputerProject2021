@@ -10,8 +10,8 @@ class label(div):
         #, font=(self.css.font['style'], self.css.font['size'])
         super()._Render()
         self._CanvasIDs += self.Window.Document.create_text(
-            self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2),
-            self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2), 
+            self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) + self.ComputedStyles.Padding[0],
+            self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) + self.ComputedStyles.Padding[1], 
             text=self.Text, 
             fill=self.Styles.ForegroundColor, 
             anchor='center',
@@ -44,8 +44,8 @@ class label(div):
 
             self.Window.Document.moveto(
                 textID,
-                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - textSize / 2,
-                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize, 
+                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - (textSize / 2) + self.ComputedStyles.Padding[0],
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize + self.ComputedStyles.Padding[1], 
             )
 
     # region Text

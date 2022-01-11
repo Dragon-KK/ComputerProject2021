@@ -11,9 +11,9 @@ class img(div):
     def _Render(self):
         super()._Render()
         if self.ComputedStyles.Size.x <=0 or self.ComputedStyles.Size.y <= 0:return
-        self.__PhotoSize = self.ComputedStyles.Size - (self.ComputedStyles.ImagePadding[2] + self.ComputedStyles.ImagePadding[1], self.ComputedStyles.ImagePadding[3] + self.ComputedStyles.ImagePadding[1])
+        self.__PhotoSize = self.ComputedStyles.Size - (self.ComputedStyles.Padding[2] + self.ComputedStyles.Padding[1], self.ComputedStyles.Padding[3] + self.ComputedStyles.Padding[1])
         self.__PhotoImage = ImageManager.ProcessedImage(self.Image, self.__PhotoSize)
-        self._CanvasIDs += self.Window.Document.create_image(self.ComputedStyles.TopLeft.x + self.ComputedStyles.ImagePadding[0], self.ComputedStyles.TopLeft.y + self.ComputedStyles.ImagePadding[1],anchor='nw',image = self.__PhotoImage)
+        self._CanvasIDs += self.Window.Document.create_image(self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0], self.ComputedStyles.TopLeft.y + self.ComputedStyles.Padding[1],anchor='nw',image = self.__PhotoImage)
 
     def _Update(self, updateRender = True):
         super()._Update(updateRender=updateRender)
@@ -30,7 +30,7 @@ class img(div):
             
             if self.__PhotoSize != self.ComputedStyles.Size:
                 # Resize the img again
-                self.__PhotoSize = self.ComputedStyles.Size - (self.ComputedStyles.ImagePadding[2] + self.ComputedStyles.ImagePadding[1], self.ComputedStyles.ImagePadding[3] + self.ComputedStyles.ImagePadding[1])
+                self.__PhotoSize = self.ComputedStyles.Size - (self.ComputedStyles.Padding[2] + self.ComputedStyles.Padding[1], self.ComputedStyles.Padding[3] + self.ComputedStyles.Padding[1])
                 self.__PhotoImage = ImageManager.ProcessedImage(self.Image, self.__PhotoSize)
                 
                 self.Window.Document.itemconfig(
@@ -40,12 +40,12 @@ class img(div):
 
                 self.Window.Document.moveto(
                     imgId,
-                    self.ComputedStyles.TopLeft.x + self.ComputedStyles.ImagePadding[0],
-                    self.ComputedStyles.TopLeft.y + self.ComputedStyles.ImagePadding[1], 
+                    self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0],
+                    self.ComputedStyles.TopLeft.y + self.ComputedStyles.Padding[1], 
                 )
             else:
                 self.Window.Document.moveto(
                     imgId,
-                    self.ComputedStyles.TopLeft.x + self.ComputedStyles.ImagePadding[0],
-                    self.ComputedStyles.TopLeft.y + self.ComputedStyles.ImagePadding[1], 
+                    self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0],
+                    self.ComputedStyles.TopLeft.y + self.ComputedStyles.Padding[1], 
                 )

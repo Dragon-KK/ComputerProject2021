@@ -111,31 +111,3 @@ class Vector:
             return self / Vector(0,0) >= other
         else:
             raise TypeError("Cannot find dist")
-
-#https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/
-# I dont think we are even going to use this
-# Is trash
-import threading
-class Thread(threading.Thread):
- 
-    # Thread class with a _stop() method.
-    # The thread itself has to check
-    # regularly for the stopped() condition.
- 
-    def __init__(self, *args, **kwargs):
-        super(MyThread, self).__init__(*args, **kwargs)
-        self._stop = threading.Event()
- 
-    # function using _stop function
-    def stop(self):
-        self._stop.set()
- 
-    def stopped(self):
-        return self._stop.isSet()
- 
-    def run(self):
-        while True:
-            if self.stopped():
-                return
-            print("Hello, world!")
-            time.sleep(1)

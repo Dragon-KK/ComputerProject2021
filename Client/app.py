@@ -5,9 +5,6 @@ import ctypes
 
 # To improve resolution
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
-
-
-
 # Create a window
 MyWindow = Window(
     resizable=True,

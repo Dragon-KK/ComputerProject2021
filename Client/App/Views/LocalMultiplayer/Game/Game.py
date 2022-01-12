@@ -27,6 +27,9 @@ class Document(doc):
        # region Toolbar
         Toolbar = div(name=".toolbar")
         Container.Children += Toolbar
+        GoBackButton = img(self.Window.Resources.Images.LocalMultiplayer.Home, name = ".goHome")
+        GoBackButton.EventListeners += EventListener("<Button-1>", lambda *args,**kwargs:GoHome())
+        Toolbar.Children += GoBackButton
 
         PauseButton = img(self.Window.Resources.Images.LocalMultiplayer.Pause,name = '.pause')
         Toolbar.Children += PauseButton
@@ -54,6 +57,9 @@ class Document(doc):
                 # Show end screen
                 print("Winner has won",winner)
                 pass
+        def GoHome():
+            from ...MainMenu import Document as MainMenu
+            self.Window.Document = MainMenu
         # endregion       
 
         PauseButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.Pong.TogglePause())

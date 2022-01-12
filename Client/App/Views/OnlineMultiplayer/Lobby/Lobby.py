@@ -32,6 +32,7 @@ class GameRequest:
         def ShowInfo():
             def acceptGame():
                 self.OnGameAcceptance(self)
+                closeInfo()
             def closeInfo():
                 gameInfoContainer.Remove()
             gameInfoContainer = div(name = ".gameInfoContainer")
@@ -94,18 +95,32 @@ class GameRequestList:
 
     def Add(self, req):
         '''Adds a game request'''
-        req = GameRequest.FromJson(req, self.ListBox, ongameaccpetance= self.OnGameAcceptance)
-        self.RequestList.append(req)
-        req.Show()
+        if type(req) == list:
+            for r in req:
+                s = GameRequest.FromJson(r, self.ListBox, ongameaccpetance= self.OnGameAcceptance)
+                self.RequestList.append(s)
+                s.Show()
+        else:
+            req = GameRequest.FromJson(req, self.ListBox, ongameaccpetance= self.OnGameAcceptance)
+            self.RequestList.append(req)
+            req.Show()
         self.ListBox.Update(propogationDepth=float('inf'))
 
     def Remove(self, req):
         '''Removes a game request'''
-        req = GameRequest.FromJson(req, self.ListBox)
-        index = self.RequestList.index(req) if req in self.RequestList else -1
-        if index > -1:
-            self.RequestList[index].Remove()
-            self.RequestList.pop(index)
+        if type(req) == list:
+            for r in req:
+                s = GameRequest.FromJson(r, self.ListBox)
+                index = self.RequestList.index(s) if s in self.RequestList else -1
+                if index > -1:
+                    self.RequestList[index].Remove()
+                    self.RequestList.pop(index)
+        else:
+            req = GameRequest.FromJson(req, self.ListBox)
+            index = self.RequestList.index(req) if req in self.RequestList else -1
+            if index > -1:
+                self.RequestList[index].Remove()
+                self.RequestList.pop(index)
         self.ListBox.Update(propogationDepth=float('inf'))
 
 class Document(doc):
@@ -139,7 +154,7 @@ class Document(doc):
                 self.__NextGameReqID += 1
                 self.CreateGameRequest({
                     "id" : self.__NextGameReqID,
-                    "addr" : self.Worker.Sock.getsockname(),
+                    "addr" : self.Worker.Address,
                     "gameSettings" : {
                         'Difficulty' : listbox.Children[1].Value,
                         'DifficultySlope' : listbox.Children[2].Value,
@@ -182,10 +197,22 @@ class Document(doc):
         Thread(target=self.TryConnection, daemon=True).start()
 
     def OnGameAcceptance(self,game):
-        self.GameRequestList.Remove(game.ToJson())
+        if game.Address == self.Worker.Address:
+            
+            return
+
+        self.Worker.SendMessage({
+            'type' : "GameAccepted",
+            'data' : game.ToJson(),
+            'addr' : game.Address
+        })
 
     def CreateGameRequest(self, gameReq):
         self.GameRequestList.Add(gameReq)
+        self.Worker.SendMessage({
+            'type' : 'RequestCreation',
+            'data' : gameReq
+        })
 
     def TryConnection(self):
         if not self.Worker.ConnectToServer(): # This function returns True if it could connect successfully else it returns False
@@ -198,10 +225,19 @@ class Document(doc):
         self.Worker.Close()
 
     def OnMessage(self, msg):
+        print(msg)
         if msg['type'] == 'NewGameRequest':
-            pass
+            self.GameRequestList.Add(msg['data'])
         elif msg['type'] == 'CancelGameRequests':
-            pass
+            self.GameRequestList.Remove(msg['data'])
+        elif msg['type'] == 'StartGame':
+            self.Worker.Close()
+            self.Window.Resources.Storage.OnlineMultiplayer['PeerAddress'] = msg['peerAddr']
+            self.Window.Resources.Storage.OnlineMultiplayer['IsBoss'] = msg['boss']
+            self.Window.Resources.Storage.OnlineMultiplayer['GameSettings'] = msg['data']['gameSettings']
+            from ..Game import Document as Game
+            self.Window.Document = Game
+            return True
     
     def OnConnectionError(self):
         '''Called when we are unable to connect to the server'''

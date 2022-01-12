@@ -6,29 +6,34 @@ from ....UI.CompoundItems import TimedContinueButton
 from ....UI.Components import AspectRatioPreservedContainer
 from ....UI.Elements import *
 from ....Core.DataTypes.Game import GameSettings
+from ....Core.Connection import PeerToPeer
 
 class Document(doc):
     MinSize = Vector(1000, 500)
-    Name = "Pong/LocalMultiplayer/Game"
-    StyleSheet = "Styles/LocalMultiplayer/Game.json"
-    ResourceKey = "LocalMultiplayer"
+    Name = "Pong/OnlineMultiplayer/Game"
+    StyleSheet = "Styles/OnlineMultiplayer/Game.json"
+    ResourceKey = "OnlineMultiplayer"
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        settings = GameSettings.FromJson(self.Window.Resources.Storage.LocalMultiplayer['GameSettings'])
-
+        settings = GameSettings.FromJson(self.Window.Resources.Storage.OnlineMultiplayer['GameSettings'])
+        self.P2P = PeerToPeer()
+        self.P2P.ConnectToPeer(self.Window.Resources.Storage.OnlineMultiplayer['PeerAddress'])
         self.config(bg="black") # Let the background be black
 
         # Container (since we want our page to preserve aspect ratio)
         Container = AspectRatioPreservedContainer(name=".container",aspectRatio=16/9)        
         self.Children += Container
        
-       # region Toolbar
+        # region Toolbar
         Toolbar = div(name=".toolbar")
         Container.Children += Toolbar
+        GoBackButton = img(self.Window.Resources.Images.OnlineMultiplayer.Home, name = ".goHome")
+        GoBackButton.EventListeners += EventListener("<Button-1>", lambda *args,**kwargs:GoHome())
+        Toolbar.Children += GoBackButton
 
-        PauseButton = img(self.Window.Resources.Images.LocalMultiplayer.Pause,name = '.pause')
+        PauseButton = img(self.Window.Resources.Images.OnlineMultiplayer.Pause,name = '.pause')
         Toolbar.Children += PauseButton
         # endregion
 
@@ -38,7 +43,7 @@ class Document(doc):
         self.Pong = LocalMultiplayerPong(WorldContainer,settings, onGoal=lambda *args,**kwargs:OnGoal(*args,**kwargs))
 
 
-        tcb = TimedContinueButton(WorldContainer,lambda : OnCountdownFinish(), self.Window.Resources.Images.LocalMultiplayer.Play, 3)
+        tcb = TimedContinueButton(WorldContainer,lambda : OnCountdownFinish(), self.Window.Resources.Images.OnlineMultiplayer.Play, 3)
         def OnCountdownFinish():
             self.Pong.StartRound()
         def ShowCountDown():
@@ -54,13 +59,15 @@ class Document(doc):
                 # Show end screen
                 print("Winner has won",winner)
                 pass
+        def GoHome():
+            from ...MainMenu import Document as MainMenu
+            self.Window.Document = MainMenu
         # endregion       
 
         PauseButton.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs:self.Pong.TogglePause())
 
-
-    def Render(self):
-        super().Render()
+    def Destroy(self):
+        super().Destroy()
 
         
 

@@ -24,7 +24,6 @@ class Window:
         self.Resources += Resources.Storage()
         self.Resources += Resources.Audio()
         self.Resources += Resources.Images()
-        self.Resources += Resources.Networking()
 
         self.Intervals = IntervalContainer(self)
         self.Timeouts = TimeoutContainer(self)
@@ -72,7 +71,7 @@ class Window:
             self.Intervals.EndAll()
             self.Timeouts.EndAll()
             self._Document.Destroy()
-        self.Timeouts.SetTimeout(1, lambda : self.__InstantiateDocument(docConstructor)) # THis is to avoid long error messages
+        self._tkRoot.after(10, lambda : self.__InstantiateDocument(docConstructor))
     #endregion
 
 

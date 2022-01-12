@@ -4,28 +4,29 @@ from .Protocol import Protocol
 from threading import Thread
 from ..Diagnostics.Debugging import Console
 
-class Worker:
+class PeerToPeer:
     def __init__(self):
-        self.Sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
-        
+        self.Sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket        
         self.IsConnected = False
         
-    def ConnectToServer(self):
+    def ConnectToPeer(self, peerAddr):
         '''Connects to the server'''
+        self.PeerAddress = peerAddr
         try:
-            self.Sock.connect(Helper.GetServerAddress()) # Connect to the server address
+            self.Sock.connect(peerAddr) # Connect to the server address
             self.IsConnected = True # Set my connection status
             self.Address = self.Sock.getsockname()
-            Console.serverLog("Connection Accepted")
+            Console.clientLog(peerAddr,"Connection Accepted")
             return True
         except WindowsError: # The error called when the connection cannot be made
             self.Address = ('0.0.0.0',0000)
-            Console.serverLog("Connection Declined")
+            
+            Console.clientLog(peerAddr,"Connection Declined")
             return False
 
     def _Listen(self, callback,delay, OnConnectionReset = lambda:0):
         from time import sleep
-        Console.info("Listening to server")
+        Console.info("Listening to peer")
         while True:           
             try:
                 # region Get Message
@@ -47,6 +48,7 @@ class Worker:
                 break
             except:
                 break
+        Console.info("Stopped Listening")
 
     def Listen(self, callback, delay = 0):
         '''Listens for messages from the server and gives it to the callback function'''

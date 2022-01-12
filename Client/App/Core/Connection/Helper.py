@@ -25,3 +25,5 @@ class Helper:
     @staticmethod
     def GetServerAddress():
         return ("10.0.0.102", 8008)
+
+    

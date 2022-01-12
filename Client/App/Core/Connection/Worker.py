@@ -7,7 +7,7 @@ from ..Diagnostics.Debugging import Console
 class Worker:
     def __init__(self):
         self.Sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
-        
+        self.listeningThread = Thread(target=self._Listen,daemon=True)
         self.IsConnected = False
         
     def ConnectToServer(self):
@@ -30,6 +30,7 @@ class Worker:
             try:
                 # region Get Message
                 sleep(delay)
+                if not self.IsConnected:break
                 msgLen_unparsed = self.Sock.recv(Protocol.HEADER_LENGTH) # A header message is always sent first followed by the actual message
                 msgLen = Helper.ParseHeader(msgLen_unparsed)
                 if not msgLen:continue
@@ -50,7 +51,8 @@ class Worker:
 
     def Listen(self, callback, delay = 0):
         '''Listens for messages from the server and gives it to the callback function'''
-        self.myThread = Thread(target=self._Listen,args=(callback,delay),daemon=True).start()
+        self.listeningThread._args = (callback,delay)
+        self.listeningThread.start()
 
     def SendMessage(self, msg):
         '''Sends a jsonifiable object to the server'''
@@ -65,10 +67,13 @@ class Worker:
     def Close(self):
         '''Safely closes the connection'''
         if self.IsConnected:
+            
             try:
                 self.SendMessage(Protocol.Commands.DISCONNECT) # Send the disconnect message
+                self.IsConnected = False
                 self.Sock.shutdown(socket.SHUT_WR) # Close the socket
                 Console.serverLog("Disconnecting")
             except socket.error:
+                self.IsConnected = False
                 self.Sock.shutdown(socket.SHUT_WR) # Close the socket
                 Console.serverLog("Disconnecting")

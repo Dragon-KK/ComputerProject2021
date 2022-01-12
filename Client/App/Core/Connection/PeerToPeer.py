@@ -11,6 +11,7 @@ class PeerToPeer:
         
     def ConnectToPeer(self, peerAddr):
         '''Connects to the server'''
+        peerAddr = tuple(peerAddr)
         self.PeerAddress = peerAddr
         try:
             self.Sock.connect(peerAddr) # Connect to the server address

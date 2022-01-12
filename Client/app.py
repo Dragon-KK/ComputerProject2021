@@ -17,5 +17,6 @@ MyWindow.Document = Document
 
 # Run window
 MyWindow.Run()
-
+import threading
+print(threading.active_count()) # Just a sanity check
 # eeeez game done. gn

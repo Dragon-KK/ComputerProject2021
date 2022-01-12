@@ -197,8 +197,13 @@ class Document(doc):
         Thread(target=self.TryConnection, daemon=True).start()
 
     def OnGameAcceptance(self,game):
-        if game.Address == self.Worker.Address:
-            
+        if game.Address == self.Worker.Address: # If im accepting myself just delete the game (just a shortcut ideally there would be another function for this)
+            g = game.ToJson()
+            self.GameRequestList.Remove(g)
+            self.Worker.SendMessage({
+                'type' : "RequestDeletion",
+                'data' : g
+            })
             return
 
         self.Worker.SendMessage({
@@ -225,7 +230,6 @@ class Document(doc):
         self.Worker.Close()
 
     def OnMessage(self, msg):
-        print(msg)
         if msg['type'] == 'NewGameRequest':
             self.GameRequestList.Add(msg['data'])
         elif msg['type'] == 'CancelGameRequests':

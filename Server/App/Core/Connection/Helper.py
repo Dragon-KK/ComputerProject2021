@@ -21,7 +21,3 @@ class Helper:
         header = str(len(msg)).encode("utf-8")
         header += b' ' * (Protocol.HEADER_LENGTH - len(header))
         return header
-
-    @staticmethod
-    def GetAddress():
-        return ("10.0.0.102", 8008)

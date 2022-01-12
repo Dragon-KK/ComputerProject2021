@@ -23,5 +23,5 @@ class Helper:
         return header
 
     @staticmethod
-    def GetAddress():
+    def GetServerAddress():
         return ("10.0.0.102", 8008)

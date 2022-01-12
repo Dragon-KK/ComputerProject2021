@@ -28,17 +28,17 @@ class StateHolder:
         if other not in self.States:
             if type(other) == str:
                 self.States.append(State(other))
-                self.OnChange()
+                self.OnChange(propogate = (other == States.Visible))
             elif type(other) == State:
                 self.States.append(other)
-                self.OnChange()
+                self.OnChange(propogate = (other == States.Visible))
 
         return self
 
     def __sub__(self,other):
         if other in self.States:
             self.States.remove(other)
-            self.OnChange(removed = [other])
+            self.OnChange(removed = [other], propogate = (other == States.Visible))
         return self
 
     def __contains__(self, item):

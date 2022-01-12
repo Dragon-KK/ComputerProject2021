@@ -8,27 +8,222 @@
                 "Position" : ["50:w%","50:h%"]
             }
         }
-    ],
-    ".listbox" : [
+    ],    
+    ".title" : [
         {
             "State" : "Visible",
-            "Styles" :{
-                "BackgroundColor" : "Pink",
+            "Styles" : {
                 "OriginType" : "Centre",
-                "Position" : ["50:w%","50:h%"],
-                "Size" : ["80:w%", "80:h%"],
-                "Padding" : "7.5:h%,10:h%",
-                "Gap" : "2:em",
-                "CornerRadius" : "2:em"
+                "Position" : ["50:w%", "10:h%"],
+                "FontSize" : "4:em",
+                "BackgroundColor" : "#131313",
+                "CornerRadius" : "5:em",
+                "ForegroundColor" : "White",
+                "Size" : ["30:w%","15:h%"]
             }
         }
     ],
-    ".testItem" :[
+    ".createGameIcon" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["90:w%", "86:h%"],
+                "Size" : ["4:em", "4:em"],
+                "BackgroundColor" : "Light Green",
+                "BorderStroke" : 0,
+                "CornerRadius" : "3:em",
+                "Padding" : "-0.4:em,-0.4:em"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#999999"
+            }
+        }
+    ],
+    ".goHome" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["1:w%", "1:em"],
+                "Size" : ["4:em", "4:em"],
+                "BackgroundColor" : "",
+                "BorderStroke" : 0,
+                "CornerRadius" : "1.5:em",
+                "Padding" : "1.1:em,1.1:em,1:em,1:em"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#3d3d3d"
+            }
+        }
+    ],
+    ".gameRequestsList" : [
         {
             "State" : "Visible",
             "Styles" :{
-                "BackgroundColor" : "#aaaaaa",
-                "Size" : ["50:w%","10:h%"]
+                "BackgroundColor" : "",
+                "OriginType" : "Top",
+                "Position" : ["50:w%","20:h%"],
+                "Size" : ["90:w%", "75:h%"],
+                "Padding" : "4:w%,10:h%",
+                "Gap" : "2:em",
+                "BorderColor" : "Gray",
+                "BorderStroke" : 2, 
+                "CornerRadius" : "3:em"
+            }
+        }
+    ],
+    ".gameRequestContainer" :[
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#222222",
+                "Size" : ["91:w%", "10:h%"],
+                "CornerRadius" : "3:em"
+            }
+        },
+        {
+            "State" : "Expanded",
+            "Styles" : {
+                "BackgroundColor" : "#222222",
+                "Size" : ["91:w%", "50:h%"],
+                "CornerRadius" : "3:em"
+            }
+        }
+    ],
+    ".gameRequestLabel" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Padding" : "0,3:h%",
+                "BackgroundColor" : "",
+                "Size" : ["100:w%", "4:em"],
+                "ForegroundColor" : "White",
+                "FontSize" : "1.5:em",
+                "BorderColor" :""                
+            }
+        }
+    ],
+    ".gameInfoList" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#222222",
+                "OriginType" : "Top",
+                "Size" : ["67:w%", "62:h%"],
+                "Position" : ["50:w%", "15:h%"],
+                "BorderColor" :"",
+                "CornerRadius" : "3:em",
+                "BorderStroke" : 0,
+                "Gap" : "4:h%"
+            }
+        }
+    ],
+    ".gameInfoList2" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "",
+                "OriginType" : "Top",
+                "Size" : ["67:w%", "67:h%"],
+                "Position" : ["50:w%", "15:h%"],
+                "BorderColor" :"",
+                "CornerRadius" : "3:em",
+                "BorderStroke" : 0,
+                "Gap" : "4:h%"
+            }
+        }
+    ],
+    ".gameInfo" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Padding" : "0,3:h%",
+                "BackgroundColor" : "",
+                "Size" : ["100:w%", "10:h%"],
+                "ForegroundColor" : "White",
+                "FontSize" : "5:h%",
+                "BorderColor" :""                
+            }
+        }
+    ],
+    ".gameInfo2" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Padding" : "1:h%,0.5:h%",
+                "BackgroundColor" : "#333333",
+                "Size" : ["100:w%", "10:h%"],
+                "ForegroundColor" : "White",
+                "FontSize" : "5:h%",
+                "BorderColor" :"",
+                "BorderStroke" : 2,
+                "CornerRadius" : "5:h%"            
+            }
+        },
+        {
+            "State" : "KeyboardFocused",
+            "Styles" : {
+                "BorderColor" :"#257afd"                
+            }
+        }
+    ],
+    ".gameInfoContainer" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#111111",
+                "OriginType" : "Centre",
+                "Size" : ["70:vh", "70:vh"],
+                "Position" : ["50:vw", "50:vh"],
+                "BorderColor" :"White",
+                "CornerRadius" : "3:em",
+                "BorderStroke" : 4
+                           
+            }
+        }
+    ],
+    ".closeMoreInfo" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "White",
+                "OriginType" : "Centre",
+                "Size" : ["10:h%", "10:h%"],
+                "Position" : ["90:w%", "10:h%"],
+                "BorderColor" :"",
+                "CornerRadius" : "5:h%",
+                "Padding" : "-5:h%,-5:h%"            
+            }
+        }
+    ],
+    ".acceptGameButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "White",
+                "OriginType" : "Centre",
+                "Size" : ["5:h%", "5:h%"],
+                "Position" : ["50:w%", "85:h%"],
+                "CornerRadius" : "5:h%",
+                "Padding" : "-5:h%,-5:h%"            
+            }
+        }
+    ],
+    ".createGameButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "Light Green",
+                "OriginType" : "Centre",
+                "Size" : ["10:h%", "10:h%"],
+                "Position" : ["50:w%", "90:h%"],
+                "CornerRadius" : "5:h%",
+                "Padding" : "-2:h%,-2:h%"            
             }
         }
     ]

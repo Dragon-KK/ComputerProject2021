@@ -55,11 +55,19 @@ class Element:
             self.Parent = parent  # The parent
             self.Window = parent.Window  # Gets hold of the window object
 
-    def UpdateBasedOnStyleSheet(self, removed = []):
+    def UpdateBasedOnStyleSheet(self, removed = [], propogate = False):
         if not self.Parent:return
         # Possibility of none type error here be careful
         self.__SetStylesBasedOnSheet(removed = removed)
         self.Update(ReRender=True)
+        if propogate:
+            if "Visible" in removed:
+                for i in self.Children:
+                    i.State -= "Visible"
+            else:
+                for i in self.Children:
+                    i.State += "Visible"
+
 
     def __SetStylesBasedOnSheet(self,removed = []):
         styleSheet = self.Window.Document.GetStylesByClassName(self.Name)
@@ -75,7 +83,7 @@ class Element:
             if style['State'] in self.State:
                 for prop in style['Styles'].keys():
                     self.Styles.Set(prop, style['Styles'][prop], update=False)
-
+        
         self.SetStyleUnits()
         self.ComputeStyles()    
 
@@ -114,7 +122,7 @@ class Element:
         if self._CanvasIDs.list:self.Window.Document._RemoveVisual(self._CanvasIDs.list)
         self.Parent.Children.Remove(self)
         self._CanvasIDs.clear()
-        for child in self.Children:
+        for child in self.Children + []: # TO createa  seperate object
             child.Remove()  # Removes every child
         self.EventListeners.RemoveAll()
         self.Parent = None

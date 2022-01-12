@@ -25,8 +25,8 @@ class ListBox(div):
     def __OnScroll(self, e):
         if not self.Scrollable:return
         if e.sender == self: # If i am the focused element
-            self.__Scroller.Scroll(1 if e.args[0].delta < 0 else -1)
-            if self.__Scroller.LastCurrent == self.__Scroller.Current:return
+            self.__Scroller.Scroll(1 if e.args[0].delta < 0 else -1 if e.args[0].delta>0 else 0)
+            if abs(self.__Scroller.LastCurrent - self.__Scroller.Current) < 1:return
             self.Update(float('inf'), ReRender=True)
 
 
@@ -131,10 +131,8 @@ class ListBox(div):
             maxWidth = 0
             for child in self.Children:
                 child.Styles.Position = (NextChildPosition.x, NextChildPosition.y)
-                if "Visible" not in child.State:
-                    child.State += "Visible"
-                else:
-                    child.Update(propogationDepth = propogationDepth - 1, ReRender = ReRender)
+                if "Visible" not in child.State:child.State += "Visible"
+                child.Update(propogationDepth = propogationDepth - 1, ReRender = ReRender)
                 if child.ComputedStyles.Size.x + self.ComputedStyles.Padding[0] > maxWidth:maxWidth = child.ComputedStyles.Size.x + self.ComputedStyles.Padding[0]
                 NextChildPosition += (0, child.ComputedStyles.Size.y + self.ComputedStyles.Gap.y)
                 if not ((child.ComputedStyles.TopLeft.y + child.ComputedStyles.Size.y > self.ComputedStyles.TopLeft.y + self.ComputedStyles.Padding[1]) and (child.ComputedStyles.TopLeft.y < self.ComputedStyles.TopLeft.y + self.ComputedStyles.Size.y - self.ComputedStyles.Padding[1])):
@@ -151,10 +149,8 @@ class ListBox(div):
             NextChildPosition += (-self.__Scroller.Current, 0)
             for child in self.Children:
                 child.Styles.Position = (NextChildPosition.x, NextChildPosition.y)
-                if "Visible" not in child.State:
-                    child.State += "Visible"
-                else:
-                    child.Update(propogationDepth = propogationDepth - 1, ReRender = ReRender)
+                if "Visible" not in child.State:child.State += "Visible"
+                child.Update(propogationDepth = propogationDepth - 1, ReRender = ReRender)
                 if child.ComputedStyles.Size.y + self.ComputedStyles.Padding[1] > maxHeight:maxHeight = child.ComputedStyles.Size.y + self.ComputedStyles.Padding[1]
                 if not ((child.ComputedStyles.TopLeft.x + child.ComputedStyles.Size.x > self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0]) and (child.ComputedStyles.TopLeft.x < self.ComputedStyles.TopLeft.x + self.ComputedStyles.Size.x - self.ComputedStyles.Padding[0])):
                     child.State -= "Visible"

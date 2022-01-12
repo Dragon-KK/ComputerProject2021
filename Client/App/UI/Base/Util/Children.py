@@ -14,7 +14,9 @@ class Children(list):
             other._SetParent(self.Parent)
             if self.Parent.InitialRenderDone:
                 other.Render()
-        except:
+                self.Parent.Update(propogationDepth=float('inf'), ReRender=True)
+        except Exception as e:
+            print(e)
             raise TypeError(f"Cannot add type {type(other)} as child")
 
         return self

@@ -42,7 +42,7 @@ class Root:
         for child in self.Children:
             child.Remove() # Removes every child
 
-    def Update(self, propogationDepth = 0):
+    def Update(self, propogationDepth = 0, **kwargs):
         self.__ComputedStyles.Size = self.Window.ViewPort
         self.SetStyleUnits()
         

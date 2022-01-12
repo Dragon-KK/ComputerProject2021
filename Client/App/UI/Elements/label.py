@@ -13,7 +13,7 @@ class label(div):
             self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) + self.ComputedStyles.Padding[0],
             self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) + self.ComputedStyles.Padding[1], 
             text=self.Text, 
-            fill=self.Styles.ForegroundColor, 
+            fill=self.Styles.ForegroundColor  if "Visible" in self.State else "",
             anchor='center',
             justify='center',
             font = (
@@ -26,11 +26,10 @@ class label(div):
     def _Update(self, updateRender = True):
         super()._Update(updateRender=updateRender)
         if updateRender and self._CanvasIDs.list:
-            
             textID = self._CanvasIDs.list[1]
             self.Window.Document.itemconfig(
                 textID,
-                fill=self.Styles.ForegroundColor,
+                fill=self.Styles.ForegroundColor if "Visible" in self.State else "",
                 anchor='center',
                 justify='center',
                 font = (

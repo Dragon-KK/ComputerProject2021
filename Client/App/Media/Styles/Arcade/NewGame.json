@@ -132,7 +132,7 @@
         {
             "State" : "Visible",
             "Styles" : {
-                "Position" : ["1:w%", "0.5:em"],
+                "Position" : ["1:w%", "1:em"],
                 "Size" : ["4:em", "4:em"],
                 "BackgroundColor" : "",
                 "BorderStroke" : 0,

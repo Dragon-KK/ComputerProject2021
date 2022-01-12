@@ -7,5 +7,11 @@
         "Play" : "play.png",
         "Pause" : "pause.png",
         "Home" : "home.png"
+    },
+    "OnlineMultiplayer" : {
+        "Home" : "home.png",
+        "Close" : "close.png",
+        "Accept" : "accept.png",
+        "Create" : "create.png"
     }
 }

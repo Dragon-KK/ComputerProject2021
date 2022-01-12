@@ -55,3 +55,11 @@ network{
 
     talks with world
 }
+
+----------------------------------------------------
+
+RequestCreation : Sent by the client to the server when a request is created
+RequestDeletion : Sent by the client to the server when a request is deleted
+
+NewGameRequest : Sent by server to all clients when a request is created
+CancelGameRequests : Sent by server to all clients when a list of requests are deleted

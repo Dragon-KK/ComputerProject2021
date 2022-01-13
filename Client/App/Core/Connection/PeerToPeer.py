@@ -3,40 +3,55 @@ from .Helper import Helper
 from .Protocol import Protocol
 from threading import Thread
 from ..Diagnostics.Debugging import Console
-
+# We should get the source port (client listening port) and the listening port (Same as what was used to connect to the server)
 class PeerToPeer:
     def __init__(self):
-        self.Sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket        
+        self.OutSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
+        self.ListenSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)     
         self.IsConnected = False
+        self.Disconnect = False
+        
         
     def ConnectToPeer(self, peerAddr):
         '''Connects to the server'''
         peerAddr = tuple(peerAddr)
         self.PeerAddress = peerAddr
         try:
-            self.Sock.connect(peerAddr) # Connect to the server address
+            self.OutSock.connect(peerAddr) # Connect to the server address
             self.IsConnected = True # Set my connection status
-            self.Address = self.Sock.getsockname()
+            self.Address = self.OutSock.getsockname()
             Console.clientLog(peerAddr,"Connection Accepted")
             return True
-        except WindowsError: # The error called when the connection cannot be made
+        except WindowsError as e: # The error called when the connection cannot be made
             self.Address = ('0.0.0.0',0000)
-            
+            print(e)
             Console.clientLog(peerAddr,"Connection Declined")
             return False
 
-    def _Listen(self, callback,delay, OnConnectionReset = lambda:0):
+    def _Listen(self, listeningAddr,callback,delay, OnConnectionReset = lambda:0):
         from time import sleep
-        Console.info("Listening to peer")
+        while True:
+            try:
+                self.ListeningAddress = listeningAddr
+                self.ListenSock.bind(listeningAddr)
+                self.ListenSock.listen()
+                Console.info("Listening to peer")
+                conn,addr = self.ListenSock.accept()
+            except:
+                Console.error("Listening socket is being used")
+                sleep(1)
+
+        
         while True:           
             try:
                 # region Get Message
                 sleep(delay)
-                msgLen_unparsed = self.Sock.recv(Protocol.HEADER_LENGTH) # A header message is always sent first followed by the actual message
+                if self.Disconnect:break
+                msgLen_unparsed = conn.recv(Protocol.HEADER_LENGTH) # A header message is always sent first followed by the actual message
                 msgLen = Helper.ParseHeader(msgLen_unparsed)
                 if not msgLen:continue
 
-                msg_unparsed = self.Sock.recv(int(msgLen))
+                msg_unparsed = conn.recv(int(msgLen))
                 msg = Helper.ParseMessage(msg_unparsed)
 
                 # endregion
@@ -44,17 +59,17 @@ class PeerToPeer:
                 if callback(msg):break
             except ConnectionResetError:
                 Console.info("Connection has been resetted")
-                self.IsConnected = False
                 OnConnectionReset()
                 break
-            except:
+            except Exception as e:
+                print(e)
                 break
         Console.info("Stopped Listening")
 
-    def Listen(self, callback, delay = 0):
+    def Listen(self, listeningAddr,callback, delay = 0):
         '''Listens for messages from the server and gives it to the callback function'''
-        self.myThread = Thread(target=self._Listen,args=(callback,delay),daemon=True).start()
-
+        listeningAddr = tuple(listeningAddr)
+        self.myThread = Thread(target=self._Listen,args=(listeningAddr,callback,delay),daemon=True).start()
     def SendMessage(self, msg):
         '''Sends a jsonifiable object to the server'''
         if not self.IsConnected:
@@ -62,16 +77,21 @@ class PeerToPeer:
             return
         encodedMsg = Helper.EncodeMessage(msg) # Encode the message
         header = Helper.GetHeader(encodedMsg) # Get the header
-        self.Sock.send(header) # Send the header
-        self.Sock.send(encodedMsg) # Send the message
+        self.OutSock.send(header) # Send the header
+        self.OutSock.send(encodedMsg) # Send the message
 
     def Close(self):
         '''Safely closes the connection'''
+        self.Disconnect = True
         if self.IsConnected:
             try:
                 self.SendMessage(Protocol.Commands.DISCONNECT) # Send the disconnect message
-                self.Sock.shutdown(socket.SHUT_WR) # Close the socket
+                self.IsConnected = False
+                self.OutSock.shutdown(socket.SHUT_WR) # Close the socket
+                self.ListenSock.shutdown(socket.SHUT_WR) # Close the socket
                 Console.serverLog("Disconnecting")
             except socket.error:
-                self.Sock.shutdown(socket.SHUT_WR) # Close the socket
+                self.IsConnected = False
+                self.OutSock.shutdown(socket.SHUT_WR) # Close the socket
+                self.ListenSock.shutdown(socket.SHUT_WR) # Close the socket
                 Console.serverLog("Disconnecting")

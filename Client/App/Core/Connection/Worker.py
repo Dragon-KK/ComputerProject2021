@@ -4,6 +4,9 @@ from .Protocol import Protocol
 from threading import Thread
 from ..Diagnostics.Debugging import Console
 
+# TODO
+# Possible error when both sides send headers then both are blocked on socket.recv
+# Maybe the time.sleep stops it?
 class Worker:
     def __init__(self):
         self.Sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket

@@ -56,7 +56,8 @@ class input(div):
             anchor = 'w',
             font = (
                 self.Styles.FontStyle,
-                self.ComputedStyles.FontSize
+                self.ComputedStyles.FontSize,
+                self.Styles.FontType
             )
         )
         self.Window.Document.moveto(
@@ -77,7 +78,8 @@ class input(div):
                 anchor='w',
                 font = (
                     self.Styles.FontStyle,
-                    self.ComputedStyles.FontSize
+                    self.ComputedStyles.FontSize,
+                    self.Styles.FontType
                 )
             )
 

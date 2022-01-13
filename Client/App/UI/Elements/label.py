@@ -18,10 +18,19 @@ class label(div):
             justify='center',
             font = (
                 self.Styles.FontStyle,
-                self.ComputedStyles.FontSize
+                self.ComputedStyles.FontSize,
+                self.Styles.FontType
             ),
             width = self.ComputedStyles.Size.x
         )
+        
+        textSize = tkFont.Font(self.Window.Document, family=self.Styles.FontStyle,size = self.ComputedStyles.FontSize,weight = self.Styles.FontType).measure(self.Text)
+
+        self.Window.Document.moveto(
+                self._CanvasIDs.list[1],
+                self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - (textSize / 2) + self.ComputedStyles.Padding[0],
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - (self.ComputedStyles.FontSize * 1.25) + self.ComputedStyles.Padding[1], 
+            )
 
     def _Update(self, updateRender = True):
         super()._Update(updateRender=updateRender)
@@ -34,17 +43,18 @@ class label(div):
                 justify='center',
                 font = (
                     self.Styles.FontStyle,
-                    self.ComputedStyles.FontSize
+                    self.ComputedStyles.FontSize,
+                    self.Styles.FontType
                 ),
                 width=self.ComputedStyles.Size.x
             )
 
-            textSize = tkFont.Font(self.Window.Document, family=self.Styles.FontStyle,size = self.ComputedStyles.FontSize).measure(self.Text)
+            textSize = tkFont.Font(self.Window.Document, family=self.Styles.FontStyle,size = self.ComputedStyles.FontSize,weight = self.Styles.FontType).measure(self.Text)
 
             self.Window.Document.moveto(
                 textID,
                 self.ComputedStyles.TopLeft.x + (self.ComputedStyles.Size.x/2) - (textSize / 2) + self.ComputedStyles.Padding[0],
-                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize + self.ComputedStyles.Padding[1], 
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - (self.ComputedStyles.FontSize * 1.25) + self.ComputedStyles.Padding[1], 
             )
 
     # region Text

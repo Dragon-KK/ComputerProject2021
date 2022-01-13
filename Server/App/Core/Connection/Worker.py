@@ -31,7 +31,7 @@ class Server:
 
         self.Sock.listen()
         while 1: # Our socket runs forever (until we close it)
-
+            
             conn, addr = self.Sock.accept() # Accept connections and keep the connection object and the adress
 
             threading.Thread(
@@ -89,29 +89,29 @@ class Server:
                 # endregion
 
                 if msg['type'] == "RequestCreation":
-                    self.OnlineMultiplayerGameRequestees[addr][1].append(msg['data'])
-                    self.BroadcastGameRequestCreation(conn, addr, [msg['data']])
+                    self.OnlineMultiplayerGameRequestees[addr][1].append(msg['data']) # Add it
+                    self.BroadcastGameRequestCreation(conn, addr, [msg['data']]) # Broadcast it
                 elif msg['type'] == 'RequestDeletion':                    
-                    self.OnlineMultiplayerGameRequestees[addr][1].remove(msg['data'])
-                    self.BroadcastGameRequestDeletion(conn, addr, [msg['data']])
+                    self.OnlineMultiplayerGameRequestees[addr][1].remove(msg['data']) # Remove it
+                    self.BroadcastGameRequestDeletion(conn, addr, [msg['data']]) # Broadcast deletion
                 elif msg['type'] == 'GameAccepted':
-                    msg['addr'] = tuple(msg['addr'])
+                    msg['addr'] = tuple(msg['addr']) # Convert to tuple (it needs to be hashable)
 
-                    self.BroadcastGameRequestDeletion(conn, addr, self.OnlineMultiplayerGameRequestees[addr][1] + self.OnlineMultiplayerGameRequestees[msg['addr']][1])
+                    self.BroadcastGameRequestDeletion(conn, addr, self.OnlineMultiplayerGameRequestees[addr][1] + self.OnlineMultiplayerGameRequestees[msg['addr']][1]) # Delete all game requests made by the two
 
                     
-                    c = self.OnlineMultiplayerGameRequestees[msg['addr']][0]
+                    c = self.OnlineMultiplayerGameRequestees[msg['addr']][0] # Get the connection
                     
-                    self.OnlineMultiplayerGameRequestees[addr][1].clear()
-                    self.OnlineMultiplayerGameRequestees[msg['addr']][1].clear()
+                    self.OnlineMultiplayerGameRequestees[addr][1].clear() # Clear
+                    self.OnlineMultiplayerGameRequestees[msg['addr']][1].clear() # Clear
 
-                    self.SendMessage(c, {
+                    self.SendMessage(c, { # Send message of acceptance
                         'type' : "StartGame",
                         'peerAddr' : addr,
                         'data' : msg['data'],
                         'boss' : False # The player who accepts gets priority in the peer to peer thing
                     })
-                    self.SendMessage(conn, {
+                    self.SendMessage(conn, { # Send message of confirmation
                         'type' : "StartGame",
                         'peerAddr' : msg['addr'],
                         'data' : msg['data'],
@@ -120,8 +120,8 @@ class Server:
         except Exception as e:
             print(e)
         finally:
-            self.BroadcastGameRequestDeletion(conn, addr, self.OnlineMultiplayerGameRequestees[addr][1]) # Remove the game requests made by the disconnecting client
-            del self.OnlineMultiplayerGameRequestees[addr] # Delete the dictionary item of this client
+            self.BroadcastGameRequestDeletion(conn, addr, self.OnlineMultiplayerGameRequestees.get(addr,(0,[]))[1]) # Remove the game requests made by the disconnecting client
+            if self.OnlineMultiplayerGameRequestees.get(addr):del self.OnlineMultiplayerGameRequestees[addr] # Delete the dictionary item of this client
             Console.clientLog(addr, "Disconnecting")
             Console.info(f"Total active connections : {len(self.OnlineMultiplayerGameRequestees.keys())}")
             conn.close() # Close the connection

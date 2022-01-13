@@ -237,6 +237,7 @@ class Document(doc):
         elif msg['type'] == 'StartGame':
             self.Worker.Close()
             self.Window.Resources.Storage.OnlineMultiplayer['PeerAddress'] = msg['peerAddr']
+            self.Window.Resources.Storage.OnlineMultiplayer['ListeningAddress'] = self.Worker.Address
             self.Window.Resources.Storage.OnlineMultiplayer['IsBoss'] = msg['boss']
             self.Window.Resources.Storage.OnlineMultiplayer['GameSettings'] = msg['data']['gameSettings']
             from ..Game import Document as Game

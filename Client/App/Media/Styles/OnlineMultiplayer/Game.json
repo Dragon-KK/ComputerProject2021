@@ -103,5 +103,20 @@
                 "BackgroundColor" : "#3d3d3d"
             }
         }
+    ],
+    ".messageLabel" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["50:w%", "50:h%"],
+                "Size" : ["70:em", "15:em"],
+                "OriginType" : "Centre",
+                "FontSize" : "3:em",
+                "BorderColor" : "",
+                "CornerRadius" : "2:em",
+                "BackgroundColor" : "#3d3d3d",
+                "ForegroundColor" : "#CCCCCC"
+            }
+        }
     ]
 }

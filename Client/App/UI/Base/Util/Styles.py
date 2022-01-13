@@ -27,6 +27,7 @@ class Style:
         "FontSize",
         "FontStyle",
         "Padding",
+        "FontType",
         "PlaceHolderForegroundColor",
         "Gap"
     ]
@@ -43,7 +44,8 @@ class Style:
         "BorderColor" : "Black",
         "BorderStroke" : 1,
         "FontSize" : "1:rem",
-        "FontStyle" : "ariel",
+        "FontStyle" : "Montserrat",
+        "FontType" : "bold",
         "Padding" : "0:em",
         "Gap" : (0, 0)
 

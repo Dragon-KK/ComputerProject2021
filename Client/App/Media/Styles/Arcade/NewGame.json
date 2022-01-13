@@ -91,7 +91,7 @@
             "Styles" : {
                 "Size" : ["50:w%", "100:h%"],
                 "Position" : ["50:w%", 0],
-                "Padding" : "1:em,0.1:em",
+                "Padding" : "1:em,-0.1:em",
                 "BackgroundColor" : "#333333",
                 "BorderColor" : "",
                 "BorderStroke" : 2,

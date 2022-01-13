@@ -17,3 +17,8 @@ Finish arcade
 
 Work on online multiplayer
 Work on input
+
+
+
+-------------------
+For sockets, create a seperate server for sending and recieving

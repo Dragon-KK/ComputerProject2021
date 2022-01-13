@@ -14,6 +14,7 @@ class Children(list):
             other._SetParent(self.Parent)
             if self.Parent.InitialRenderDone:
                 other.Render()
+                other.EventListeners.Set()
                 self.Parent.Update(propogationDepth=float('inf'), ReRender=True)
         except Exception as e:
             print(e)

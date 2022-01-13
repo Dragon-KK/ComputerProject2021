@@ -18,7 +18,8 @@ class Children(list):
                 other.EventListeners.Set()
                 self.Parent.Update(propogationDepth=float('inf'), ReRender=True)
         except Exception as e:
-            print(e)
+            import traceback
+            print(traceback.print_exc())
             raise TypeError(f"Cannot add type {type(other)} as child")
 
         return self

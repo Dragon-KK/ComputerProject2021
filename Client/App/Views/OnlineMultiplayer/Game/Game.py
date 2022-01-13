@@ -50,12 +50,13 @@ class Document(doc):
     def RequestRoundStart(self):
         self.StartRoundButton.Remove()
         self.HasRequestedStart = True
+        self.MessageLabel = label(name = ".messageLabel", text = "Waiting for opponent...")
+        self.WorldContainer.Parent.Children += self.MessageLabel
         self.P2P.SendMessage({
             'type' : 'command',
             'data' : 'RequestRoundStart'
         })
-        self.MessageLabel = label(name = ".messageLabel", text = "Waiting for opponent...")
-        self.WorldContainer.Parent.Children += self.MessageLabel
+        
 
     def ShowStartRoundButton(self):
         self.StartRoundButton = img(self.Window.Resources.Images.OnlineMultiplayer.Play, name = ".startRoundbutton")

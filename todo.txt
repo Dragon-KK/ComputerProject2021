@@ -21,4 +21,11 @@ Work on input
 
 
 -------------------
-For sockets, create a seperate server for sending and recieving
+#TODO
+Now we just need to send a message with paddle position every few milliseconds
+create the ongoal function
+
+maybe add validation later on?
+
+# TODO
+WORK ON UI CHANGES!!!!!!!

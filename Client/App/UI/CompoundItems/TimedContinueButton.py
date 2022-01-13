@@ -25,7 +25,7 @@ class TimedContinueButton:
         self.__CountdownInterval = Interval(1000, self.__OnCountDownTick)
 
         self.ImageElement.EventListeners += EventListener("<Button-1>", lambda *args, **kwargs : self.StartCountDown())
-
+        
         self.ParentElement.Children += self.ImageElement
 
     def __OnCountdownEnd(self):

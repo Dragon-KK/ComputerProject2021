@@ -6,6 +6,7 @@ class Children(list):
         self.Parent = parent
 
     def __iadd__(self, other):
+        
         try:
             if other in self:
                 Console.error(f"{other} is already a child of me")

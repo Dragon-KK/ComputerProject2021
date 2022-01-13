@@ -50,7 +50,7 @@ class input(div):
         super()._Render()
         self._CanvasIDs += self.Window.Document.create_text(
             self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0],
-                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize + self.ComputedStyles.Padding[1],
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - (self.ComputedStyles.FontSize * 1.25) + self.ComputedStyles.Padding[1],
             text=self.__value if self.__value else self.PlaceHolder if self.PlaceHolder else self.Type(), 
             fill=self.Styles.ForegroundColor if self.__value else self.Styles.PlaceHolderForegroundColor,
             anchor = 'w',
@@ -63,7 +63,7 @@ class input(div):
         self.Window.Document.moveto(
                 self._CanvasIDs.list[1],
                 self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0],
-                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize + self.ComputedStyles.Padding[1]
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - (self.ComputedStyles.FontSize) * 1.25 + self.ComputedStyles.Padding[1]
             )
 
     def _Update(self, updateRender = True):
@@ -87,7 +87,7 @@ class input(div):
             self.Window.Document.moveto(
                 textID,
                 self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0],
-                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - self.ComputedStyles.FontSize + self.ComputedStyles.Padding[1], 
+                self.ComputedStyles.TopLeft.y + (self.ComputedStyles.Size.y/2) - (self.ComputedStyles.FontSize * 1.25) + self.ComputedStyles.Padding[1], 
             )
 
     # region Text

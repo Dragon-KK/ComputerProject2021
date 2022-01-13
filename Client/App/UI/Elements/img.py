@@ -16,6 +16,7 @@ class img(div):
         self._CanvasIDs += self.Window.Document.create_image(self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0], self.ComputedStyles.TopLeft.y + self.ComputedStyles.Padding[1],anchor='nw',image = self.__PhotoImage)
 
     def _Update(self, updateRender = True):
+        if not self._CanvasIDs.list:return
         super()._Update(updateRender=updateRender)
         imgId = self._CanvasIDs.list[1]
         if self.ComputedStyles.Size.x <= 0 or self.ComputedStyles.Size.y <= 0:

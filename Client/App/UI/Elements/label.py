@@ -33,8 +33,9 @@ class label(div):
             )
 
     def _Update(self, updateRender = True):
-        super()._Update(updateRender=updateRender)
+        
         if updateRender and self._CanvasIDs.list:
+            super()._Update(updateRender=updateRender)
             textID = self._CanvasIDs.list[1]
             self.Window.Document.itemconfig(
                 textID,

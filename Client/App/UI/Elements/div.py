@@ -49,7 +49,7 @@ class div(Element):
         ]
 
     def _Update(self, updateRender = True):
-        if updateRender:
+        if updateRender and self._CanvasIDs.list:
             boxID = self._CanvasIDs.list[0]
             # Move our box
             self.Window.Document.coords(boxID,*self._GetVisualRectBox()) 

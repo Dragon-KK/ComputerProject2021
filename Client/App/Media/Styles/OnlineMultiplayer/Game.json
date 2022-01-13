@@ -28,7 +28,7 @@
             }
         }
     ],
-    ".countdownImage" : [
+    ".startRoundbutton" : [
         {
             "State" : "Visible",
             "Styles" : {

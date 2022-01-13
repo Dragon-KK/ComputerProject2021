@@ -50,7 +50,7 @@ class Circle(Sprite):
 
 
     def _Update(self, updateRender = True):
-        if updateRender:
+        if updateRender and self._CanvasIDs.list:
             _id = self._CanvasIDs.list[0] # The canvas id of our circle
             self.Window.Document.coords(
                 _id,

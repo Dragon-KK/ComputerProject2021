@@ -30,6 +30,7 @@ class PeerToPeer:
 
     def _Listen(self, listeningAddr,callback,delay, OnConnectionReset = lambda:0):
         from time import sleep
+        retryCount = 0
         while True:
             try:
                 self.ListeningAddress = listeningAddr
@@ -37,8 +38,12 @@ class PeerToPeer:
                 self.ListenSock.listen()
                 Console.info("Listening to peer")
                 conn,addr = self.ListenSock.accept()
+                break
             except:
+                retryCount += 1
                 Console.error("Listening socket is being used")
+                if retryCount > 10:
+                    return
                 sleep(1)
 
         
@@ -62,7 +67,7 @@ class PeerToPeer:
                 OnConnectionReset()
                 break
             except Exception as e:
-                print(e)
+                print("aglio ugllio",e)
                 break
         Console.info("Stopped Listening")
 
@@ -88,10 +93,17 @@ class PeerToPeer:
                 self.SendMessage(Protocol.Commands.DISCONNECT) # Send the disconnect message
                 self.IsConnected = False
                 self.OutSock.shutdown(socket.SHUT_WR) # Close the socket
-                self.ListenSock.shutdown(socket.SHUT_WR) # Close the socket
+                self.ListenSock.close() # Close the socket
                 Console.serverLog("Disconnecting")
             except socket.error:
                 self.IsConnected = False
                 self.OutSock.shutdown(socket.SHUT_WR) # Close the socket
-                self.ListenSock.shutdown(socket.SHUT_WR) # Close the socket
+                self.ListenSock.close() # Close the socket
                 Console.serverLog("Disconnecting")
+
+    def WordlessClose(self):
+        self.Disconnect = True
+        self.IsConnected = False
+        self.OutSock.shutdown(socket.SHUT_WR) # Close the socket
+        self.ListenSock.close() # Close the socket
+        Console.serverLog("Disconnecting")

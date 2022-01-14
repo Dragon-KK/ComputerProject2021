@@ -1,0 +1,10 @@
+{
+    ".background" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["100:w%", "100:h%"]
+            }
+        }
+    ]
+}

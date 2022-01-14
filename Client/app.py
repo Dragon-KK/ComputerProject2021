@@ -13,7 +13,7 @@ MyWindow = Window(
 )
 
 # Set document
-MyWindow.Document = Document
+MyWindow.ChangeDocument(Document)
 
 # Run window
 MyWindow.Run()

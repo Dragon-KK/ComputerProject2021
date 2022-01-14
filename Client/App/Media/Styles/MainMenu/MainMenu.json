@@ -6,5 +6,44 @@
                 "Size" : ["100:w%", "100:h%"]
             }
         }
-    ]
+    ],
+    ".title" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["60:w%","20:h%"],
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","17.5:h%"],
+                "ForegroundColor" : "White",
+                "FontSize" : "7:em"
+            }
+        }
+    ],
+    ".navigationButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["30:w%","7.5:h%"],
+                "OriginType" : "Left",
+                "BackgroundColor" : "#28292f",
+                "ForegroundColor" : "White",
+                "FontSize" : "1.5:em",
+                "CornerRadius" : "2:em",
+                "FontType" : "normal"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#f9ae5c",
+                "ForegroundColor" : "Black",
+                "Size" : ["40:w%","8:h%"]
+            }
+        }
+    ],
+    ".onlineButton" : [{"State" : "Visible","Styles" : {"Position" : ["35:w%","50:h%"]}}],
+    ".localButton" : [{"State" : "Visible","Styles" : {"Position" : ["35:w%","60:h%"]}}],
+    ".arcadeButton" : [{"State" : "Visible","Styles" : {"Position" : ["35:w%","70:h%"]}}],
+    ".quitButton" : [{"State" : "Visible","Styles" : {"Position" : ["35:w%","80:h%"]}}]
+
 }

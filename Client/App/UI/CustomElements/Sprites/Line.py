@@ -13,8 +13,9 @@ class Line(Sprite):
         self.P1 = P1
         self.P2 = P2
 
-        self.Styles.Set("Size" , (f"{P2.x - P1.x}:em", f"{P2.y - P1.y}:em"), update=False)
-
+        self.Styles.Size = (f"{P2.x - P1.x}:em", f"{P2.y - P1.y}:em")
+        self.Styles.BorderStroke = 3
+        self.Styles.BorderColor = "white"
         self.Position = P1 # Posible redundancy
 
     @property
@@ -26,7 +27,7 @@ class Line(Sprite):
        self.Displacement += value - self.P1
        self.P2 += value - self.P1
        self.P1 = value
-       self.Styles.Set("Position", (f"{self.P1.x}:em", f"{self.P1.y}:em"))
+       self.Styles.Position = (f"{self.P1.x}:em", f"{self.P1.y}:em")
 
 
         

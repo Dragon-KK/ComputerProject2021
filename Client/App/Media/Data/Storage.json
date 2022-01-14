@@ -1,3 +1,1 @@
-{
-    
-}
+{"Arcade": {"GameSettings": {"Difficulty": 40, "DifficultySlope": 0.01, "BallCount": 5, "Duece": false, "WinCondition": 0}, "Difficulty": "Impossible"}, "LocalMultiplayer": {"GameSettings": {"Difficulty": 30, "DifficultySlope": 0.1, "BallCount": 2, "Duece": false, "WinCondition": 1}, "Difficulty": "Expert"}, "OnlineMultiplayer": {}}

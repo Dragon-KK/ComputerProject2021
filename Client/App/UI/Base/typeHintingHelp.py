@@ -1,6 +1,6 @@
 from ...Core.DataTypes.Standard import Vector
 from ..Base import Document
-from ..Helper import ResourceManager
+from ..Helper import ResourceManager,IntervalContainer,TimeoutContainer
 class Window:
     '''Create a new window'''
 
@@ -15,12 +15,15 @@ class Window:
         # self.Resources += Resources.Audio()
         # self.Resources += Resources.Images()
 
-        # self.Intervals = IntervalContainer(self)
-        # self.Timeouts = TimeoutContainer(self)
+        self.Intervals = IntervalContainer(self)
+        self.Timeouts = TimeoutContainer(self)
 
         Console.info("Initializing Window")
 
-    def ChangeDocument(self, newDocument):
+    def Quit(self):
+        pass
+
+    def ChangeDocumentTo(self, newDocument):
         # self.Resources.RemoveAll()
         # self.Timeouts.EndAll()
         # self.Intervals.EndAll()

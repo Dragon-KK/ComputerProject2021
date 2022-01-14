@@ -11,11 +11,6 @@ class State:
         else:
             return False
 
-class States:
-    Visible = State("Visible")
-    KeyboardFocused = State("KeyboardFocused")
-    Hovered = State("Hovered")
-    Focused = State("Focused")
 
 class StateHolder(list):
     def __init__(self):

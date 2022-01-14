@@ -7,6 +7,7 @@ class AspectRatioPreservedContainer(div):
     Aspect ratio = width/height
     '''
     def __init__(self, * args, aspectRatio = 16 / 9,**kwargs):
+        kwargs['elemName'] = kwargs.get('elemName', 'AspectRatioPreservedContainer')
         super().__init__(*args,**kwargs)
         self.AspectRatio = aspectRatio
 
@@ -19,7 +20,7 @@ class AspectRatioPreservedContainer(div):
         else:
             mySize = (parentSize.x , parentSize.x / self.AspectRatio )# Adjust based on aspect ratio
 
-        self._Styles.Size = mySize
+        self.Styles.Size = mySize
         self._ComputedStyles = ComputedStyles.FromStyles(self.Styles, self) # Compute our styles
 
     def _GetStyleUnits(self):

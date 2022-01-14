@@ -1,0 +1,12 @@
+{
+    "Entities" : {
+        "Ball" : {
+            "BackgroundColor" : "#CCCCCC",
+            "OriginType" : "Centre"
+        },
+        "Paddle" : {
+            "BackgroundColor" : "#FFFFFF",
+            "OriginType" : "Centre"
+        }
+    }
+}

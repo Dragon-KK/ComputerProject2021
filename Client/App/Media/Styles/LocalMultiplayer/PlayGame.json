@@ -1,0 +1,165 @@
+{
+    ".container" : [
+        {
+            "State" : "Visible",
+            "Styles" :{
+                "BackgroundColor" : "#111111"
+            }
+        }
+    ],
+    ".toolbar" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#222222",
+                "Size" : ["100:w%", "5:em"]
+            }
+        }
+    ],
+    ".scoreCounter" : [
+        {
+            "State" : "Visible",
+            "Styles" :{
+                "FontSize" : "2:em",
+                "ForegroundColor" : "White"
+            }         
+        },
+        {
+            "State" : "Won",
+            "Styles" :{
+                "ForegroundColor" : "Light Green"
+            }         
+        },
+        {
+            "State" : "Lost",
+            "Styles" :{
+                "ForegroundColor" : "#cc0000"
+            }         
+        }
+    ],
+    ".p1score" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["25:w%","50:h%"]
+            }
+        }
+    ],
+    ".p2score" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["75:w%","50:h%"]
+            }
+        }
+    ],
+    ".worldContainer" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#1e1e1e",
+                "Position" : ["0:px", "5:em"],
+                "Size" : ["100:w%", "51.25:em"]
+            }
+        }
+    ],
+    ".countdownImage" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["50:w%", "50:h%"],
+                "Size" : ["8:em", "8:em"],
+                "OriginType" : "Centre",
+                "BackgroundColor" : "",
+                "BorderStroke" : 0,
+                "BorderColor" : "",
+                "CornerRadius" : "2:em",
+                "Padding" : "1.1:em,1.1:em,1:em,1:em"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#3d3d3d",
+                "ForegroundColor" : "#CCCCCC"
+            }
+        }
+    ],
+    ".countdownLabel" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["50:w%", "50:h%"],
+                "Size" : ["8:em", "8:em"],
+                "OriginType" : "Centre",
+                "FontSize" : "3:em",
+                "BorderColor" : "",
+                "CornerRadius" : "2:em",
+                "BackgroundColor" : "#3d3d3d",
+                "ForegroundColor" : "#CCCCCC"
+            }
+        }
+    ],
+    
+    ".counter" :
+    [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["50:w%", "50:h%"],
+                "OriginType":"Centre",
+                "Padding" : "0,5:h%",
+                "FontSize":"3:em",
+                "ForegroundColor" : "#CCCCCC"
+            }
+        }
+    ],
+    ".imgButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {                
+                "Size" : ["4:em", "4:em"],
+                "CornerRadius" : "1.5:em",
+                "Padding" : "1.1:em,1.1:em,1:em,1:em",
+                "BackgroundColor" : "",
+                "BorderColor" : "black"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#4d4d4d"
+            }
+        }
+    ],
+    ".goHome" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["1:w%", "10:h%"]
+            }
+        }
+    ],
+    ".pause" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["95:w%","10:h%"]
+            }
+        }
+    ],
+    ".gameoverMessage" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#111111",
+                "CornerRadius" :"3:em",
+                "Size" : ["80:w%","30:h%"],
+                "FontSize" : "3:em",
+                "ForegroundColor" : "White",
+                "Position" : ["50:w%", "50:h%"],
+                "OriginType" : "Centre"
+            }
+        }
+    ]
+}

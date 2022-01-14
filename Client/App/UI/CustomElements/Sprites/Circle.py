@@ -27,7 +27,7 @@ class Circle(Sprite):
     @Radius.setter
     def Radius(self, value):
         self._Radius = value
-        self.Styles.Set("Size", (f"{self._Radius * 2}:em", f"{self._Radius * 2}:em"), update=False)
+        self.Styles.Size = (f"{self._Radius * 2}:em", f"{self._Radius * 2}:em")
     # endregion
 
     # region Centre
@@ -38,7 +38,7 @@ class Circle(Sprite):
     def Centre(self, value):
         self.Displacement += value - self._Centre
         self._Centre = value
-        self.Styles.Set("Position", (f"{self._Centre.x}:em", f"{self._Centre.y}:em"), update=False)
+        self.Styles.Position =  (f"{self._Centre.x}:em", f"{self._Centre.y}:em")
         
     # end Region
 
@@ -46,12 +46,11 @@ class Circle(Sprite):
         return self.Window.Document.create_oval(self.ComputedStyles.TopLeft.x ,self.ComputedStyles.TopLeft.y, self.ComputedStyles.TopLeft.x + self.ComputedStyles.Size.x , self.ComputedStyles.TopLeft.y + self.ComputedStyles.Size.y, fill = self.Styles.BackgroundColor, width = self.Styles.BorderStroke, outline = self.Styles.BorderColor)
 
     def _Render(self):
-        self._CanvasIDs += self.__CreateCircle()
+        self._CanvasID.circle = self.__CreateCircle()
 
-
-    def _Update(self, updateRender = True):
-        if updateRender and self._CanvasIDs.list:
-            _id = self._CanvasIDs.list[0] # The canvas id of our circle
+    def _Update(self):
+        if self._CanvasID.circle:
+            _id = self._CanvasID.circle # The canvas id of our circle
             self.Window.Document.coords(
                 _id,
                 self.ComputedStyles.TopLeft.x, self.ComputedStyles.TopLeft.y, 

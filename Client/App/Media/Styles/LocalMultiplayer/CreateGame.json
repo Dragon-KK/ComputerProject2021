@@ -1,0 +1,164 @@
+{
+    ".background" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["100:w%", "100:h%"]
+            }
+        }
+    ],
+    ".title" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["90:w%","20:h%"],
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","10:h%"],
+                "ForegroundColor" : "White",
+                "FontSize" : "5:em"
+            }
+        }
+    ],
+    ".imgButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {                
+                "Size" : ["5:em", "5:em"],
+                "CornerRadius" : "1.5:em",
+                "Padding" : "1.1:em,1.1:em,1:em,1:em",
+                "BackgroundColor" : "#06070d"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#4d4d4d"
+            }
+        }
+    ],
+    ".goHome" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["1:w%", "1:em"]
+            }
+        }
+    ],
+    ".startButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {                
+                "Size" : ["10:em", "5:em"],
+                "Position" : ["85:w%", "80:h%"],
+                "CornerRadius" : "2:em",
+                "FontSize" : "1.5:em",
+                "BackgroundColor" : "#1e1e1e",
+                "ForegroundColor" : "White",
+                "FontType" : "normal"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#4d4d4d"
+            }
+        }
+    ],
+    ".selectionBox" : [
+        {
+            "State" :"Visible",
+            "Styles" : {
+                "Size" : ["90:w%","75:h%"],
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","57.25:h%"],
+                "BorderColor" : "#3d3d3d",
+                "CornerRadius" : "3:em",
+                "BorderStroke" : 2
+            }
+        }
+    ],
+    ".miniTitle" : [
+        {
+            "State" :"Visible",
+            "Styles" : {
+                "Size" : ["100:w%","15:h%"],
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","10:h%"],
+                "ForegroundColor" : "White",
+                "FontSize" : "2:em"
+            }
+        }
+    ],
+    ".optionsRadio" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Top",
+                "Position" : ["50:w%","20:h%"],
+                "Size" : ["100:w%","60:h%"]
+            }
+        }
+    ],
+    ".option" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Top",
+                "Size" : ["20:em","10:em"],
+                "BackgroundColor" : "#28292f",
+                "BorderColor" : "#393a3f",
+                "CornerRadius" : "3:em",
+                "BorderStroke" : 3,
+                "ForegroundColor" : "White",
+                "FontSize" : "1.5:em",
+                "FontType" : "normal"
+            }
+        },
+        {
+            "State" : "RadioSelected",
+            "Styles" : {
+                "BorderColor" : "#257afd"
+            }
+        }
+    ],
+    ".lvl1" : [{"State" : "Visible","Styles" : {"Position":["20:w%","10:h%"]}}],
+    ".lvl2" : [{"State" : "Visible","Styles" : {"Position":["50:w%","10:h%"]}}],
+    ".lvl3" : [{"State" : "Visible","Styles" : {"Position":["80:w%","10:h%"]}}],
+    ".lvl4" : [{"State" : "Visible","Styles" : {"Position":["35:w%","60:h%"]}}],
+    ".lvl5" : [{"State" : "Visible","Styles" : {"Position":["65:w%","60:h%"]}}],
+
+    ".allowDueceToggles" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#cc0000",
+                "ForegroundColor" : "White",
+                "Size" : ["30:em", "10:em"],
+                "FontSize" : "2:em",
+                "Position":["10:w%","40:h%"],
+                "FontType" : "normal",
+                "CornerRadius" : "2:em"
+            }
+        }
+    ],
+    ".confirmGreen" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "Light Green",
+                "ForegroundColor" : "Black"
+            }
+        }
+    ],
+    ".winCondInp" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["30:em", "10:em"],
+                "FontSize" : "2:em",
+                "Position":["60:w%","40:h%"],
+                "FontType" : "normal"
+            }
+        }
+    ]
+}

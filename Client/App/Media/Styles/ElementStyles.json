@@ -1,3 +1,39 @@
 {
-    
+    "AspectRatioPreservedContainer" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Centre",
+                "Position" : ["50:w%", "50:h%"]
+            }
+        }
+    ],
+    "label" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "ForegroundColor" : "Black"
+            }
+        }
+    ],
+    "input" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Padding" : "1:em,-0.1:em",
+                "BackgroundColor" : "#333333",
+                "BorderColor" : "#1e1e1e",
+                "BorderStroke" : 2,
+                "FontSize" : "2:em",
+                "CornerRadius" : "2:em",
+                "ForegroundColor" : "White"
+            }
+        },
+        {
+            "State" : "KeyboardFocused",
+            "Styles" : {
+                "BorderColor" : "#257afd"
+            }
+        }
+    ]
 }

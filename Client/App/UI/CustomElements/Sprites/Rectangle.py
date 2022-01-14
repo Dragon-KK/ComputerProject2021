@@ -25,9 +25,8 @@ class Rectangle(Sprite):
     def Position(self, value):
         self.Displacement += value - self._Position
         self._Position = value
-        self.Styles.Set("Position", (f"{self._Position.x}:em", f"{self._Position.y}:em"), update=False)        
+        self.Styles.Position = (f"{self._Position.x}:em", f"{self._Position.y}:em")    
     # end Region
-
     # region Size
     @property
     def Size(self):
@@ -35,5 +34,5 @@ class Rectangle(Sprite):
     @Size.setter
     def Size(self, value):
         self._Size = value
-        self.Styles.Set("Size", (f"{self._Size.x}:em", f"{self._Size.y}:em"), update=False)        
+        self.Styles.Size = (f"{self._Size.x}:em", f"{self._Size.y}:em")       
     # end Region

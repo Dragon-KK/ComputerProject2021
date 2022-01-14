@@ -3,6 +3,7 @@ from ...Core.DataManagers import ImageManager
 
 class img(div):
     def __init__(self, img, *args,**kwargs):
+        kwargs['elemName'] = kwargs.get('elemName', 'img')
         super().__init__(*args, **kwargs)
         self.Image = img # A PIL.Image object
         self.__PhotoImage = None

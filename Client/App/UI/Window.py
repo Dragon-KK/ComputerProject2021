@@ -1,4 +1,4 @@
-#from .Base.Util import IntervalContainer, TimeoutContainer
+from .Helper import IntervalContainer, TimeoutContainer
 from ..Core.Diagnostics.Debugging import Console
 from ..Core.DataTypes.Standard import Vector
 from .Helper import ResourceManager
@@ -25,8 +25,8 @@ class Window:
         self.Resources += Resources.Audio()
         self.Resources += Resources.Images()
 
-        # self.Intervals = IntervalContainer(self)
-        # self.Timeouts = TimeoutContainer(self)
+        self.Intervals = IntervalContainer(self)
+        self.Timeouts = TimeoutContainer(self)
 
         if not resizable: self._tkRoot.resizable(0,0) # This makes the window unresizable
 
@@ -34,6 +34,9 @@ class Window:
         self._tkRoot.bind("<Configure>", self.OnResize)
 
         Console.info("Initializing Window")
+
+    def Quit(self):
+        self.OnClose()
 
     def Run(self):
         Console.info("Showing Window")
@@ -45,26 +48,26 @@ class Window:
             self.ViewPort = Vector(event.width, event.height)
 
     def OnClose(self):
-        # self.Resources.RemoveAll()
-        # self.Timeouts.EndAll()
-        # self.Intervals.EndAll()
+        self.Resources.RemoveAll()
+        self.Timeouts.EndAll()
+        self.Intervals.EndAll()
         self.Document.Destroy() if self.Document else None # Destroy the document
         self._tkRoot.destroy() # Destroy the tkinter window
         Console.info("Closing Window")
 
     def __InstantiateDocument(self, docConstructor):
         Console.info(f"Rendering document {docConstructor.Name}")
-            
+        self.Title = docConstructor.Name
         self.Document = docConstructor(self) # Set the new document
         # The minimum size of the window is given by the document it is rendering
         self.MinSize = self.Document.MinSize
         
         self.Document.Render() # Render the new document
 
-    def ChangeDocument(self, newDocument):
-        # self.Resources.RemoveAll()
-        # self.Timeouts.EndAll()
-        # self.Intervals.EndAll()
+    def ChangeDocumentTo(self, newDocument):
+        self.Resources.RemoveAll()
+        self.Timeouts.EndAll()
+        self.Intervals.EndAll()
         self.Document.Destroy() if self.Document else None # Destroy the document
         self._tkRoot.after(10, self.__InstantiateDocument, newDocument)
 

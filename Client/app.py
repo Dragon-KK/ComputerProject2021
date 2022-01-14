@@ -1,6 +1,6 @@
 from App.UI import Window
 from App.Core.DataTypes.Standard import Vector
-from App.Views.MainMenu import Document
+from App.Views.MainMenu import MainMenu
 import ctypes
 
 # To improve resolution
@@ -13,10 +13,8 @@ MyWindow = Window(
 )
 
 # Set document
-MyWindow.ChangeDocument(Document)
+MyWindow.ChangeDocumentTo(MainMenu)
 
 # Run window
 MyWindow.Run()
-import threading
-print(threading.active_count()) # Just a sanity check
 # eeeez game done. gn

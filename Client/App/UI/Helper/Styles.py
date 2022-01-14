@@ -1,16 +1,6 @@
 from ...Core.DataTypes.Standard import Vector
 from ...Core.Diagnostics.Debugging import Console
 
-class Positions:
-    Left = -1
-    TopLeft = 0.5
-    Top = 1
-    TopRight = 1.5
-    Right = 2
-    BottomRight = 2.5
-    Bottom = 3
-    BottomLeft = 3.5
-    Centre = 4
 
 
 class Styles:
@@ -31,7 +21,7 @@ class Styles:
         "Gap"
     ]
     Default = {
-        "OriginType" : Positions.TopLeft,
+        "OriginType" : 'TopLeft',
         "Size" : (0,0),
         "Position" : (0,0),
         "CornerRadius" : "0",
@@ -48,7 +38,7 @@ class Styles:
 
     }
     def __init__(self):
-        self.OriginType = Positions.TopLeft,
+        self.OriginType = "TopLeft",
         self.Size = (0,0)
         self.Position = (0,0)
         self.CornerRadius = "0"
@@ -70,9 +60,6 @@ class Styles:
     @classmethod
     def FromJson(cls, styles):
         retVal = cls()
-        if styles.get("OriginType"):
-            if Positions.__dict__.get(styles["OriginType"]):
-                styles["OriginType"] = Positions.__dict__.get(styles["OriginType"])
         for propName in styles:
             retVal.__dict__[propName] = styles[propName]
         return retVal
@@ -84,7 +71,7 @@ class ComputedStyles:
         self.Origin = Vector(0, 0) # x, y the topleft of the parent
         self.TopLeft = Vector(0, 0) # x, y absolute
         self.FontSize = 10 # Fontsize
-        self.SelfOriginType = Positions.TopLeft # Position
+        self.SelfOriginType = "TopLeft" # Position
         self.CornerRadius = (0, 0, 0, 0) # (topleft, topright, bottomright, bottomleft)
         self.Padding = (0, 0, 0, 0) # (left, up, right, down)
         self.Gap = Vector(0, 0) # x,y
@@ -194,21 +181,21 @@ class ComputedStyles:
         retVal.Origin = element.Parent.ComputedStyles.TopLeft
         offset = Vector(0, 0)
         # region setOffset
-        if retVal.SelfOriginType == Positions.Bottom:
+        if retVal.SelfOriginType == 'Bottom':
             offset = Vector(-retVal.Size.x/2, -retVal.Size.y)
-        elif retVal.SelfOriginType == Positions.BottomLeft:
+        elif retVal.SelfOriginType == 'BottomLeft':
             offset = Vector(0, -retVal.Size.y)
-        elif retVal.SelfOriginType == Positions.BottomRight:
+        elif retVal.SelfOriginType == 'BottomRight':
             offset = Vector(-retVal.Size.x, -retVal.Size.y)
-        elif retVal.SelfOriginType == Positions.Centre:
+        elif retVal.SelfOriginType == 'Centre':
             offset = Vector(-retVal.Size.x/2, -retVal.Size.y/2)
-        elif retVal.SelfOriginType == Positions.Left:
+        elif retVal.SelfOriginType == 'Left':
             offset = Vector(0, -retVal.Size.y/2)
-        elif retVal.SelfOriginType == Positions.Right:
+        elif retVal.SelfOriginType == 'Right':
             offset = Vector(-retVal.Size.x, -retVal.Size.y/2)
-        elif retVal.SelfOriginType == Positions.Top:
+        elif retVal.SelfOriginType == 'Top':
             offset = Vector(-retVal.Size.x/2, 0)
-        elif retVal.SelfOriginType == Positions.TopRight:
+        elif retVal.SelfOriginType == 'TopRight':
             offset = Vector(-retVal.Size.x, 0)
         else:
             offset = Vector(0, 0)    

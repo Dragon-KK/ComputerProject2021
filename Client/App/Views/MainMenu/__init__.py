@@ -1,1 +1,1 @@
-from .MainMenu import Document
+from .MainMenu import MainMenu

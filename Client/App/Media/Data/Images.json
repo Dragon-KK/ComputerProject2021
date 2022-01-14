@@ -1,10 +1,12 @@
 {
     "LocalMultiplayer" : {
+        "Background" : "background.png",
         "Play" : "play.png",
         "Pause" : "pause.png",
         "Home" : "home.png"
     },
     "Arcade" : {
+        "Background" : "background.png",
         "Play" : "play.png",
         "Pause" : "pause.png",
         "Home" : "home.png"

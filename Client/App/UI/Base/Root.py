@@ -1,4 +1,4 @@
-from ..Helper import ComputedStyles,Children,EventHandler
+from ..Helper import ComputedStyles,Children,EventHandler,StateHolder
 from ...Core.DataManagers import FileManager
 from ..Base.typeHintingHelp import Window
 class Root:
@@ -12,6 +12,9 @@ class Root:
 
         self.Styles = FileManager.ReadJson(stylePath)
         self.ElementStyles = FileManager.ReadJson(elementStylesPath)
+
+        self.State = StateHolder()
+        self.State += "Visible"
 
         self.__STYLE_UNITS = {}
         self.EventHandler = EventHandler(self)

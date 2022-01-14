@@ -16,7 +16,7 @@ class Sprite(div):
         '''
         Just changes the position according to displacement. For proper proper update call Update itself (Sprite update is automatically called on resize and all : ) )
         '''
-        for item in self._CanvasIDs.list:
+        for item in self._CanvasID.ALLNOEXCEPTION:
             self.Window.Document.move(item, self.Displacement.x * self.STYLE_UNITS['em'], self.Displacement.y * self.STYLE_UNITS['em'])
 
         self.Displacement = Vector(0, 0)

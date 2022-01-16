@@ -1,0 +1,80 @@
+{
+    ".background" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["100:w%", "100:h%"]
+            }
+        }
+    ],
+    ".title" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["60:w%","20:h%"],
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","10:h%"],
+                "ForegroundColor" : "White",
+                "FontSize" : "5:em"
+            }
+        }
+    ],
+    ".imgButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {                
+                "Size" : ["5:em", "5:em"],
+                "CornerRadius" : "1.5:em",
+                "Padding" : "1.1:em,1.1:em,1:em,1:em",
+                "BackgroundColor" : "#06070d"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#4d4d4d"
+            }
+        }
+    ],
+    ".goHome" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["1:w%", "1:em"]
+            }
+        }
+    ],
+    ".lobbyContainer" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "Pink",
+                "Size" : ["90:w%", "80:h%"],
+                "Position" : ["50:w%", "60:h%"],
+                "OriginType" : "Centre"
+            }
+        }
+    ],
+    ".error" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "ForegroundColor" : "Red"
+            }
+        }
+    ],
+    ".msgBox" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#1e1e1e",
+                "ForegroundColor" : "White",
+                "FontSize" : "3:em",
+                "CornerRadius" : "2:em",
+                "Size" : ["80:em","10:em"],
+                "OriginType" : "Centre",
+                "Position" : ["50:w%","50:h%"]
+            }
+        }
+    ]
+}

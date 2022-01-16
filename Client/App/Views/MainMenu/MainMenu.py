@@ -43,7 +43,8 @@ class MainMenu(Document):
 
     def NavigateTo(self, dest):
         if dest == "Online":
-            pass
+            from ..OnlineMultiplayer import Lobby
+            self.Window.ChangeDocumentTo(Lobby)
         elif dest == "Local":
             from ..LocalMultiplayer import CreateGame
             self.Window.ChangeDocumentTo(CreateGame)

@@ -1,0 +1,2 @@
+class PeerToPeer:
+    pass

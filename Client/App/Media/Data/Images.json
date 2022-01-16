@@ -12,6 +12,7 @@
         "Home" : "home.png"
     },
     "OnlineMultiplayer" : {
+        "Background" : "background.png",
         "Home" : "home.png",
         "Close" : "close.png",
         "Accept" : "accept.png",

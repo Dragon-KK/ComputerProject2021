@@ -96,9 +96,7 @@ class Element:
 
         self.SetStyleSheet() # Set our stylesheet
         self.SetStylesByStyleSheet() # Set our styles based on the stylesheet
-        self.ComputeStyles() # Compute our styles
-
-        
+        self.ComputeStyles() # Compute our styles        
         
         self._Render()  # In case an inherited class has to do some extra stuff on render
         self._RenderBlock()

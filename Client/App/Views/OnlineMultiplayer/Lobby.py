@@ -1,10 +1,9 @@
 from ...UI.Base import Document
-from ...UI.Elements import div,img,label
+from ...UI.Elements import div,img,label,ListBox
 from ...Core.DataTypes.UI import EventListener
-from ...Core.Connection import Client,Worker
+from ...Core.Connection import Client
 from ...Core.Connection.Commands import Commands
 from ...UI.CustomElements import AspectRatioPreservedContainer
-from .GameList import GameList
 
 class Lobby(Document):
     Name = "Pong/OnlineMultiplayer/Lobby"
@@ -31,7 +30,8 @@ class Lobby(Document):
 
         self.ContentContainer = div(classes = '.lobbyContainer')
         background.Children += self.ContentContainer
-
+        self.ListBox = ListBox(classes = ".gameRequestList")
+        self.ContentContainer.Children += self.ListBox
         self.Client = Client()
         self.Client.Connect(tuple(self.Window.Resources.Storage.OnlineMultiplayer['ServerAddress']), onError=self.ConnectionFailure, onConnection=self.ConnectionSucces)
 
@@ -39,15 +39,44 @@ class Lobby(Document):
         self.ContentContainer.Children += label(classes = '.msgBox .error', text = "Could Not Connect to Server")
 
     def ConnectionSucces(self):
-        self.GameList = GameList(self.ContentContainer)
         self.Client.Listen(self.OnMessage)
+        
+        
+        addItemBox = div(classes = ".addItemBox")
+        addItemImg = img(self.Window.Resources.Images.Add, classes = ".addItemImg")
+        addItemBox.EventListeners += EventListener("<Button-1>",lambda e:self.CreateItem())
+        addItemImg.EventListeners += EventListener("<Button-1>",lambda e:self.CreateItem())
+        self.ListBox.Children += addItemBox
+        addItemBox.Children += addItemImg
+        for _ in range(10):
+            self.ListBox.Children.Add(div(classes = ".addItemBox"))
         self.Client.RequestGameList()
 
-    def OnMessage(self,msg):
+    def CreateItem(self):
+        print("Creating Item")
+
+    def SHowItemInfo(self, item):
+        print("Showing item", item)
+
+    def AddItems(self, items):
+        print("Adding Items", items)
+
+    def RemoveItems(self, items):
+        print("Removing items", items)
+
+    def StartGame(self, game, peerAddr):
+        print("Need to start game", game)
+
+    def AcceptGame(self, game):
+        print("Accepting game", game)
+
+    def OnMessage(self,message):
         if message['command'] == Commands.HideGames:
-            pass
+            self.RemoveItems(message['games'])
         elif message['command'] == Commands.ShowGames:
-            pass
+            self.AddItems(message['games'])
+        elif message['command'] == Commands.BeginGame:
+            self.StartGame(message['game'], message['addr'])
 
     def Destroy(self):
         self.Client.Close()

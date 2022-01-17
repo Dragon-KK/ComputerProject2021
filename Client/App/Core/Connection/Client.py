@@ -31,7 +31,7 @@ class Client:
             if res['command'] != Commands.LISTENER_REGISTERED:raise Exception("Server gave invalid response")
 
             Worker.SendMessage(self.TalkerSock, {'command' : Commands.VALIDATE_LISTENER})
-
+            Console.info("Connected to server succesfully")
             onConnection()
 
         except Exception as e:
@@ -44,14 +44,18 @@ class Client:
         threading.Thread(target=self._Connect, args = (serverAddr,onError,onConnection),daemon=True).start()
 
     def Disconnect(self):
+        Console.info("Disconnecting")
         if self.TalkerIsConnected:
+            self.TalkerIsConnected = False
             try:self.TalkerSock.shutdown(socket.SHUT_WR)
             except:pass
         if self.ListenerIsConnected:
+            self.ListenerIsConnected = False
             try:self.ListenerSock.shutdown(socket.SHUT_WR)
             except:pass
 
     def Close(self):
+        Console.info("Closing Client")
         try:
             Worker.SendMessage(self.TalkerSock,{'command':Commands.DISCONNECT})
         except:
@@ -60,11 +64,13 @@ class Client:
             self.Disconnect()
 
     def _Listen(self, callback):
+        Console.info("Listening to server")
         while 1:
-            if not self.TalkerIsConnected:break
-
-            msg = Worker.GetMessage(self.ListenerSock)
+            msg = Worker.GetMessage(self.ListenerSock,cancel = lambda:not self.TalkerIsConnected)
+            if msg == '!Error':break
             if callback(msg):break
+
+        Console.info("Stopping listening")
 
     def Listen(self,callback):
         threading.Thread(target = self._Listen, args = (callback,),daemon = True).start()

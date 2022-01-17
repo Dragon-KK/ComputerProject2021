@@ -68,11 +68,12 @@ class Server:
             
     def ServeClient(self, addr):
         '''Serves a client that has been initialized'''
-        try:
-            
+        try:            
             while 1:
-                msg = Worker.GetMessage(self.Clients[addr]['talker'])
-                if msg['command'] == Commands.DISCONNECT:
+                msg = Worker.GetMessage(self.Clients[addr]['talker'], cancel = lambda:not (addr in self.Clients))
+                if msg['command'] == "!Error":
+                    break
+                elif msg['command'] == Commands.DISCONNECT:
                     break
                 elif msg['command'] == Commands.CreateGame:
                     self.Broadcast({
@@ -85,8 +86,27 @@ class Server:
                         'games' : [msg['game']]
                     })
                 elif msg['command'] == Commands.AcceptGame:
-                    # TODO
-                    pass
+                    otherAddr = tuple(msg['addr'])
+                    gamesToDelete = self.Clients[addr]['games'] + self.Clients.get(otherAddr, {'games':[]})['games']
+                    try:
+                        Worker.SendMessage(self.Clients[otherAddr]['listener'], {
+                            'command':Commands.BeginGame,
+                            'addr' : addr
+                        })                    
+                        Worker.SendMessage(self.Clients[addr]['listener'],{
+                            'command':Commands.BeginGame,
+                            'addr' : msg['addr']
+                        })
+                        del self.Clients[addr]
+                        del self.Clients[otherAddr]
+                    except:
+                        pass
+                    finally:
+                        self.Broadcast({
+                            'command' : Commands.HideGames,
+                            'games' : gamesToDelete
+                        })
+                    
                 elif msg['command'] == Commands.GetGames:
                     allGames = []
                     for i in self.Clients:allGames.extend(self.Clients[i]['games'])

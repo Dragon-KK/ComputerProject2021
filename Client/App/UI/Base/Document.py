@@ -29,6 +29,18 @@ class Document(Root, Canvas):
 
         self._FocusedElement = None
         self._KeyboardFocusedElement = None
+        self._ScrollerFocusedElement = None
+
+    @property
+    def ScollerFocusedElement(self):
+        """The ScollerFocusedElement property."""
+        return self._ScollerFocusedElement
+    @ScollerFocusedElement.setter
+    def ScollerFocusedElement(self, value):
+        if self._ScrollerFocusedElement:
+            self._ScollerFocusedElement.State -= "ScrollerFocused"
+        self._ScollerFocusedElement = value
+        value.State += "ScrollerFocused"
 
     @property
     def FocusedElement(self):

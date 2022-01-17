@@ -17,18 +17,20 @@ class ListBox(div):
         self.__ContentSize = Vector(0, 0) # The size of our content
 
         self.EventListeners += EventListener("!Scroll", self.__OnScroll)
-        self.EventListeners += EventListener("<Enter>", lambda *args,**kwargs: self.GainFocus())    
-        self.EventListeners += EventListener("<Leave>", lambda *args,**kwargs: self.LoseFocus())
+        self.EventListeners += EventListener("<Enter>", lambda *args,**kwargs: self.GainScrollerFocus())
 
         self.__Scroller = ListBoxScroller(scrollSensitivity=scrollSensitivity)
 
 
+    def GainScrollerFocus(self):
+        self.Window.Document.ScollerFocusedElement = self
+
     def __OnScroll(self, e):
         if not self.Scrollable:return
-        if e.sender == self: # If i am the focused element
-            self.__Scroller.Scroll(1 if e.args[0].delta < 0 else -1 if e.args[0].delta>0 else 0)
+        if "ScrollerFocused" in self.State: # If i am the focused element
+            self.__Scroller.Scroll(1 if e.Args[0].delta < 0 else -1 if e.Args[0].delta>0 else 0)
             if abs(self.__Scroller.LastCurrent - self.__Scroller.Current) < 1:return
-            self.Update(float('inf'), ReRender=True)
+            self.Update(float('inf'))
 
 
     #region dirty shit
@@ -75,7 +77,12 @@ class ListBox(div):
             fill=self.Styles.BackgroundColor
         )
 
-    def OnChildrenChanged(self, added = None, removed = None):pass
+    def OnChildrenChanged(self, added = None, removed = None):
+        self.Update(float("inf"))
+
+    def Remove(self):
+        self.Children.OnChildrenChanged = lambda **kwargs:0
+        super().Remove()
 
     def Render(self):
         '''Make sure is same as Element.py'''
@@ -95,7 +102,7 @@ class ListBox(div):
         
         self.State.OnStateChanged = self._OnStateChange
         self.ClassList.OnClassListChange = self._OnClassChange
-        # Render our children
+        self.Children.OnChildrenChanged = self.OnChildrenChanged        # Render our children
 
 
         NextChildPosition = Vector(self.ComputedStyles.Padding[0], self.ComputedStyles.Padding[1]) # The position of the next child
@@ -160,7 +167,7 @@ class ListBox(div):
 
             # Update our padding cutoff
             self.__UpdatePaddingCutoff(self._CanvasID._topPad, self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (self.ComputedStyles.CornerRadius[0], self.ComputedStyles.CornerRadius[1], 0 ,0)))
-            self.__UpdatePaddingCutoff(self._CanvasIDs._bottomPad, self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, self.ComputedStyles.Size.y - self.ComputedStyles.Padding[1]), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (0,0,self.ComputedStyles.CornerRadius[2], self.ComputedStyles.CornerRadius[3])))
+            self.__UpdatePaddingCutoff(self._CanvasID._bottomPad, self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, self.ComputedStyles.Size.y - self.ComputedStyles.Padding[1]), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (0,0,self.ComputedStyles.CornerRadius[2], self.ComputedStyles.CornerRadius[3])))
             self.__ContentSize = Vector(maxWidth, NextChildPosition.y - self.ComputedStyles.Gap.y + self.__Scroller.Current)
             self.__Scroller.Max = self.__ContentSize.y - self.ComputedStyles.Size.y + self.ComputedStyles.Padding[1] + 2
         else:
@@ -179,47 +186,7 @@ class ListBox(div):
             self.__ContentSize = Vector(NextChildPosition.x - self.ComputedStyles.Gap.x + self.__Scroller.Current, maxHeight)
             self.__Scroller.Max = self.__ContentSize.x - self.ComputedStyles.Size.x + self.ComputedStyles.Padding[0] + 2 
 
-    def Update(self, propogationDepth=0, ReRender=True):
-        super().Update(propogationDepth=0,ReRender=ReRender)
-        if not propogationDepth:return
-
-        # Now we need to set the position for each of our children
-        NextChildPosition = Vector(self.ComputedStyles.Padding[0], self.ComputedStyles.Padding[1]) # The position of the next child
-        if self.__IsVertical:
-            NextChildPosition += (0, -self.__Scroller.Current)
-            maxWidth = 0
-            for child in self.Children:
-                child.Styles.Position = (NextChildPosition.x, NextChildPosition.y)
-                if "Visible" not in child.State:child.State += "Visible"
-                child.Update(propogationDepth = propogationDepth - 1, ReRender = ReRender)
-                if child.ComputedStyles.Size.x + self.ComputedStyles.Padding[0] > maxWidth:maxWidth = child.ComputedStyles.Size.x + self.ComputedStyles.Padding[0]
-                NextChildPosition += (0, child.ComputedStyles.Size.y + self.ComputedStyles.Gap.y)
-                if not ((child.ComputedStyles.TopLeft.y + child.ComputedStyles.Size.y > self.ComputedStyles.TopLeft.y + self.ComputedStyles.Padding[1]) and (child.ComputedStyles.TopLeft.y < self.ComputedStyles.TopLeft.y + self.ComputedStyles.Size.y - self.ComputedStyles.Padding[1])):
-                    child.State -= "Visible"
-                
-
-            # Update our padding cutoff
-            self.__UpdatePaddingCutoff(self._CanvasIDs.list[1], self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (self.ComputedStyles.CornerRadius[0], self.ComputedStyles.CornerRadius[1], 0 ,0)))
-            self.__UpdatePaddingCutoff(self._CanvasIDs.list[2], self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, self.ComputedStyles.Size.y - self.ComputedStyles.Padding[1]), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (0,0,self.ComputedStyles.CornerRadius[2], self.ComputedStyles.CornerRadius[3])))
-            self.__ContentSize = Vector(maxWidth, NextChildPosition.y - self.ComputedStyles.Gap.y + self.__Scroller.Current)
-            self.__Scroller.Max = self.__ContentSize.y - self.ComputedStyles.Size.y + self.ComputedStyles.Padding[1] + 2
-        else:
-            maxHeight = 0
-            NextChildPosition += (-self.__Scroller.Current, 0)
-            for child in self.Children:
-                child.Styles.Position = (NextChildPosition.x, NextChildPosition.y)
-                if "Visible" not in child.State:child.State += "Visible"
-                child.Update(propogationDepth = propogationDepth - 1, ReRender = ReRender)
-                if child.ComputedStyles.Size.y + self.ComputedStyles.Padding[1] > maxHeight:maxHeight = child.ComputedStyles.Size.y + self.ComputedStyles.Padding[1]
-                if not ((child.ComputedStyles.TopLeft.x + child.ComputedStyles.Size.x > self.ComputedStyles.TopLeft.x + self.ComputedStyles.Padding[0]) and (child.ComputedStyles.TopLeft.x < self.ComputedStyles.TopLeft.x + self.ComputedStyles.Size.x - self.ComputedStyles.Padding[0])):
-                    child.State -= "Visible"
-                NextChildPosition += (child.ComputedStyles.Size.x + self.ComputedStyles.Gap.x, 0)
-            self.__UpdatePaddingCutoff(self._CanvasIDs.list[1], self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Padding[0],self.ComputedStyles.Size.y), (self.ComputedStyles.CornerRadius[0], 0, 0 ,self.ComputedStyles.CornerRadius[3])))
-            self.__UpdatePaddingCutoff(self._CanvasIDs.list[2], self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke + self.ComputedStyles.Size.x - self.ComputedStyles.Padding[0], 0), Vector(self.ComputedStyles.Padding[0],self.ComputedStyles.Size.y), (0,self.ComputedStyles.CornerRadius[2],self.ComputedStyles.CornerRadius[2], 0)))
-            self.__ContentSize = Vector(NextChildPosition.x - self.ComputedStyles.Gap.x + self.__Scroller.Current, maxHeight)
-            self.__Scroller.Max = self.__ContentSize.x - self.ComputedStyles.Size.x + self.ComputedStyles.Padding[0] + 2
-    #endregion
-
+    
 class ListBoxScroller:
     def __init__(self, scrollSensitivity = 10):
         self.__Min = 0

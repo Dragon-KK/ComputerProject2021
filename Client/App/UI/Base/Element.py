@@ -165,7 +165,7 @@ class Element:
                 self.SetStylesByStyleSheet(removedState=removed)
                 self.Update()
             if removed == 'Visible':
-                for child in self.Children:child.State += 'Visible'
+                for child in self.Children:child.State -= 'Visible'
             
     
     def SetStyleSheet(self):

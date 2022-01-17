@@ -6,20 +6,22 @@ class Children(list):
         self.Parent = parent
         self.OnChildrenChanged = lambda *args,**kwargs:0
 
-    def __iadd__(self, other):
+    def Add(self, other, notify  = True):
         if other in self:
             Console.error(f"{other} is already a child of me")
             return self
         self.append(other)
         other._SetParent(self.Parent) # Set its parent
         other.Render() # Render it
-        self.OnChildrenChanged(added = other)
+        if notify:self.OnChildrenChanged(added = other)
+    def __iadd__(self, other):
+        self.Add(other)
         return self
 
     def __isub__(self, other):
         self.Remove(other)        
 
-    def Remove(self, item):
+    def Remove(self, item, notify = True):
         if item in self:
             self.remove(item)
-            self.OnChildrenChanged(removed = item)
+            if notify:self.OnChildrenChanged(removed = item)

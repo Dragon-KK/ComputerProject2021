@@ -9,10 +9,9 @@ class EventHandler:
         self.Document = doc
         self.nextListenerID = 0
         self.Listeners = {}
-        self.Document.focus_set()
-        self.Document.bind('<KeyPress>', self.__OnKeyEvent)
-        self.Document.bind('<KeyRelease>', self.__OnKeyEvent)
-        self.Document.bind('<MouseWheel>', self.__OnScrollEvent)
+        self.Document.Window._tkRoot.bind('<KeyPress>', self.__OnKeyEvent)
+        self.Document.Window._tkRoot.bind('<KeyRelease>', self.__OnKeyEvent)
+        self.Document.Window._tkRoot.bind('<MouseWheel>', self.__OnScrollEvent)
 
     
         

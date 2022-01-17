@@ -48,7 +48,6 @@
         {
             "State" : "Visible",
             "Styles" : {
-                "BackgroundColor" : "Pink",
                 "Size" : ["90:w%", "80:h%"],
                 "Position" : ["50:w%", "60:h%"],
                 "OriginType" : "Centre"
@@ -74,6 +73,44 @@
                 "Size" : ["80:em","10:em"],
                 "OriginType" : "Centre",
                 "Position" : ["50:w%","50:h%"]
+            }
+        }
+    ],
+    ".gameRequestList" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#06070d",
+                "CornerRadius" : "3:em",
+                "Gap" : "2:em",
+                "Padding" : "2:em,5:em",
+                "Size" : ["100:w%","100:h%"]
+            }
+        }
+    ],
+    ".addItemBox" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "White",
+                "Size" : ["96:w%","5:em"],
+                "CornerRadius" : "1.5:em"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "Gray"
+            }
+        }
+    ],
+    ".addItemImg" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["4:em","4:em"],
+                "Position" : ["50:w%","50:h%"],
+                "OriginType" : "Centre"
             }
         }
     ]

@@ -14,10 +14,11 @@ class Worker:
         callback(Worker.SendMessageAndGetRespose(conn, msg))
 
     @staticmethod
-    def GetMessage(conn):
+    def GetMessage(conn,cancel = lambda:0):
         msg = "!Error"
         while 1:
             try:
+                if cancel():break
                 msgLen_unparsed = conn.recv(Protocol.HEADER_LENGTH) # A header message is always sent first followed by the actual message
                 msgLen = Helper.ParseHeader(msgLen_unparsed) 
 
@@ -31,11 +32,11 @@ class Worker:
                 break
         return msg
 
-    def AsyncGetMessage(conn, callback):
-        threading.Thread(target = Worker._AsyncGetMessage,args = (conn,callback),daemon = True).start()
+    def AsyncGetMessage(conn, callback, cancel = lambda:0):
+        threading.Thread(target = Worker._AsyncGetMessage,args = (conn,callback,cancel),daemon = True).start()
 
-    def _AsyncGetMessage(conn, callback):
-        callback(Worker.GetMessage(conn))
+    def _AsyncGetMessage(conn, callback, cancel):
+        callback(Worker.GetMessage(conn, cancel=cancel))
 
     def SendMessage(conn, msg):
         '''Sends a jsonifiable object given a connection'''

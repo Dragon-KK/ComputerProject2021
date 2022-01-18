@@ -224,16 +224,16 @@ class OnlineMultiplayerPong(Pong):
             tmp = randint(0, 1)
             return n* (-1 if tmp else 1)
         def GetRandomDirection():
-            return Vector(7,3).normalized()
+            return Vector(PlusMinus(randint(5, 10)), PlusMinus(randint(1,6))).normalized()
         def GetRandomVelocity():            
             return EulersVector(magnitude=settings.Difficulty, direction=GetRandomDirection())
         # endregion
 
         
-        balls = [
-            Entities.Ball(GetRandomVelocity, settings.DifficultySlope,initialPosition=Vector(50, 25.625))
+        self.balls = [
+            Entities.Ball(GetRandomVelocity, settings.DifficultySlope,initialPosition=Vector(50, 25.625)) for _ in range(settings.BallCount)
         ]
-        walls = [
+        self.walls = [
             Entities.Wall( # The horizontal wall on top
                 Vector(0, 0),Vector(100, 0)
             ),
@@ -241,7 +241,7 @@ class OnlineMultiplayerPong(Pong):
                 Vector(0, 51.25),Vector(100, 51.25)
             )
         ]
-        goals = [
+        self.goals = [
             Entities.Goal( # The goal on the left
                 Vector(0, 0), Vector(0, 51.25),
                 "P2Goal"
@@ -251,7 +251,7 @@ class OnlineMultiplayerPong(Pong):
                 "P1Goal"
             )
         ]
-        paddles = [
+        self.paddles = [
             Entities.Paddle(Vector(2, 25.625), Vector(2, 10), Entities.Paddle.OrientationTypes.Left, name = "LeftPaddle"),
             Entities.Paddle(Vector(98, 25.625), Vector(2, 10), Entities.Paddle.OrientationTypes.Right, name = "RightPaddle"),
         ]
@@ -259,18 +259,27 @@ class OnlineMultiplayerPong(Pong):
         super().__init__(
             container, 
             settings,
-            paddles = paddles,
-            walls = walls,
-            goals = goals,
-            balls = balls,
+            paddles = self.paddles,
+            walls = self.walls,
+            goals = self.goals,
+            balls = self.balls,
             renderDelay=renderDelay
         )
     	
-        self.Physics = Physics(container, balls, walls, goals,paddles, physicsDelay, self.OnGoal)
+        self.Physics = Physics(container, self.balls, self.walls, self.goals,self.paddles, physicsDelay, self.OnGoal)
         self.Score  = [0, 0]
         self.OnGoalCallback = onGoal
-        self.InputManager = LocalMultiplayer.InputManager(container,paddles)
+        self.InputManager = LocalMultiplayer.InputManager(container,self.paddles)
         self.Settings = settings
+
+    def GetInitialImage(self):
+        return {}
+
+    def GetImage(self):
+        return {}
+
+    def UpdateFromImage(self):
+        pass
 
     def ContinueRound(self):
         self.InputManager.Continue()
@@ -291,10 +300,26 @@ class OnlineMultiplayerPong(Pong):
             entity.Reset()
 
     def StartRound(self):
+        self.RoundHasStarted = True
+        self.ContinueRound()
+
+    def StartRoundWithReset(self):
         for entity in self.World.Entities:
             entity.Reset()
         self.RoundHasStarted = True
         self.ContinueRound()
+
+    def ContinueRound(self):
+        self.InputManager.Continue()
+        self.World.Continue()
+        self.Physics.Continue()
+        self.IsPaused = False
+
+    def PauseRound(self):
+        self.World.Pause()
+        self.InputManager.Pause()
+        self.Physics.Pause()
+        self.IsPaused = True
 
     def OnGoal(self, goal):
         self.PauseRound()

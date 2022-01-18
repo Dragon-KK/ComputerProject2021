@@ -79,3 +79,22 @@ class Client:
         Worker.SendMessage(self.TalkerSock, {
             'command' : Commands.GetGames
         })
+
+    def AcceptGame(self, game, addr):
+        Worker.SendMessage(self.TalkerSock, {
+            'command' : Commands.AcceptGame,
+            'addr' : addr,
+            'game' : game
+        })
+
+    def CancelGame(self, game):
+        Worker.SendMessage(self.TalkerSock, {
+            'command' : Commands.CancelGame,
+            'game' : game
+        })
+
+    def CreateGame(self, game):
+        Worker.SendMessage(self.TalkerSock, {
+            'command' : Commands.CreateGame,
+            'game' : game
+        })

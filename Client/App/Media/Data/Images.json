@@ -16,9 +16,11 @@
         "Home" : "home.png",
         "Close" : "close.png",
         "Accept" : "accept.png",
-        "Add" : "create.png",
+        "Plus" : "plus.png",
         "Play" : "play.png",
-        "Pause" : "pause.png"
+        "Pause" : "pause.png",
+        "Info" : "info.png",
+        "Cancel" : "trash.png"
     },
     "MainMenu" : {
         "Background" : "background.png"

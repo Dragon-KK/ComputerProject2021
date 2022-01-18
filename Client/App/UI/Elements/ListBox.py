@@ -69,6 +69,7 @@ class ListBox(div):
 
     def __UpdatePaddingCutoff(self, boxID, rect):
         # Move our box
+        
         self.Window.Document.coords(boxID,*rect) 
 
         # Item config our box           
@@ -78,6 +79,7 @@ class ListBox(div):
         )
 
     def OnChildrenChanged(self, added = None, removed = None):
+        self.Window.Document.tag_raise("paddingCuttof")
         self.Update(float("inf"))
 
     def Remove(self):
@@ -94,8 +96,7 @@ class ListBox(div):
 
         self.SetStyleSheet() # Set our stylesheet
         self.SetStylesByStyleSheet() # Set our styles based on the stylesheet
-        self.ComputeStyles() # Compute our styles        
-        
+        self.ComputeStyles() # Compute our styles
         self._Render()  # In case an inherited class has to do some extra stuff on render
         self._RenderBlock()
         self.InitialRenderDone = True
@@ -120,9 +121,9 @@ class ListBox(div):
             
             # Now add the padding cutoff
             # The top part
-            self._CanvasID._topPad = self.Window.Document.create_polygon(self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (self.ComputedStyles.CornerRadius[0], self.ComputedStyles.CornerRadius[1], 0 ,0)),width=0,outline="",fill=self.Styles.BackgroundColor, smooth=True)
+            self._CanvasID._topPad = self.Window.Document.create_polygon(self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (self.ComputedStyles.CornerRadius[0], self.ComputedStyles.CornerRadius[1], 0 ,0)),width=0,outline="",fill=self.Styles.BackgroundColor, smooth=True, tag = "paddingCuttof")
             # The bottom part
-            self._CanvasID._bottomPad = self.Window.Document.create_polygon(self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, self.ComputedStyles.Size.y - self.ComputedStyles.Padding[1]), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (0,0,self.ComputedStyles.CornerRadius[2], self.ComputedStyles.CornerRadius[3])),width=0,outline="",fill=self.Styles.BackgroundColor, smooth=True)
+            self._CanvasID._bottomPad = self.Window.Document.create_polygon(self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, self.ComputedStyles.Size.y - self.ComputedStyles.Padding[1]), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (0,0,self.ComputedStyles.CornerRadius[2], self.ComputedStyles.CornerRadius[3])),width=0,outline="",fill=self.Styles.BackgroundColor, smooth=True, tag = "paddingCuttof")
 
             self.__ContentSize = Vector(maxWidth, NextChildPosition.y - self.ComputedStyles.Gap.y)
             self.__Scroller.Max = self.__ContentSize.y - self.ComputedStyles.Size.y + self.ComputedStyles.Padding[1] + 2
@@ -138,19 +139,21 @@ class ListBox(div):
 
             # Now add the padding cutoff
             # The left part
-            self._CanvasID._leftPad = self.Window.Document.create_polygon(self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Padding[0],self.ComputedStyles.Size.y), (self.ComputedStyles.CornerRadius[0], 0, 0 ,self.ComputedStyles.CornerRadius[3])),width=0,outline="",fill=self.Styles.BackgroundColor, smooth=True)
+            self._CanvasID._leftPad = self.Window.Document.create_polygon(self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Padding[0],self.ComputedStyles.Size.y), (self.ComputedStyles.CornerRadius[0], 0, 0 ,self.ComputedStyles.CornerRadius[3])),width=0,outline="",fill=self.Styles.BackgroundColor, smooth=True, tag = "paddingCuttof")
             # The right part
-            self._CanvasID._rightPad = self.Window.Document.create_polygon(self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke + self.ComputedStyles.Size.x - self.ComputedStyles.Padding[0], 0), Vector(self.ComputedStyles.Padding[0],self.ComputedStyles.Size.y), (0,self.ComputedStyles.CornerRadius[2],self.ComputedStyles.CornerRadius[2], 0)),width=0,outline="",fill=self.Styles.BackgroundColor, smooth=True)
+            self._CanvasID._rightPad = self.Window.Document.create_polygon(self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke + self.ComputedStyles.Size.x - self.ComputedStyles.Padding[0], 0), Vector(self.ComputedStyles.Padding[0],self.ComputedStyles.Size.y), (0,self.ComputedStyles.CornerRadius[2],self.ComputedStyles.CornerRadius[2], 0)),width=0,outline="",fill=self.Styles.BackgroundColor, smooth=True, tag = "paddingCuttof")
             self.__ContentSize = Vector(NextChildPosition.x - self.ComputedStyles.Gap.x, maxHeight)
             self.__Scroller.Max = self.__ContentSize.x - self.ComputedStyles.Size.x + self.ComputedStyles.Padding[0] + 2
 
         self.EventListeners.Set()
 
     def Update(self, propogationDepth=0):
+        if not self.InitialRenderDone:return
         self.ComputeStyles() # Compute styles
         self._Update() # Update
         self._UpdateBlock()
-        # Now we need to set the position for each of our children
+        # Now we need to set the position f
+        # or each of our children
         NextChildPosition = Vector(self.ComputedStyles.Padding[0], self.ComputedStyles.Padding[1]) # The position of the next child
         if self.__IsVertical:
             NextChildPosition += (0, -self.__Scroller.Current)
@@ -166,6 +169,7 @@ class ListBox(div):
                 
 
             # Update our padding cutoff
+            #if not (self.ComputedStyles.Size.x == 0 or self.ComputedStyles.Size.y == 0):
             self.__UpdatePaddingCutoff(self._CanvasID._topPad, self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (self.ComputedStyles.CornerRadius[0], self.ComputedStyles.CornerRadius[1], 0 ,0)))
             self.__UpdatePaddingCutoff(self._CanvasID._bottomPad, self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, self.ComputedStyles.Size.y - self.ComputedStyles.Padding[1]), Vector(self.ComputedStyles.Size.x - self.Styles.BorderStroke, self.ComputedStyles.Padding[1]), (0,0,self.ComputedStyles.CornerRadius[2], self.ComputedStyles.CornerRadius[3])))
             self.__ContentSize = Vector(maxWidth, NextChildPosition.y - self.ComputedStyles.Gap.y + self.__Scroller.Current)
@@ -183,6 +187,7 @@ class ListBox(div):
                 NextChildPosition += (child.ComputedStyles.Size.x + self.ComputedStyles.Gap.x, 0)
             self.__UpdatePaddingCutoff(self._CanvasIDs._leftPad, self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke, 0), Vector(self.ComputedStyles.Padding[0],self.ComputedStyles.Size.y), (self.ComputedStyles.CornerRadius[0], 0, 0 ,self.ComputedStyles.CornerRadius[3])))
             self.__UpdatePaddingCutoff(self._CanvasID._rightPad, self.__GetPaddingRectBox(self.ComputedStyles.TopLeft + (self.Styles.BorderStroke + self.ComputedStyles.Size.x - self.ComputedStyles.Padding[0], 0), Vector(self.ComputedStyles.Padding[0],self.ComputedStyles.Size.y), (0,self.ComputedStyles.CornerRadius[2],self.ComputedStyles.CornerRadius[2], 0)))
+            
             self.__ContentSize = Vector(NextChildPosition.x - self.ComputedStyles.Gap.x + self.__Scroller.Current, maxHeight)
             self.__Scroller.Max = self.__ContentSize.x - self.ComputedStyles.Size.x + self.ComputedStyles.Padding[0] + 2 
 

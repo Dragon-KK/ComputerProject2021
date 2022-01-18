@@ -71,31 +71,34 @@ class Server:
         try:            
             while 1:
                 msg = Worker.GetMessage(self.Clients[addr]['talker'], cancel = lambda:not (addr in self.Clients))
-                if msg['command'] == "!Error":
+                if msg == "!Error":
                     break
                 elif msg['command'] == Commands.DISCONNECT:
                     break
                 elif msg['command'] == Commands.CreateGame:
+                    self.Clients[addr]['games'].append(msg['game'])
                     self.Broadcast({
                         'command' : Commands.ShowGames,
                         'games' : [msg['game']]
-                    })
+                    }, src = addr)
                 elif msg['command'] == Commands.CancelGame:
                     self.Broadcast({
                         'command' : Commands.HideGames,
                         'games' : [msg['game']]
-                    })
+                    }, src = addr)
                 elif msg['command'] == Commands.AcceptGame:
                     otherAddr = tuple(msg['addr'])
                     gamesToDelete = self.Clients[addr]['games'] + self.Clients.get(otherAddr, {'games':[]})['games']
                     try:
                         Worker.SendMessage(self.Clients[otherAddr]['listener'], {
                             'command':Commands.BeginGame,
+                            'game' : msg['game'],
                             'addr' : addr
                         })                    
                         Worker.SendMessage(self.Clients[addr]['listener'],{
                             'command':Commands.BeginGame,
-                            'addr' : msg['addr']
+                            'game' : msg['game'],
+                            'addr' : otherAddr
                         })
                         del self.Clients[addr]
                         del self.Clients[otherAddr]

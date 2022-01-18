@@ -80,7 +80,7 @@
         {
             "State" : "Visible",
             "Styles" : {
-                "BackgroundColor" : "#06070d",
+                "BackgroundColor" : "Pink",
                 "CornerRadius" : "3:em",
                 "Gap" : "2:em",
                 "Padding" : "2:em,5:em",
@@ -111,6 +111,202 @@
                 "Size" : ["4:em","4:em"],
                 "Position" : ["50:w%","50:h%"],
                 "OriginType" : "Centre"
+            }
+        }
+    ],
+    ".popupBox" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["90:em","50:em"],
+                "Position" : ["50:w%","40:h%"],
+                "OriginType" : "Centre",
+                "BackgroundColor" : "#bbbbbb",
+                "CornerRadius" : "2:em"
+            }
+        }
+    ],
+    ".closeButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["92.5:w%", "1:em"],
+                "Size" : ["5:em", "5:em"],
+                "CornerRadius" : "1.5:em",
+                "Padding" : "1:em",
+                "BackgroundColor" : ""
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#777777"
+            }
+        }
+    ],
+    ".name" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["50:w%", "20:h%"],
+                "OriginType" : "Centre",
+                "Size" : ["50:em", "5:em"],
+                "CornerRadius" : "1.5:em",
+                "Padding" : "1:em,0"
+            }
+        }
+    ],
+    ".optionsRadio" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Top",
+                "Position" : ["55:w%","30:h%"],
+                "Size" : ["100:w%","20:h%"]
+            }
+        }
+    ],
+    ".red" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "Red"
+            }
+        }
+    ],
+    ".option" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "OriginType" : "Top",
+                "Size" : ["16:w%","10:w%"],
+                "BackgroundColor" : "#28292f",
+                "BorderColor" : "#393a3f",
+                "CornerRadius" : "3:em",
+                "BorderStroke" : 3,
+                "ForegroundColor" : "White",
+                "FontSize" : "1.5:em",
+                "FontType" : "normal"
+            }
+        },
+        {
+            "State" : "RadioSelected",
+            "Styles" : {
+                "BorderColor" : "#257afd"
+            }
+        }
+    ],
+    ".lvl1" : [{"State" : "Visible","Styles" : {"Position":["5:w%","0:h%"]}}],
+    ".lvl2" : [{"State" : "Visible","Styles" : {"Position":["25:w%","0:h%"]}}],
+    ".lvl3" : [{"State" : "Visible","Styles" : {"Position":["45:w%","0:h%"]}}],
+    ".lvl4" : [{"State" : "Visible","Styles" : {"Position":["65:w%","0:h%"]}}],
+    ".lvl5" : [{"State" : "Visible","Styles" : {"Position":["85:w%","0:h%"]}}],
+    ".allowDueceToggles" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "#cc0000",
+                "ForegroundColor" : "White",
+                "Size" : ["30:em", "10:em"],
+                "FontSize" : "2:em",
+                "Position":["10:w%","55:h%"],
+                "FontType" : "normal",
+                "CornerRadius" : "2:em"
+            }
+        }
+    ],
+    ".confirmGreen" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "Light Green",
+                "ForegroundColor" : "Black"
+            }
+        }
+    ],
+    ".winCondInp" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Size" : ["30:em", "10:em"],
+                "FontSize" : "2:em",
+                "Position":["60:w%","55:h%"],
+                "FontType" : "normal"
+            }
+        }
+    ],
+    ".createButton" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["50:w%", "90:h%"],
+                "OriginType" : "Centre",
+                "Size" : ["5:em", "5:em"],
+                "CornerRadius" : "1.5:em",
+                "Padding" : "1:em",
+                "BackgroundColor" : "Light Green"
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#339933"
+            }
+        }
+    ],
+    ".imgIcon" : [
+        {
+            "State" : "Visible",
+            "Styles" : {                
+                "Size" : ["5:em", "5:em"],
+                "CornerRadius" : "1.5:em",
+                "Padding" : "1.1:em,1.1:em,1:em,1:em",
+                "BackgroundColor" : ""
+            }
+        },
+        {
+            "State" : "Hovered",
+            "Styles" : {
+                "BackgroundColor" : "#777777"
+            }
+        }
+    ],
+    ".itemBox" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "BackgroundColor" : "White",
+                "Size" : ["96:w%","5:em"],
+                "CornerRadius" : "1.5:em"
+            }
+        }
+    ],
+    ".info" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["90:w%", "50:h%"],
+                "OriginType" : "Centre"
+            }
+        }
+    ],
+    ".secondary" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["97:w%", "50:h%"],
+                "OriginType" : "Centre"
+            }
+        }
+    ],
+    ".itemName" : [
+        {
+            "State" : "Visible",
+            "Styles" : {
+                "Position" : ["2:w%", "50:h%"],
+                "OriginType" : "Left",
+                "Size" : ["80:w%","100:h%"],
+                "FontSize" : "2:em"
             }
         }
     ]

@@ -40,10 +40,10 @@ class input(div):
                 self.__value = str(self.__value)[:-1]
                 if self._CanvasID.inp is not None:self.Window.Document.itemconfig(self._CanvasID.inp,text=self.__value if self.__value else self.PlaceHolder if self.PlaceHolder else self.Type(), fill = "" if "Visible" not in self.State else (self.Styles.ForegroundColor if self.__value else self.Styles.PlaceHolderForegroundColor))
 
-        elif len(self.__value) < self.MaximumInputLength and ((self.Type == str) or (self.Type == int and intCheck(self.__value, char, self.allowNegative)) or (self.Type == float and floatCheck(self.__value, char, self.allowNegative))):
+        elif (len(self.__value) < self.MaximumInputLength) and ((self.Type == str) or (self.Type == int and intCheck(self.__value, char, self.allowNegative)) or (self.Type == float and floatCheck(self.__value, char, self.allowNegative))):
             self.__value += char            
             # Basically just update the value
-            if self._CanvasID.inp is not None:self.Window.Document.itemconfig(self._CanvasID.inp,text=self.__value if self.__value else self.PlaceHolder if self.PlaceHolder else self.Type(), fill = "" if "Visible" not in self.State else (self.Styles.ForegroundColor if self.__value else self.Styles.PlaceHolderForegroundColor))
+            if self._CanvasID.inp is not None:self.Window.Document.itemconfig(self._CanvasID.inp,text=self.__value if self.__value else (self.PlaceHolder if self.PlaceHolder else self.Type()), fill = "" if "Visible" not in self.State else (self.Styles.ForegroundColor if self.__value else self.Styles.PlaceHolderForegroundColor))
 
 
     def _Render(self):

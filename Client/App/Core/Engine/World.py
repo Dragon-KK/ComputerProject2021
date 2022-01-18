@@ -25,9 +25,3 @@ class World:
     def Render(self):
         for entity in self.Entities:
             entity.Render()
-
-    def GetImage(self):
-        pass
-
-    def UpdateImage(self, image):
-        pass

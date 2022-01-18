@@ -79,7 +79,7 @@ class EventHandler:
             self.SetEventListenerForCode(code)
                 
     def SetEventListenerForCodeAndElement(self,code,element):
-        
+        if element.Parent is None:return
         for ID in element._CanvasID.ALL:
             self.Document.tag_bind(
                 ID,
@@ -142,6 +142,7 @@ class EventListenerContainer:
 
     def RemoveAll(self):
         self.element.Window.Document.EventHandler.RemoveEventListeners(self.element)
+        self.eventListeners = {}
 
     def Set(self):        
         if self.HasBeenSet:

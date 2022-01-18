@@ -10,7 +10,8 @@ class TimedContinueButton:
 
         countdownStart = 5, # The amount of time the countdown is set for (in seconds)
         imgName = ".countdownImage", # The name of the img element
-        labelName = ".countdownLabel" # The name of the label
+        labelName = ".countdownLabel", # The name of the label
+        customCountdownStart = False
     ):
         self.ImageElement = img(initialImage, classes = imgName)
         self.__labelName = labelName
@@ -24,7 +25,7 @@ class TimedContinueButton:
 
         self.__CountdownInterval = Interval(1000, self.__OnCountDownTick)
 
-        self.ImageElement.EventListeners += EventListener("<Button-1>", lambda e : self.StartCountDown())
+        if not customCountdownStart:self.ImageElement.EventListeners += EventListener("<Button-1>", lambda e : self.StartCountDown())
         
         self.ParentElement.Children += self.ImageElement
 

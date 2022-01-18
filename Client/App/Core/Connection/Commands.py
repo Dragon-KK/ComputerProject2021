@@ -17,4 +17,9 @@ class Commands:
     AcceptGame = "[AG]" # Sent when a game request has been accepted
     GetGames = "[GG]" # Sent when a list of all game requests is needed
 
-
+    # Peer commands (Sent by a peer to another)
+    RequestRoundStart = "{RRS}"  # Sent when on side wants to begin the round
+    StartRound = "{SR}" # Sent when the round start request has been accepted by the other side
+    UpdateImage = "{UI}" # Sends a 'picture' of the current situation to the other side. The other side will then updates its own image with the data given
+    UpdateScore = "{US}" # Sent when the result is decided on one end this is validated by the other end
+    RaiseInconsistency = "{RI}" # Raised when result found by own physics and result found by round result is different. When this is raised, game is aborted (For now)

@@ -27,8 +27,11 @@ class Worker:
                 msg_unparsed = conn.recv(int(msgLen))
                 msg = Helper.ParseMessage(msg_unparsed)
                 break
+            except WindowsError as e:
+                print("Windows error", e)
+                break
             except Exception as e:
-                print(e)
+                print("Get error",e)
                 break
         return msg
 

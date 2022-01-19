@@ -20,10 +20,10 @@ class InputManager:
     def OnKey(self, event):
         e = event.Args[0]
         t = str(e.type)
-        if t == "KeyPress":
+        if t == "KeyPress" or t=="2":
             if e.keysym in self.KeyBinds:
                 self.__PressedKeys.add(e.keysym)
-        elif t == "KeyRelease":
+        elif t == "KeyRelease" or t=="3":
             if e.keysym in self.__PressedKeys:
                 self.__PressedKeys.remove(e.keysym)
 

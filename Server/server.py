@@ -37,11 +37,13 @@ class Server:
         try:
             initmsg = Worker.GetMessage(conn)
             if initmsg['command'] == Commands.CONNECT_MAIN:
-                self.Clients[addr] = {'talker':conn,'listener':None,'games':[]}
+                a = tuple(initmsg['addr'])
+                self.Clients[a] = {'talker':conn,'listener':None,'games':[]}
+                Worker.SendMessage(conn, {'command':Commands.VALIDATE_LISTENER})
                 readymsg = Worker.GetMessage(conn)
                 if readymsg['command'] == Commands.VALIDATE_LISTENER:
-                    if self.Clients[addr]['listener']:
-                        self.ServeClient(addr)
+                    if self.Clients[a]['listener']:
+                        self.ServeClient(a)
                     else:
                         raise Exception("Y u lie, listener didnt connect")
             elif initmsg['command'] == Commands.CONNECT_LISTENER:

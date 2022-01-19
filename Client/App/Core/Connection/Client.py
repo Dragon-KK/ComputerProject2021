@@ -20,14 +20,15 @@ class Client:
             self.TalkerSock.connect(serverAddr)
             self.TalkerIsConnected = True
             self.TalkerAddr = self.TalkerSock.getsockname()
-
             self.ListenerSock.connect(serverAddr)
             self.ListenerIsConnected = True
-            Worker.SendMessage(self.TalkerSock, {'command' : Commands.CONNECT_MAIN})
+            Worker.SendMessage(self.TalkerSock, {'command' : Commands.CONNECT_MAIN,'addr':self.TalkerAddr})
+            Worker.GetMessage(self.TalkerSock)
             res = Worker.SendMessageAndGetRespose(self.ListenerSock, {
                 'command' : Commands.CONNECT_LISTENER,
                 'talkerAddr' : self.TalkerAddr
             })
+            print(res)
             if res['command'] != Commands.LISTENER_REGISTERED:raise Exception("Server gave invalid response")
 
             Worker.SendMessage(self.TalkerSock, {'command' : Commands.VALIDATE_LISTENER})
@@ -35,6 +36,7 @@ class Client:
             onConnection()
 
         except Exception as e:
+            
             print(e)
             self.Disconnect()
             onError()

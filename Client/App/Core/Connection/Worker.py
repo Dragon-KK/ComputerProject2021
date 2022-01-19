@@ -43,7 +43,11 @@ class Worker:
 
     def SendMessage(conn, msg):
         '''Sends a jsonifiable object given a connection'''
-        encodedMsg = Helper.EncodeMessage(msg) # Encode the message
-        header = Helper.GetHeader(encodedMsg) # Get the header
-        conn.send(header) # Send the header
-        conn.send(encodedMsg) # Send the message
+        try:
+            encodedMsg = Helper.EncodeMessage(msg) # Encode the message
+            header = Helper.GetHeader(encodedMsg) # Get the header
+            conn.send(header) # Send the header
+            conn.send(encodedMsg) # Send the message
+        except Exception as e:
+            print("Send message error",e)
+            return

@@ -102,7 +102,7 @@ class Lobby(Document):
             difficulty = OptionsRadio.SelectedElement.Text
             if difficulty == "Beginner":
                 settings = {
-                    "Difficulty" : 40,
+                    "Difficulty" : 30,
                     "DifficultySlope" : 0,
                     "BallCount" : 1,
                     "Duece" : False,

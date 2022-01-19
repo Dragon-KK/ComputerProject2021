@@ -17,4 +17,4 @@ MyWindow.ChangeDocumentTo(MainMenu)
 
 # Run window
 MyWindow.Run()
-# eeeez game done. gn
+# eeeez game done. gn5

@@ -107,7 +107,7 @@ class CreateGame(Document):
         difficulty = self.OptionsRadio.SelectedElement.Text
         if difficulty == "Beginner":
             self.Window.Resources.Storage.LocalMultiplayer['GameSettings'] = {
-                "Difficulty" : 40,
+                "Difficulty" : 30,
                 "DifficultySlope" : 0,
                 "BallCount" : 1,
                 "Duece" : self.Duece,

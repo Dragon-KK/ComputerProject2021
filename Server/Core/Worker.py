@@ -22,7 +22,7 @@ class Worker:
                 msgLen_unparsed = conn.recv(Protocol.HEADER_LENGTH) # A header message is always sent first followed by the actual message
                 msgLen = Helper.ParseHeader(msgLen_unparsed) 
 
-                if not msgLen:continue # Sometimes an empty message is empty, if so just ignore it
+                if not msgLen:break # Sometimes an empty message is empty, if so just ignore it
 
                 msg_unparsed = conn.recv(int(msgLen))
                 msg = Helper.ParseMessage(msg_unparsed)

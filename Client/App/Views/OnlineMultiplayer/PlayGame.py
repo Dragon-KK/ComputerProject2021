@@ -42,7 +42,8 @@ class PlayGame(Document):
         container.Children += self.WorldContainer
         self.MsgBox = label(classes = ".gameoverMessage",text = "Connecting to opponent...")
 
-        self.Pong = OnlineMultiplayerPong(self.WorldContainer,settings, onGoal=lambda **kwargs:OnGoal(**kwargs))
+        self.IsMain = (tuple(self.Window.Resources.Storage.OnlineMultiplayer['peerAddr']) != tuple(self.Window.Resources.Storage.OnlineMultiplayer['game']['addr']))
+        self.Pong = OnlineMultiplayerPong(self.WorldContainer,settings, onGoal=lambda **kwargs:OnGoal(**kwargs),isLeft = self.IsMain)
         self.WorldContainer.Children += self.MsgBox
         
         self.P2P.Connect(self.Window.Resources.Storage.OnlineMultiplayer['peerAddr'], onConnection=self.OnConnection,onError = self.OnConnectionError,wait = 4)
@@ -55,7 +56,7 @@ class PlayGame(Document):
         self.WorldContainer.Children += self.MsgBox
 
     def OnConnection(self):
-        self.IsMain = (self.P2P.TalkerAddr == tuple(self.Window.Resources.Storage.OnlineMultiplayer['game']['addr']))
+        
         if self.MsgBox:
             self.MsgBox.Remove()
             self.MsgBox = None
@@ -70,7 +71,9 @@ class PlayGame(Document):
             self.OtherScore = None
             self.RoundStartHasBeenRequested = False
             self.Pong.StartRound()
+            self.P2P.SendImages(cancel=lambda : self.Pong.RoundHasEnded,data=lambda:self.Pong.GetImage(),delay = 0.01)
         def RequestCountdownStart():
+            if not self.P2P.TalkerIsConnected:return self.OnConnectionError()
             if ".greenBack" in self.tcb.ImageElement.ClassList:return
             if self.RoundStartHasBeenRequested:
                 self.P2P.StartRound()
@@ -85,15 +88,19 @@ class PlayGame(Document):
         def ShowCountDown():
             self.tcb.Reset()
             self.tcb.ImageElement.ClassList -= ".greenBack"
+            if not self.P2P.TalkerIsConnected:self.OnConnectionError()
         def UpdateScore():
             self.p1Score.Text= self.Pong.Score[0]
             self.p2Score.Text= self.Pong.Score[1]
         def OnGoal(winner = ""):
             
             UpdateScore()
-            if self.OtherScore and self.OtherScore != self.Pong.Score:
-                self.RaiseInconsistency()
-                return
+            if self.OtherScore:
+                if self.OtherScore != self.Pong.Score:
+                    self.RaiseInconsistency()
+                    return
+            else:
+                self.P2P.ValidateResult(self.Pong.Score)
                         
             if not winner:
                 ShowCountDown()
@@ -107,18 +114,18 @@ class PlayGame(Document):
                     self.p1Score.State += "Lost"
                     self.p2Score.State += "Won"
                     t = "Player 2 Wins"
-                container.Children += label(classes = '.gameoverMessage',text = t)
+                self.WorldContainer.Children += label(classes = '.gameoverMessage',text = t)
+                self.P2P.Close()
         # endregion        
         
 
     def OnMessage(self, msg):
-        print(msg)
         if msg == Commands.DISCONNECT:
             return True
-        elif msg['command'] == Commands.RequestRoundStart:
-            self.RoundStartHasBeenRequested = True
         elif msg['command'] == Commands.UpdateImage:
             self.Pong.UpdateFromImage(msg['data'])
+        elif msg['command'] == Commands.RequestRoundStart:
+            self.RoundStartHasBeenRequested = True
         elif msg['command'] == Commands.UpdateScore:
             self.OtherScore = msg['data']
         elif msg['command'] == Commands.StartRound:
@@ -126,9 +133,23 @@ class PlayGame(Document):
             if self.IsMain:
                 self.P2P.UpdateImage(self.Pong.GetInitialImage())
             self.tcb.StartCountDown()
+        elif msg['command'] == Commands.RaiseInconsistency:
+            self.P2P.Close()
+            if self.MsgBox:
+                self.MsgBox.Remove()
+                self.MsgBox = None
+            self.MsgBox = label(classes = ".gameoverMessage .redText",text = "Validation error!")
+            self.WorldContainer.Children += self.MsgBox
 
     def RaiseInconsistency(self):
-        pass
+        self.P2P.RaiseInconsistency()
+        self.P2P.Close()
+        if self.MsgBox:
+            self.MsgBox.Remove()
+            self.MsgBox = None
+        self.MsgBox = label(classes = ".gameoverMessage .redText",text = "Validation error!")
+        self.WorldContainer.Children += self.MsgBox
+        
 
     def Destroy(self):
         super().Destroy()

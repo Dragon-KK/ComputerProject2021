@@ -29,3 +29,17 @@ maybe add validation later on?
 
 # TODO
 WORK ON UI CHANGES!!!!!!!
+
+
+
+
+
+
+----------------------------------
+
+
+# TODO_DO_ME!!!
+fill the getinitial image and get image functions in pong.py for online multiplayer
+make an input manager for online multiplayer
+add round end validation atleast
+make it so that when one side wins peer is disconnected

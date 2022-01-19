@@ -13,8 +13,10 @@ class PeerToPeer:
         self.ListenerAddr = (0,0)
         self.TalkerSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
         self.ListenerSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
+        self.ImageSenderSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
         self.TalkerIsConnected = True
         self.ListenerIsConnected = False
+        self.__Connections = []
         Console.info("Initializing p2p connection")
 
 
@@ -25,6 +27,8 @@ class PeerToPeer:
             self.TalkerSock.connect(peerAddr)
             self.TalkerIsConnected = True
             self.TalkerAddr = self.TalkerSock.getsockname()
+
+            self.ImageSenderSock.connect(peerAddr)
             Console.info("Connected to peer succesfully")
             onConnection()
 
@@ -34,29 +38,7 @@ class PeerToPeer:
             self.Disconnect()
             onError()
 
-    def _Listen(self, listeningAddr,callback):
-        Console.info("Setting up p2p listener")
-        
-        retryCount = 0
-        conn = None
-        while True:
-            try:
-                self.ListeningAddress = listeningAddr
-                self.ListenerSock.bind(listeningAddr)
-                self.ListenerIsConnected = True
-                self.ListenerSock.listen()
-                Console.info("Waiting for peer")
-                conn,addr = self.ListenerSock.accept()                
-                break
-            except Exception as e:
-                print(e)
-                retryCount += 1
-                Console.error("Listening socket is being used")
-                if retryCount > 100:
-                    self.Disconnect()
-                    return
-                time.sleep(1)
-        Console.info("Peer has connected")     
+    def __Listen(self,conn,callback):
         try:
             while 1:
                 msg = Worker.GetMessage(conn,cancel = lambda:not self.TalkerIsConnected)
@@ -67,7 +49,34 @@ class PeerToPeer:
         except Exception as e:
             Console.error(errorDesc = e)
         conn.close()   
+        self.Disconnect()
         Console.info("Stopped Listening")
+    def _Listen(self, listeningAddr,callback):
+        Console.info("Setting up p2p listener")
+        
+        retryCount = 0
+        while True:
+            try:
+                self.ListeningAddress = listeningAddr
+                self.ListenerSock.bind(listeningAddr)
+                self.ListenerIsConnected = True
+                self.ListenerSock.listen()
+                Console.info("Waiting for peer")
+                connT,addrT = self.ListenerSock.accept()                
+                connI,addrI = self.ListenerSock.accept()                
+                break
+            except Exception as e:
+                print(e)
+                retryCount += 1
+                Console.error("Listening socket is being used")
+                if retryCount > 100:
+                    self.Disconnect()
+                    return
+                time.sleep(1)
+        Console.info("Peer has connected")
+        self.__Connections = [connI,connT]  
+        threading.Thread(target = self.__Listen, args = (connT, callback),daemon = True).start()
+        threading.Thread(target = self.__Listen, args = (connI, callback),daemon = True).start()
 
     def Listen(self,listeningAddr,callback):
         listeningAddr = tuple(listeningAddr)
@@ -80,11 +89,18 @@ class PeerToPeer:
 
     def Disconnect(self):
         Console.info("Disconnecting")
+        for conn in self.__Connections:
+            try:
+                conn.shutdown(socket.SHUT_WR)
+                conn.close()
+            except:pass
         self.TalkerIsConnected = False
         self.ListenerIsConnected = False
         try:self.TalkerSock.shutdown(socket.SHUT_WR)
         except:pass
         
+        try:self.ListenSock.shutdown(socket.SHUT_RDWR) # Close the socket
+        except:pass
         try:self.ListenSock.close() # Close the socket
         except:pass
 
@@ -114,7 +130,7 @@ class PeerToPeer:
             'data' : res
         })
 
-    def RaiseInconsistency(self, res):
+    def RaiseInconsistency(self):
         Worker.SendMessage(self.TalkerSock, {
             'command' : Commands.RaiseInconsistency
         })
@@ -123,3 +139,24 @@ class PeerToPeer:
         Worker.SendMessage(self.TalkerSock, {
             'command' : Commands.StartRound
         })
+
+    def _SendImages(self, cancel, data, delay):
+        Console.info("Sending images")
+        try:
+            while 1:
+                time.sleep(delay)
+                if cancel() or (not self.TalkerIsConnected):return
+                Worker.SendMessage(self.ImageSenderSock, {
+                    'command' : Commands.UpdateImage,
+                    'data' : data()
+                })
+        except ConnectionResetError:
+            Console.info("Connection has been resetted 124rqwe")            
+        except Exception as e:
+            Console.error(errorDesc = e)
+
+        Console.info("Stopped sending images")
+
+
+    def SendImages(self, cancel = lambda:False,data = lambda:{}, delay = 0):
+        threading.Thread(target=self._SendImages, args = (cancel, data, delay), daemon = True).start()

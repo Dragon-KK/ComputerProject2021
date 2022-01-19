@@ -2,7 +2,7 @@ from . import World,Physics
 from . import Entities
 from ..DataTypes.Standard import Vector
 from ..DataTypes.Physics import EulersVector
-from .Helpers import LocalMultiplayer,Arcade
+from .Helpers import LocalMultiplayer,Arcade,OnlineMultiplayer
 from random import randint
 class Pong:
     '''
@@ -217,7 +217,7 @@ class ArcadePong(Pong):
 
 
 class OnlineMultiplayerPong(Pong):
-    def __init__(self, container, settings, physicsDelay = 10, renderDelay = 15, onGoal = lambda winner="":0):
+    def __init__(self, container, settings,isLeft = True, physicsDelay = 10, renderDelay = 15, onGoal = lambda winner="":0):
 
         #region Random Velocity
         def PlusMinus(n):
@@ -265,21 +265,52 @@ class OnlineMultiplayerPong(Pong):
             balls = self.balls,
             renderDelay=renderDelay
         )
-    	
+        self.RoundHasEnded = False
+        self.IsLeft = isLeft
         self.Physics = Physics(container, self.balls, self.walls, self.goals,self.paddles, physicsDelay, self.OnGoal)
         self.Score  = [0, 0]
         self.OnGoalCallback = onGoal
-        self.InputManager = LocalMultiplayer.InputManager(container,self.paddles)
+        self.InputManager = OnlineMultiplayer.InputManager(container,self.paddles[0] if isLeft else self.paddles[1])
         self.Settings = settings
 
     def GetInitialImage(self):
-        return {}
+        return {
+            "Balls" : [
+                {
+                    "direction" : (ball.Velocity.Direction.x,ball.Velocity.Direction.y)
+                }
+                for ball in self.balls
+            ]
+        }
+
+    def UpdateFromInitialImage(self, img):
+        for i in range(self.Settings.BallCount):
+            self.balls[i].Velocity.Direction = Vector(*img['Balls'][i]['direction'])
+            
 
     def GetImage(self):
-        return {}
+        if self.IsLeft:
+            return {
+                "LeftPaddle" : {
+                    'position' : (self.paddles[0].Position.x,self.paddles[0].Position.y)
+                }
+            }
+        else:
+            return {
+                "RightPaddle" : {
+                    'position' : (self.paddles[1].Position.x,self.paddles[1].Position.y)
+                }
+            }
 
-    def UpdateFromImage(self):
-        pass
+
+
+    def UpdateFromImage(self, img):
+        if self.RoundHasEnded:return # If the round has ended from our side just return
+        if img.get("Balls"):return self.UpdateFromInitialImage(img) # If the img has ball position it must be the initial image (this will be changed in the future)
+        if self.IsLeft:
+            self.paddles[1].Position = Vector(*img['RightPaddle']['position'])
+        else:
+            self.paddles[0].Position = Vector(*img['LeftPaddle']['position'])
 
     def ContinueRound(self):
         self.InputManager.Continue()
@@ -296,6 +327,7 @@ class OnlineMultiplayerPong(Pong):
             return ""
 
     def Reset(self):
+        self.RoundHasEnded = False
         for entity in self.World.Entities:
             entity.Reset()
 
@@ -304,6 +336,7 @@ class OnlineMultiplayerPong(Pong):
         self.ContinueRound()
 
     def StartRoundWithReset(self):
+        self.RoundHasEnded = False
         for entity in self.World.Entities:
             entity.Reset()
         self.RoundHasStarted = True
@@ -323,6 +356,7 @@ class OnlineMultiplayerPong(Pong):
 
     def OnGoal(self, goal):
         self.PauseRound()
+        self.RoundHasEnded = True
         self.World.Render() # Soemtimes the world misses a render 
         self.RoundHasStarted = False
         if goal.GoalName == "P1Goal":

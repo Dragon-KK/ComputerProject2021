@@ -90,6 +90,7 @@ class Server:
                     }, src = addr)
                 elif msg['command'] == Commands.AcceptGame:
                     otherAddr = tuple(msg['addr'])
+                    
                     gamesToDelete = self.Clients[addr]['games'] + self.Clients.get(otherAddr, {'games':[]})['games']
                     try:
                         Worker.SendMessage(self.Clients[otherAddr]['listener'], {

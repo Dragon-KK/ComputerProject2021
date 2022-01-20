@@ -8,11 +8,11 @@ import time
 
 class PeerToPeer:
     
-    def __init__(self):
+    def __init__(self, listenerSock):
         self.TalkerAddr = (0,0)
         self.ListenerAddr = (0,0)
         self.TalkerSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
-        self.ListenerSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
+        self.ListenerSock = listenerSock
         self.ImageSenderSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
         self.TalkerIsConnected = True
         self.ListenerIsConnected = False
@@ -23,6 +23,7 @@ class PeerToPeer:
 
     def _Connect(self, peerAddr, onError, onConnection,wait):
         time.sleep(wait)
+        print(peerAddr)
         try:
             self.TalkerSock.connect(peerAddr)
             self.TalkerIsConnected = True
@@ -57,8 +58,6 @@ class PeerToPeer:
         retryCount = 0
         while True:
             try:
-                self.ListeningAddress = listeningAddr
-                self.ListenerSock.bind(listeningAddr)
                 self.ListenerIsConnected = True
                 self.ListenerSock.listen()
                 Console.info("Waiting for peer")
@@ -66,9 +65,8 @@ class PeerToPeer:
                 connI,addrI = self.ListenerSock.accept()                
                 break
             except Exception as e:
-                print(e)
                 retryCount += 1
-                Console.error("Listening socket is being used")
+                Console.error(e)
                 if retryCount > 20:
                     self.Disconnect()
                     return
@@ -85,6 +83,7 @@ class PeerToPeer:
     def Connect(self, peerAddr, onError = lambda:0, onConnection = lambda:0, wait = 0):
         '''Connects to the peer (asynchronously)'''
         peerAddr = tuple(peerAddr)
+        
         threading.Thread(target=self._Connect, args = (peerAddr,onError,onConnection,wait),daemon=True).start()
 
     def Disconnect(self):

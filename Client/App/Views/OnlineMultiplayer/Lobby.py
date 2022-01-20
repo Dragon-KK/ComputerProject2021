@@ -249,7 +249,7 @@ class Lobby(Document):
     def StartGame(self, game, peerAddr):
         self.Window.Resources.Storage.OnlineMultiplayer['peerAddr'] = peerAddr
         self.Window.Resources.Storage.OnlineMultiplayer['game'] = game
-        self.Window.Resources.Storage.OnlineMultiplayer['listeningAddr'] = self.Client.TalkerAddr
+        self.Window.Resources.Networking.HoldResource("peerListener", self.Client.PeerListener)
         self.NavigateTo("PlayGame")
 
     def AcceptGame(self, game):

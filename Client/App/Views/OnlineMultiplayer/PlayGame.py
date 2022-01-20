@@ -36,7 +36,7 @@ class PlayGame(Document):
         Toolbar.Children += GoBackButton
         # endregion
 
-        self.P2P = PeerToPeer()
+        self.P2P = PeerToPeer(self.Window.Resources.Networking.peerListener)
         self.P2P.Listen(self.Window.Resources.Storage.OnlineMultiplayer['listeningAddr'], self.OnMessage)
         self.WorldContainer = div(classes=".worldContainer")
         container.Children += self.WorldContainer
@@ -155,6 +155,7 @@ class PlayGame(Document):
         super().Destroy()
         self.Pong.PauseRound() 
         self.P2P.Close()
+        self.Window.Resources.Networking.ReleaseResource("peerListener")
 
     def NavigateTo(self, dest):
         if dest == "MainMenu":

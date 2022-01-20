@@ -13,6 +13,7 @@ class Client:
         self.TalkerSock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.ListenerSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
         self.TalkerIsConnected = False
+        self.PeerListener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ListenerIsConnected = False
         Console.info("Initializing client connection")
 
@@ -20,16 +21,16 @@ class Client:
         try:
             self.TalkerSock.connect(serverAddr)
             self.TalkerIsConnected = True
-            self.TalkerAddr = self.TalkerSock.getsockname()
             self.ListenerSock.connect(serverAddr)
             self.ListenerIsConnected = True
+            self.PeerListener.bind((socket.gethostbyname(socket.gethostname()), 0))
+            self.TalkerAddr = self.PeerListener.getsockname() # I Say talker addr but its actually peer listener address
             Worker.SendMessage(self.TalkerSock, {'command' : Commands.CONNECT_MAIN,'addr':self.TalkerAddr})
             Worker.GetMessage(self.TalkerSock)
             res = Worker.SendMessageAndGetRespose(self.ListenerSock, {
                 'command' : Commands.CONNECT_LISTENER,
                 'talkerAddr' : self.TalkerAddr
             })
-            print(res)
             if res['command'] != Commands.LISTENER_REGISTERED:raise Exception("Server gave invalid response")
 
             Worker.SendMessage(self.TalkerSock, {'command' : Commands.VALIDATE_LISTENER})
@@ -84,6 +85,7 @@ class Client:
         })
 
     def AcceptGame(self, game, addr):
+        
         Worker.SendMessage(self.TalkerSock, {
             'command' : Commands.AcceptGame,
             'addr' : addr,

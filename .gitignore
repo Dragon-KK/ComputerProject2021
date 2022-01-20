@@ -1,2 +1,3 @@
 *.pyc
 .vscode
+Client/App/Media/Data/Storage.json

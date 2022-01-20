@@ -10,6 +10,7 @@ class Client:
     def __init__(self):
         self.TalkerAddr = (0,0)
         self.TalkerSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
+        self.TalkerSock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.ListenerSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # The socket
         self.TalkerIsConnected = False
         self.ListenerIsConnected = False

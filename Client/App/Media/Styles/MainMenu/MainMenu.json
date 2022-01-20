@@ -24,7 +24,7 @@
             "State" : "Visible",
             "Styles" : {
                 "Size" : ["30:w%","7.5:h%"],
-                "OriginType" : "Left",
+                "OriginType" : "Centre",
                 "BackgroundColor" : "#28292f",
                 "ForegroundColor" : "White",
                 "FontSize" : "1.5:em",
@@ -37,13 +37,13 @@
             "Styles" : {
                 "BackgroundColor" : "#f9ae5c",
                 "ForegroundColor" : "Black",
-                "Size" : ["40:w%","8:h%"]
+                "Size" : ["35:w%","10:h%"]
             }
         }
     ],
-    ".onlineButton" : [{"State" : "Visible","Styles" : {"Position" : ["35:w%","50:h%"]}}],
-    ".localButton" : [{"State" : "Visible","Styles" : {"Position" : ["35:w%","60:h%"]}}],
-    ".arcadeButton" : [{"State" : "Visible","Styles" : {"Position" : ["35:w%","70:h%"]}}],
-    ".quitButton" : [{"State" : "Visible","Styles" : {"Position" : ["35:w%","80:h%"]}}]
+    ".onlineButton" : [{"State" : "Visible","Styles" : {"Position" : ["50:w%","50:h%"]}}],
+    ".localButton" : [{"State" : "Visible","Styles" : {"Position" : ["50:w%","60:h%"]}}],
+    ".arcadeButton" : [{"State" : "Visible","Styles" : {"Position" : ["50:w%","70:h%"]}}],
+    ".quitButton" : [{"State" : "Visible","Styles" : {"Position" : ["50:w%","80:h%"]}}]
 
 }

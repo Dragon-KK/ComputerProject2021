@@ -46,7 +46,7 @@ class PlayGame(Document):
         self.Pong = OnlineMultiplayerPong(self.WorldContainer,settings, onGoal=lambda **kwargs:OnGoal(**kwargs),isLeft = self.IsMain)
         self.WorldContainer.Children += self.MsgBox
         
-        self.P2P.Connect(self.Window.Resources.Storage.OnlineMultiplayer['peerAddr'], onConnection=self.OnConnection,onError = self.OnConnectionError,wait = 4)
+        self.P2P.Connect(self.Window.Resources.Storage.OnlineMultiplayer['peerAddr'], onConnection=self.OnConnection,onError = self.OnConnectionError,wait = 10)
 
     def OnConnectionError(self):
         if self.MsgBox:

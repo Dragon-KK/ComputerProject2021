@@ -58,7 +58,7 @@ class Physics:
             for entity in walls: # I go through each of the walls it could theoretically collide with
                 if entity.IsHorizontal: # If the wall is horizontal,
                     poc = ball.Position + Vector(0, sign(ball.Velocity.Direction.y) * ball.Radius)
-                    FuelNeeded = (entity.P1.y - poc.y) / ball.Velocity.Direction.y # distance.y / velocity.y
+                    FuelNeeded = (entity.P1.y - poc.y) / ball.Velocity.Direction.y # distance.y * speed / velocity.y
                     if FuelNeeded > fuel or FuelNeeded < 0:continue             
                     xCoordOfCollision = poc.x + (FuelNeeded * ball.Velocity.Direction.x)
                     if entity.P1.x < xCoordOfCollision < entity.P2.x: # The x coordinate of collision falls bw the ends of the wall/goal

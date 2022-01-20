@@ -122,7 +122,7 @@ class EventListenerContainer:
         self.nextListenerID += 1
         if self.HasBeenSet:
             self.element.Window.Document.EventHandler.AddEventListener(eventListener.Code, self.element)
-            if self.element.InitialRenderDone:self.element.Window.Document.EventHandler.SetEventListenersForElement(self.element)
+            if self.element.InitialRenderDone:self.element.Window.Document.EventHandler.SetEventListenerForCode(eventListener.Code, self.element)
         return self
 
     def Remove(self, ID):

@@ -37,7 +37,8 @@
             "Styles" : {
                 "BackgroundColor" : "#f9ae5c",
                 "ForegroundColor" : "Black",
-                "Size" : ["35:w%","10:h%"]
+                "Size" : ["35:w%","10:h%"],
+                "FontSize" : "1.8:em"
             }
         }
     ],

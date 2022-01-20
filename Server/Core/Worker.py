@@ -20,6 +20,7 @@ class Worker:
             try:
                 if cancel():break
                 msgLen_unparsed = conn.recv(Protocol.HEADER_LENGTH) # A header message is always sent first followed by the actual message
+                if msgLen_unparsed == b'SSH-2.0-Renci.SshNet.SshClient.0.0.1\r\n':continue # For some reason with ngrok this msg comes idk why tho
                 msgLen = Helper.ParseHeader(msgLen_unparsed) 
 
                 if not msgLen:break # Sometimes an empty message is empty, if so just ignore it

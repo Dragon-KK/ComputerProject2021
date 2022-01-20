@@ -36,7 +36,9 @@ class Server:
         Console.clientLog(addr, "Connected to server")
         try:
             initmsg = Worker.GetMessage(conn)
-            if initmsg['command'] == Commands.CONNECT_MAIN:
+            if initmsg == "!Error":
+                raise Exception("Initial message was a dud")
+            elif initmsg['command'] == Commands.CONNECT_MAIN:
                 a = tuple(initmsg['addr'])
                 self.Clients[a] = {'talker':conn,'listener':None,'games':[]}
                 Worker.SendMessage(conn, {'command':Commands.VALIDATE_LISTENER})
@@ -53,8 +55,6 @@ class Server:
                 raise Exception("Initial message must be a connection management message")
         except Exception as e:
             print(e)
-            import traceback
-            traceback.print_exc()
             Console.clientLog(addr, "Disconnecting")
             
             if self.Clients.get(addr):del self.Clients[addr]

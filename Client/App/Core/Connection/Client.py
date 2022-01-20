@@ -23,7 +23,7 @@ class Client:
             self.TalkerIsConnected = True
             self.ListenerSock.connect(serverAddr)
             self.ListenerIsConnected = True
-            self.PeerListener.bind((socket.gethostbyname(socket.gethostname()), 0))
+            self.PeerListener.bind((self.TalkerSock.getsockname()[0], 0))
             self.TalkerAddr = self.PeerListener.getsockname() # I Say talker addr but its actually peer listener address
             Worker.SendMessage(self.TalkerSock, {'command' : Commands.CONNECT_MAIN,'addr':self.TalkerAddr})
             Worker.GetMessage(self.TalkerSock)

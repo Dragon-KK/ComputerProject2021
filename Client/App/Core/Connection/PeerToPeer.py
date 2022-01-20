@@ -69,10 +69,10 @@ class PeerToPeer:
                 print(e)
                 retryCount += 1
                 Console.error("Listening socket is being used")
-                if retryCount > 100:
+                if retryCount > 20:
                     self.Disconnect()
                     return
-                time.sleep(1)
+                time.sleep(0.5)
         Console.info("Peer has connected")
         self.__Connections = [connI,connT]  
         threading.Thread(target = self.__Listen, args = (connT, callback),daemon = True).start()
